@@ -1,0 +1,238 @@
+{
+  "entity": "Lula",
+  "date": "2026-05-18",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Luiz Inácio Lula da Silva",
+      "link": "https://en.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva",
+      "snippet": "Luiz Inácio Lula da Silva known mononymously as Lula, is a Brazilian politician, trade unionist and former metalworker who has served as president of Brazil ...",
+      "domain": "en.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "Luiz Inacio Lula da Silva - BBC News",
+      "link": "https://www.bbc.com/news/topics/ce73e161xjet",
+      "snippet": "All the latest content about Luiz Inacio Lula da Silva from the BBC.",
+      "domain": "bbc.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "Luiz Ignácio Lula da Silva | Brazil: Five Centuries of Change",
+      "link": "https://library.brown.edu/create/fivecenturiesofchange/chapters/chapter-8/luiz-ignacio-lula-da-silva/",
+      "snippet": "His Marxist views caused alarm among many who did not know what to expect if Lula were elected President of Brazil. How would he change economic policies? What ...",
+      "domain": "library.brown.edu",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Lula and His Politics of Cunning - Duke History Department",
+      "link": "https://history.duke.edu/books/lula-and-his-politics-cunning-metalworker-president-brazil",
+      "snippet": "Known around the world simply as Lula, Luis Inacio Lula da Silva was born in 1945 to illiterate parents who migrated to industrializing Sao Paulo.",
+      "domain": "history.duke.edu",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 5,
+      "title": "Luiz Inácio Lula da Silva",
+      "link": "https://www.theguardian.com/world/luiz-inacio-lula-da-silva",
+      "snippet": "Luiz Inácio Lula da Silva. May 2026. President Trump and President Xi Jinping stand side by side in front of American and Chinese. Men in the mirror: Trump ...",
+      "domain": "theguardian.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Luiz Inácio Lula da Silva",
+      "link": "https://www.weforum.org/people/luiz-inacio-lula-da-silva/",
+      "snippet": "Technical degree. Former metalworkers' union leader. 1975, elected President, Metal Workers Trade Union; 1983, Co-Founder, Trade Union CUT (Central Unica ...",
+      "domain": "weforum.org",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Lula (2024)",
+      "link": "https://www.imdb.com/title/tt32186444/",
+      "snippet": "Lula: Directed by Oliver Stone, Robert S. Wilson. With Luiz Inácio Lula da Silva, Oliver Stone, Jair Bolsonaro, George W. Bush. An intimate portrait of Luiz ...",
+      "domain": "imdb.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "Luis Inácio Lula da Silva (1945 - )",
+      "link": "https://www.presidency.gov.za/luis-inacio-lula-da-silva-1945",
+      "snippet": "Mr Luis Inácio Lula da Silva was born on 27 October 1945 in the state of Pernambuco in Brazil. He was the 35th President of Brazil.",
+      "domain": "presidency.gov.za",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "en.wikipedia.org",
+    "bbc.com",
+    "library.brown.edu",
+    "history.duke.edu",
+    "theguardian.com",
+    "weforum.org",
+    "imdb.com",
+    "presidency.gov.za"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 7,
+    "positive": 1
+  },
+  "controlled_assets": 0,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 0,
+  "authority_vacuum": "HIGH",
+  "expansion_associations": [
+    {
+      "entity": "Jair Bolsonaro",
+      "type": "unknown",
+      "frequency": 12,
+      "domains": [
+        "bbc.com",
+        "en.wikipedia.org"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Luiz Inácio",
+      "type": "unknown",
+      "frequency": 12,
+      "domains": [
+        "en.wikipedia.org"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Luiz Inácio Lula",
+      "type": "unknown",
+      "frequency": 11,
+      "domains": [
+        "en.wikipedia.org",
+        "library.brown.edu"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Bolsa Família",
+      "type": "unknown",
+      "frequency": 8,
+      "domains": [
+        "library.brown.edu"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "President Jair Bolsonaro",
+      "type": "unknown",
+      "frequency": 6,
+      "domains": [
+        "bbc.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Dilma Rousseff",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "en.wikipedia.org"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Fernando Henrique Cardoso",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "en.wikipedia.org",
+        "library.brown.edu"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "White House",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "bbc.com"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 48,
+    "count_30d": 48,
+    "momentum": "Escalating",
+    "most_aggressive": "g1.globo.com"
+  },
+  "generated_at": "2026-05-18T10:54:02.460756+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": []
+}

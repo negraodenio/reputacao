@@ -1,0 +1,112 @@
+{
+  "entity": "careca do INSS",
+  "date": "2026-05-16",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Careca do INSS – Wikipédia, a enciclopédia livre",
+      "link": "https://pt.wikipedia.org/wiki/Careca_do_INSS",
+      "snippet": "Antônio Carlos Camilo Antunes ( [onde?], [quando?] ), mais conhecido como \"Careca do INSS\" é um lobista brasileiro, que ganhou notoriedade por ser o epicentro e ...",
+      "domain": "pt.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 2,
+      "title": "'Careca do INSS' não responde perguntas de relator, mas ...",
+      "link": "https://www12.senado.leg.br/noticias/materias/2025/09/25/2018careca-do-inss2019-nao-responde-perguntas-de-relator-mas-nega-participar-de-fraude",
+      "snippet": "A suspeita é de que o “Careca do INSS” tenha pago propina a servidores graduados do INSS para facilitar descontos fraudulentos nas ...",
+      "domain": "www12.senado.leg.br",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 3,
+      "title": "Quem é o “Careca do INSS”, apontado pela PF como ...",
+      "link": "https://www.cnnbrasil.com.br/politica/quem-e-o-careca-do-inss-apontado-pela-pf-como-intermediario-das-fraudes/",
+      "snippet": "A Polícia Federal (PF) destacou em relatório sobre as fraudes no Instituto Nacional do Seguro Social (INSS) a participação de Antônio Carlos ...",
+      "domain": "cnnbrasil.com.br",
+      "type": "mainstream",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "'Careca do INSS' movimentou R$ 12 milhões em 129 dias ...",
+      "link": "https://g1.globo.com/sp/sao-paulo/noticia/2025/09/12/careca-do-inss-movimentou-r-12-milhoes-em-129-dias-aponta-investigacao-contra-fraudes-em-aposentadorias.ghtml",
+      "snippet": "Uma investigação da Polícia Federal apontou que Antônio Carlos Camilo Antunes, conhecido como o \"Careca do INSS\", movimentou mais de R$ 12 ...",
+      "domain": "g1.globo.com",
+      "type": "mainstream",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 5,
+      "title": "Ouvido na CPMI, \"Careca do INSS\" nega envolvimento ...",
+      "link": "https://www.camara.leg.br/noticias/1204642-ouvido-na-cpmi-careca-do-inss-nega-envolvimento-com-descontos-indevidos/",
+      "snippet": "O empresário Antonio Carlos Camilo Antunes, preso pela Polícia Federal e que ficou conhecido como “Careca do INSS”, negou aos membros da CPMI do ...",
+      "domain": "camara.leg.br",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 6,
+      "title": "Entenda o papel do “Careca do INSS” no esquema de fraudes ...",
+      "link": "https://www.youtube.com/watch?v=Qnsz1FVf6vU",
+      "snippet": "A PF (Polícia Federal) prendeu nesta sexta-feira (12) Antônio Carlos Camilo Antunes, conhecido como \"Careca do INSS\", e o empresário ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 7,
+      "title": "Careca do INSS admite que fraude nasceu no governo ...",
+      "link": "https://ptnosenado.org.br/careca-do-inss-admite-que-fraude-nasceu-no-governo-bolsonaro/",
+      "snippet": "Um dos principais suspeitos de fraudes contra aposentados e pensionistas do INSS, o empresário Antônio Carlos Camilo Antunes, conhecido como ...",
+      "domain": "ptnosenado.org.br",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 8,
+      "title": "Empresário: \"Careca do INSS\" é um personagem fictício ...",
+      "link": "https://www.facebook.com/cnnbrasil/videos/empres%C3%A1rio-careca-do-inss-%C3%A9-um-personagem-fict%C3%ADcio-cnn-360%C2%BA/1349051733440593/",
+      "snippet": "Empresário: \"Careca do INSS\" é um personagem fictício; assista #CNNBrasil360.",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    }
+  ],
+  "domains": [
+    "pt.wikipedia.org",
+    "www12.senado.leg.br",
+    "cnnbrasil.com.br",
+    "g1.globo.com",
+    "camara.leg.br",
+    "youtube.com",
+    "ptnosenado.org.br",
+    "facebook.com"
+  ],
+  "sentiment_counts": {
+    "negative": 5,
+    "neutral": 3,
+    "positive": 0
+  },
+  "controlled_assets": 2,
+  "page_1_negative_ratio": 0.625,
+  "top_3_negative_count": 2,
+  "legal_domain_count": 0,
+  "authority_vacuum": "HIGH",
+  "narrative_pressure": {
+    "count_7d": 2,
+    "count_30d": 10,
+    "momentum": "Stable",
+    "most_aggressive": "metropoles.com"
+  }
+}

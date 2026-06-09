@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Variação Semântica — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#0a0a0a; --surface:#111; --surface2:#161616;
+      --border:#222; --border-mid:#2a2a2a;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#8a6e3e;
+      --red:#c0392b; --orange:#d35400; --yellow:#d4a017; --green:#27ae60;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1100px; margin:0 auto; padding:48px 32px 80px; }
+    .header { border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:32px; }
+    .entity-name { font-size:26px; font-weight:600; margin-bottom:4px; }
+    .header-meta { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+    .section-title { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.16em; color:var(--accent); text-transform:uppercase; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .nav-bar { display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; }
+    .nav-link { font-family:var(--mono); font-size:9px; padding:4px 12px; border:1px solid var(--border-mid); color:var(--text-dim); text-decoration:none; border-radius:3px; }
+    .nav-link:hover { color:var(--accent); border-color:var(--accent-dim); }
+
+    /* Frame selector */
+    .frames-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:8px; margin-bottom:24px; }
+    .frame-card { background:var(--surface); border:1px solid var(--border); padding:14px 16px; cursor:pointer; transition:border-color 0.1s; }
+    .frame-card.selected { border-color:var(--accent-dim); background:var(--surface2); }
+    .frame-card:hover { border-color:var(--border-mid); }
+    .frame-name { font-family:var(--mono); font-size:11px; font-weight:500; margin-bottom:4px; }
+    .frame-meta { font-size:10px; color:var(--text-dim); }
+    .frame-platforms { font-family:var(--mono); font-size:9px; color:var(--accent-dim); margin-top:4px; }
+
+    /* Article selector */
+    .article-selector { background:var(--surface); border:1px solid var(--border); padding:12px 16px; margin-bottom:24px; }
+    .article-selector select { width:100%; background:var(--surface2); border:1px solid var(--border-mid); color:var(--text); padding:8px 12px; font-family:var(--mono); font-size:11px; border-radius:3px; }
+
+    /* Generate button */
+    .gen-btn { font-family:var(--mono); font-size:11px; padding:10px 28px; background:var(--accent); color:#000; border:none; border-radius:3px; cursor:pointer; font-weight:600; letter-spacing:0.05em; }
+    .gen-btn:disabled { background:var(--border); color:var(--text-faint); cursor:not-allowed; }
+
+    /* Warning */
+    .warning-box { background:#1a0e05; border:1px solid #3d2a1a; padding:14px 18px; margin-bottom:24px; }
+    .warning-text { font-size:12px; color:#d4a017; line-height:1.7; }
+    .warning-text strong { color:var(--accent); }
+
+    /* Results */
+    .variation-card { background:var(--surface); border:1px solid var(--border); margin-bottom:12px; }
+    .variation-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:var(--surface2); border-bottom:1px solid var(--border); }
+    .variation-label { font-family:var(--mono); font-size:11px; font-weight:500; }
+    .variation-platforms { font-family:var(--mono); font-size:9px; color:var(--accent-dim); }
+    .variation-body { padding:16px; font-size:12px; line-height:1.8; color:var(--text-dim); white-space:pre-wrap; max-height:300px; overflow-y:auto; }
+    .variation-footer { padding:8px 16px; border-top:1px solid var(--border); display:flex; gap:8px; }
+    .copy-btn { font-family:var(--mono); font-size:9px; padding:3px 10px; border:1px solid var(--border-mid); background:var(--surface2); color:var(--text-dim); border-radius:3px; cursor:pointer; }
+    .copy-btn:hover { color:var(--accent); border-color:var(--accent-dim); }
+    .word-count { font-family:var(--mono); font-size:9px; color:var(--text-faint); margin-left:auto; }
+
+    #loading { display:none; font-family:var(--mono); font-size:11px; color:var(--text-dim); padding:24px; text-align:center; }
+    #results { margin-top:24px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="nav-bar">
+    <a href="/snapshots" class="nav-link">← Entidades</a>
+    <a href="/content/{{ slug }}" class="nav-link">Content Studio</a>
+    <a href="/distribution/{{ slug }}" class="nav-link">Distribution Matrix</a>
+    <a href="/narrative-blast/{{ slug }}" class="nav-link">Narrative Blast</a>
+  </div>
+
+  <header class="header">
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">Motor de Variação Semântica &mdash; {{ generated_at }}</div>
+  </header>
+
+  <div class="warning-box">
+    <div class="warning-text">
+      <strong>Anti-Mass-Posting:</strong> O Google penaliza publicação do mesmo texto em múltiplos domínios no mesmo dia.
+      Este motor gera <strong>6 enquadramentos distintos</strong> da mesma narrativa — mesma mensagem, perspectivas diferentes.
+      Cada variação é publicada em plataformas diferentes → Google detecta coerência semântica sem footprint artificial.
+    </div>
+  </div>
+
+  <!-- Article selector -->
+  <div style="margin-bottom:24px;">
+    <div class="section-title">Artigo Base</div>
+    <div class="article-selector">
+      <select id="articleSelect">
+        <option value="">Selecione um artigo em cache...</option>
+        {% for a in articles %}
+        <option value="{{ a.get('asset_type', '') }}">{{ a.get('seo', {}).get('title', a.get('asset_type','')) }} ({{ a.get('asset_type','') }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if not articles %}
+    <p style="font-size:12px;color:var(--text-dim);">Nenhum artigo em cache. Gere artigos primeiro em <a href="/content/{{ slug }}" style="color:var(--accent);">Content Studio</a>.</p>
+    {% endif %}
+  </div>
+
+  <!-- Frame selector -->
+  <div style="margin-bottom:24px;">
+    <div class="section-title">Enquadramentos (selecione os desejados)</div>
+    <div class="frames-grid">
+      {% for key, f in frames.items() %}
+      <div class="frame-card selected" data-frame="{{ key }}" onclick="toggleFrame(this)">
+        <div class="frame-name">{{ f.label }}</div>
+        <div class="frame-meta">Melhor para: {{ f.best_for[:2]|join(', ') }}</div>
+        <div class="frame-platforms">→ {{ f.platforms|join(' · ') }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <button class="gen-btn" id="genBtn" onclick="generateVariations()">⚡ Gerar Variações</button>
+
+  <div id="loading">Gerando variações semânticas... Isso pode levar 20-30 segundos.</div>
+  <div id="results"></div>
+</div>
+
+<script>
+function toggleFrame(card) {
+  card.classList.toggle('selected');
+}
+
+async function generateVariations() {
+  const assetType = document.getElementById('articleSelect').value;
+  if (!assetType) {
+    alert('Selecione um artigo primeiro.');
+    return;
+  }
+
+  const selectedCards = document.querySelectorAll('.frame-card.selected');
+  const frames = Array.from(selectedCards).map(c => c.dataset.frame);
+  if (!frames.length) {
+    alert('Selecione pelo menos um enquadramento.');
+    return;
+  }
+
+  document.getElementById('genBtn').disabled = true;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('results').innerHTML = '';
+
+  try {
+    const r = await fetch('/semantic-variations/{{ slug }}/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ asset_type: assetType, frames }),
+    });
+    const data = await r.json();
+
+    if (data.error) {
+      document.getElementById('results').innerHTML = `<p style="color:var(--red);">Erro: ${data.error}</p>`;
+      return;
+    }
+
+    const resultsEl = document.getElementById('results');
+    const title = document.createElement('div');
+    title.className = 'section-title';
+    title.style.marginTop = '32px';
+    title.textContent = `${data.total} Variações Geradas`;
+    resultsEl.appendChild(title);
+
+    Object.entries(data.variations).forEach(([frameKey, v]) => {
+      const card = document.createElement('div');
+      card.className = 'variation-card';
+
+      const header = document.createElement('div');
+      header.className = 'variation-header';
+      header.innerHTML = `
+        <span class="variation-label">${v.label}</span>
+        <span class="variation-platforms">${(v.platform_targets || []).join(' · ')}</span>
+      `;
+
+      const body = document.createElement('div');
+      body.className = 'variation-body';
+      body.textContent = v.error ? `Erro: ${v.error}` : (v.body || '(vazio)');
+
+      const footer = document.createElement('div');
+      footer.className = 'variation-footer';
+      footer.innerHTML = `
+        <button class="copy-btn" onclick="copyText(this, \`${(v.body || '').replace(/`/g, "'")}\`)">Copiar</button>
+        <span class="word-count">${v.word_count || 0} palavras</span>
+      `;
+
+      card.appendChild(header);
+      card.appendChild(body);
+      card.appendChild(footer);
+      resultsEl.appendChild(card);
+    });
+  } catch(e) {
+    document.getElementById('results').innerHTML = `<p style="color:var(--red);">Erro: ${e.message}</p>`;
+  } finally {
+    document.getElementById('genBtn').disabled = false;
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 2000);
+  });
+}
+</script>
+</body>
+</html>

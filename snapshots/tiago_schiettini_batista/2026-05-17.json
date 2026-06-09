@@ -1,0 +1,211 @@
+{
+  "entity": "Tiago Schiettini Batista",
+  "date": "2026-05-17",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Tiago SCHETTINI BATISTA personal appointments",
+      "link": "https://find-and-update.company-information.service.gov.uk/officers/XE4AGE598t9gZyj-a1oUXSm3ecE/appointments",
+      "snippet": "Free company information from Companies House including registered office address, filing history, accounts, annual return, officers, charges, ...",
+      "domain": "find-and-update.company-information.service.gov.uk",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 2,
+      "title": "Tiago Batista (@tiago.schettini)",
+      "link": "https://www.instagram.com/tiago.schettini/",
+      "snippet": "This profile is private. Follow tiago.schettini in the app to see their photos and videos. Open Instagram. Sign up.",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 3,
+      "title": "Tiago Schettini Batista Email & Phone Number | B2t",
+      "link": "https://rocketreach.co/tiago-schettini-batista-email_46121790",
+      "snippet": "Tiago Schettini Batista, is currently a Diretor Comercial at B2t - Business to Technology. Tiago Schettini Batista brings experience from previous roles at B2t ...",
+      "domain": "rocketreach.co",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "Mendonça mantém prisão de Tiago Schettini Batista, sócio ...",
+      "link": "https://www.youtube.com/watch?v=zUMBdvopbPM",
+      "snippet": "O ministro do Supremo Tribunal Federal (STF) André Mendonça decidiu manter a prisão preventiva do empresário Tiago Schettini Batista ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "negative",
+      "controlled": true
+    },
+    {
+      "position": 5,
+      "title": "Sócio oculto do Careca do INSS deve multa de R$ 7,7 ...",
+      "link": "https://www.metropoles.com/colunas/tacio-lorran/socio-oculto-do-careca-do-inss-deve-multa-de-77-milhoes-por-corrupcao",
+      "snippet": "CGU puniu empresa de Tiago Schettini por fraude em contrato no Ministério do Trabalho e Emprego; empresário é alvo da PF na Farra do INSS.",
+      "domain": "metropoles.com",
+      "type": "mainstream",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 6,
+      "title": "Tiago Schettini Batista - Sócio de 8 empresas",
+      "link": "https://advdinamico.com.br/socios/tiago-schettini-batista-ba4ca523",
+      "snippet": "Tiago Schettini Batista é uma pessoa física que atua como sócio em 8 empresa(s) no Brasil. Com qualificação de Sócio-Administrador, Tiago Schettini Batista tem ...",
+      "domain": "advdinamico.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 7,
+      "title": "Uma empresa de tecnologia do empresário Tiago Schettini ...",
+      "link": "https://www.facebook.com/metropolesdf/posts/uma-empresa-de-tecnologia-do-empres%C3%A1rio-tiago-schettini-batista-que-esteve-no-pa/1234208768863300/",
+      "snippet": "Uma empresa de tecnologia do empresário Tiago Schettini Batista, que esteve no passado no centro de investigações sobre fraudes contratuais ...",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "negative",
+      "controlled": true
+    },
+    {
+      "position": 8,
+      "title": "Tiago Schettini Batista",
+      "link": "https://www.escavador.com/sobre/3945608/tiago-schettini-batista",
+      "snippet": "Não perca informações importantes da justiça sobre Tiago Schettini Batista! O assistente jurídico do Escavador monitora nomes nos Diários Oficiais e envia todos ...",
+      "domain": "escavador.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 9,
+      "title": "Tiago Schettini - Advogado | Compliance Regulatório",
+      "link": "https://br.linkedin.com/in/tiago-schettini-1481ba37",
+      "snippet": "Experiência · Membro da Comissão Permanente de Governança e Integridade · Membro da Comissão Especial de Compliance · Advogado de Compliance, PLD/FT, Controles ...",
+      "domain": "br.linkedin.com",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 10,
+      "title": "Tiago Schettini Batista - Processos",
+      "link": "https://www.jusbrasil.com.br/processos/nome/66532738/tiago-schettini-batista",
+      "snippet": "O Jusbrasil encontrou 13 processos que mencionam o nome Tiago Schettini Batista. A maioria é do TRF1, seguido por tjdft. Desses processos encontrados ...",
+      "domain": "jusbrasil.com.br",
+      "type": "legal",
+      "sentiment": "negative",
+      "controlled": false
+    }
+  ],
+  "domains": [
+    "find-and-update.company-information.service.gov.uk",
+    "instagram.com",
+    "rocketreach.co",
+    "youtube.com",
+    "metropoles.com",
+    "advdinamico.com.br",
+    "facebook.com",
+    "escavador.com",
+    "br.linkedin.com",
+    "jusbrasil.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 4,
+    "neutral": 6,
+    "positive": 0
+  },
+  "controlled_assets": 4,
+  "page_1_negative_ratio": 0.4,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 1,
+  "authority_vacuum": "MODERATE",
+  "expansion_associations": [
+    {
+      "entity": "Tiago Schettini Batista",
+      "type": "unknown",
+      "frequency": 21,
+      "domains": [
+        "metropoles.com",
+        "rocketreach.co"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Tiago Schettini",
+      "type": "unknown",
+      "frequency": 11,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Tácio Lorran",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Redes Sociais",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Phone Number",
+      "type": "unknown",
+      "frequency": 21,
+      "domains": [
+        "rocketreach.co"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Tiago Schettini Batista Email",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "rocketreach.co"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Tiago Butzke Email",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "rocketreach.co"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Companies House",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "find-and-update.company-information.service.gov.uk"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 0,
+    "count_30d": 0,
+    "momentum": "Declining",
+    "most_aggressive": null
+  },
+  "threat_archetype": "association_based",
+  "crisis_state": "structural_toxicity"
+}

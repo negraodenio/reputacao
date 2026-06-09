@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrative Blast — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#0a0a0a; --surface:#111; --surface2:#161616;
+      --border:#222; --border-mid:#2a2a2a;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#8a6e3e;
+      --red:#c0392b; --orange:#d35400; --yellow:#d4a017; --green:#27ae60;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1100px; margin:0 auto; padding:48px 32px 80px; }
+
+    .header { border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:32px; }
+    .entity-name { font-size:26px; font-weight:600; margin-bottom:4px; }
+    .header-meta { font-family:var(--mono); font-size:10px; color:var(--text-dim); letter-spacing:0.06em; }
+
+    /* Budget selector */
+    .budget-bar { display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; align-items:center; }
+    .budget-label { font-family:var(--mono); font-size:10px; color:var(--text-faint); letter-spacing:0.1em; margin-right:4px; }
+    .budget-btn { font-family:var(--mono); font-size:10px; padding:6px 16px; border:1px solid var(--border-mid); background:var(--surface); color:var(--text-dim); border-radius:3px; cursor:pointer; text-decoration:none; }
+    .budget-btn.active { border-color:var(--accent-dim); color:var(--accent); background:var(--surface2); }
+    .region-btn { font-family:var(--mono); font-size:10px; padding:6px 16px; border:1px solid var(--border-mid); background:var(--surface); color:var(--text-dim); border-radius:3px; cursor:pointer; text-decoration:none; }
+    .region-btn.active { border-color:#1a3d2c; color:#6aaa84; background:#0a1a10; }
+
+    /* Overview */
+    .overview-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:32px; }
+    .ov-cell { background:var(--surface); padding:16px 20px; }
+    .ov-num { font-family:var(--mono); font-size:24px; font-weight:500; }
+    .ov-label { font-family:var(--mono); font-size:8px; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-top:2px; }
+
+    /* Stack MVP */
+    .section { margin-bottom:36px; }
+    .section-title { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.16em; color:var(--accent); text-transform:uppercase; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+
+    .stack-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:8px; }
+    .stack-card { background:var(--surface); border:1px solid var(--border); padding:12px 16px; }
+    .stack-name { font-family:var(--mono); font-size:11px; font-weight:500; margin-bottom:2px; }
+    .stack-role { font-size:11px; color:var(--text-dim); }
+    .stack-cost { font-family:var(--mono); font-size:9px; margin-top:4px; }
+    .cost-free { color:#6aaa84; }
+    .cost-paid { color:#aa8a6a; }
+
+    /* Phases */
+    .phase-block { border:1px solid var(--border); margin-bottom:16px; }
+    .phase-header { display:flex; gap:16px; align-items:center; padding:16px 20px; background:var(--surface2); cursor:pointer; user-select:none; border-bottom:1px solid var(--border); }
+    .phase-header:hover { background:var(--surface); }
+    .phase-day { font-family:var(--mono); font-size:10px; padding:3px 10px; border-radius:2px; white-space:nowrap; }
+    .priority-critica { background:#2c0a0a; color:#c0392b; border:1px solid #4a1515; }
+    .priority-alta { background:#1e1a08; color:#d4a017; border:1px solid #3d3515; }
+    .priority-media { background:#0a1a0f; color:#6aaa84; border:1px solid #153d1f; }
+    .priority-operacional { background:#0a0d1a; color:#6a8aaa; border:1px solid #15203d; }
+    .phase-title { font-family:var(--mono); font-size:12px; font-weight:500; flex:1; }
+    .phase-arrow { font-family:var(--mono); font-size:10px; color:var(--text-faint); }
+    .phase-body { padding:20px; display:none; }
+    .phase-body.open { display:block; }
+    .phase-desc { font-size:12px; color:var(--text-dim); margin-bottom:16px; line-height:1.7; }
+
+    .action-table { width:100%; border-collapse:collapse; font-size:11px; }
+    .action-table th { font-family:var(--mono); font-size:9px; letter-spacing:0.1em; color:var(--text-faint); text-transform:uppercase; padding:6px 12px; text-align:left; border-bottom:1px solid var(--border); }
+    .action-table td { padding:10px 12px; border-bottom:1px solid var(--border-mid); vertical-align:top; }
+    .action-table tr:last-child td { border-bottom:none; }
+    .platform-name-cell { font-family:var(--mono); font-weight:500; white-space:nowrap; }
+    .priority-badge { font-size:9px; padding:2px 7px; border-radius:2px; white-space:nowrap; }
+    .prio-obrigatorio { background:#2c0a0a; color:#c0392b; }
+    .prio-alta { background:#1e1a08; color:#d4a017; }
+    .prio-recomendado { background:#0a1a0f; color:#6aaa84; }
+    .prio-complementar { background:#0a0d1a; color:#6a8aaa; }
+    .cost-cell { font-family:var(--mono); font-size:10px; white-space:nowrap; }
+    .api-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:4px; }
+    .api-yes { background:#6aaa84; }
+    .api-no  { background:#555; }
+    .action-notes { font-size:10px; color:var(--text-dim); margin-top:3px; }
+    .action-text { font-size:11px; }
+
+    .checklist { margin-top:16px; padding:16px; background:var(--surface2); border:1px solid var(--border-mid); }
+    .checklist-title { font-family:var(--mono); font-size:9px; color:var(--accent); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
+    .check-item { display:flex; gap:8px; padding:4px 0; font-size:11px; color:var(--text-dim); }
+    .check-box { width:14px; height:14px; min-width:14px; border:1px solid var(--border-mid); margin-top:2px; flex-shrink:0; cursor:pointer; }
+    .check-box.checked { background:var(--accent); border-color:var(--accent-dim); }
+
+    /* Warnings */
+    .warnings { border:1px solid #3d2a1a; background:#1a0e05; padding:16px 20px; margin-bottom:32px; }
+    .warning-title { font-family:var(--mono); font-size:9px; color:#aa8a6a; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px; }
+    .warning-item { font-size:11px; color:#d4a017; padding:4px 0; padding-left:16px; position:relative; }
+    .warning-item::before { content:"⚠"; position:absolute; left:0; font-size:10px; }
+
+    /* Nav */
+    .nav-bar { display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; }
+    .nav-link { font-family:var(--mono); font-size:9px; padding:4px 12px; border:1px solid var(--border-mid); color:var(--text-dim); text-decoration:none; border-radius:3px; }
+    .nav-link:hover { color:var(--accent); border-color:var(--accent-dim); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="nav-bar">
+    <a href="/snapshots" class="nav-link">← Entidades</a>
+    <a href="/distribution/{{ slug }}" class="nav-link">Distribution Matrix</a>
+    <a href="/content/{{ slug }}" class="nav-link">Content Studio</a>
+    <a href="/battle-plan/{{ slug }}" class="nav-link">Battle Plan</a>
+  </div>
+
+  <header class="header">
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">Narrative Blast — Workflow de Campanha 30 dias &mdash; {{ blast.generated_at }}</div>
+  </header>
+
+  <!-- Budget + Region selector -->
+  <div class="budget-bar">
+    <span class="budget-label">BUDGET</span>
+    <a href="?budget=minimal&region={{ region }}" class="budget-btn {% if budget == 'minimal' %}active{% endif %}">Minimal &lt;€150</a>
+    <a href="?budget=standard&region={{ region }}" class="budget-btn {% if budget == 'standard' %}active{% endif %}">Standard €150-400</a>
+    <a href="?budget=premium&region={{ region }}" class="budget-btn {% if budget == 'premium' %}active{% endif %}">Premium €500+</a>
+    <span class="budget-label" style="margin-left:16px;">REGIÃO</span>
+    <a href="?budget={{ budget }}&region=BR" class="region-btn {% if region == 'BR' %}active{% endif %}">BR</a>
+    <a href="?budget={{ budget }}&region=PT" class="region-btn {% if region == 'PT' %}active{% endif %}">PT</a>
+    <a href="?budget={{ budget }}&region=GLOBAL" class="region-btn {% if region == 'GLOBAL' %}active{% endif %}">GLOBAL</a>
+  </div>
+
+  <!-- Overview -->
+  <div class="overview-grid">
+    <div class="ov-cell">
+      <div class="ov-num">{{ blast.campaign_overview.total_platforms }}</div>
+      <div class="ov-label">Plataformas</div>
+    </div>
+    <div class="ov-cell">
+      <div class="ov-num">30</div>
+      <div class="ov-label">Dias</div>
+    </div>
+    <div class="ov-cell">
+      <div class="ov-num">{{ blast.campaign_overview.newswires|length }}</div>
+      <div class="ov-label">Newswires</div>
+    </div>
+    <div class="ov-cell">
+      <div class="ov-num" style="font-size:16px;">{{ blast.campaign_overview.total_estimate }}</div>
+      <div class="ov-label">Custo Estimado</div>
+    </div>
+  </div>
+
+  <!-- Stack MVP -->
+  <section class="section">
+    <div class="section-title">Stack Mínima Viável — {{ budget }}</div>
+    <div class="stack-grid">
+      {% for item in blast.stack_mvp %}
+      <div class="stack-card">
+        <div class="stack-name">{{ item.name }}</div>
+        <div class="stack-role">{{ item.role }}</div>
+        <div class="stack-cost {% if item.cost == 'Free' or item.cost == 'free' %}cost-free{% else %}cost-paid{% endif %}">{{ item.cost }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Warnings -->
+  {% if blast.warnings %}
+  <div class="warnings">
+    <div class="warning-title">Avisos Operacionais</div>
+    {% for w in blast.warnings %}
+    <div class="warning-item">{{ w }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Phases -->
+  <section class="section">
+    <div class="section-title">Workflow de 30 Dias</div>
+
+    {% for phase in blast.phases %}
+    {% set prio_class = {
+      'crítica': 'priority-critica',
+      'alta': 'priority-alta',
+      'média': 'priority-media',
+      'operacional': 'priority-operacional'
+    }.get(phase.priority, 'priority-media') %}
+    <div class="phase-block">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <span class="phase-day {{ prio_class }}">{{ phase.days }}</span>
+        <span class="phase-title">{{ phase.phase }}</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+      <div class="phase-body {% if loop.index <= 2 %}open{% endif %}">
+        <p class="phase-desc">{{ phase.description }}</p>
+
+        {% if phase.actions %}
+        <table class="action-table">
+          <thead>
+            <tr>
+              <th>Plataforma</th>
+              <th>Prioridade</th>
+              <th>Custo</th>
+              <th>API</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in phase.actions %}
+            <tr>
+              <td class="platform-name-cell">{{ a.platform_name }}</td>
+              <td>
+                {% set pcls = {
+                  'obrigatório': 'prio-obrigatorio',
+                  'alta': 'prio-alta',
+                  'recomendado': 'prio-recomendado',
+                  'complementar': 'prio-complementar'
+                }.get(a.priority, 'prio-recomendado') %}
+                <span class="priority-badge {{ pcls }}">{{ a.priority }}</span>
+              </td>
+              <td class="cost-cell">
+                {% if a.cost in ('free', 'Free') %}
+                <span style="color:#6aaa84;">Free</span>
+                {% elif a.cost == 'freemium' %}
+                <span style="color:#6a8aaa;">Freemium</span>
+                {% else %}
+                <span style="color:#aa8a6a;">{{ a.get('estimated_cost', a.cost) }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="api-dot {% if a.api %}api-yes{% else %}api-no{% endif %}"></span>
+                <span style="font-size:9px;color:var(--text-faint);">{% if a.api %}API{% else %}manual{% endif %}</span>
+              </td>
+              <td>
+                <div class="action-text">{{ a.action }}</div>
+                {% if a.notes %}
+                <div class="action-notes">{{ a.notes }}</div>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+
+        {% if phase.checklist %}
+        <div class="checklist">
+          <div class="checklist-title">Checklist da Fase</div>
+          {% for item in phase.checklist %}
+          <div class="check-item">
+            <div class="check-box" onclick="this.classList.toggle('checked')"></div>
+            <span>{{ item }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+
+  <!-- Authority Belt -->
+  {% if blast.campaign_overview.authority_belt %}
+  <section class="section">
+    <div class="section-title">Cinturão de Autoridade — {{ archetype }}</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">
+      Esses perfis criam uma malha de citações que alimenta o Painel de Conhecimento e o AI Overview para o nome "{{ entity_name }}".
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      {% for name in blast.campaign_overview.authority_belt %}
+      <span style="font-family:var(--mono);font-size:10px;padding:4px 12px;border:1px solid var(--border-mid);background:var(--surface);border-radius:3px;">{{ name }}</span>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Cross-Language Occupation -->
+  {% if blast.cross_language %}
+  {% set cl = blast.cross_language %}
+  <section class="section">
+    <div class="section-title">Ocupação Multilíngue
+      {% if cl.enabled %}<span style="font-size:9px;background:#1a3d2c;color:#6aaa84;padding:2px 8px;border-radius:2px;margin-left:8px;">ATIVO</span>{% else %}<span style="font-size:9px;background:#2a1a1a;color:#888;padding:2px 8px;border-radius:2px;margin-left:8px;">OPCIONAL</span>{% endif %}
+    </div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px;line-height:1.7;">{{ cl.rationale }}</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+      {% for lang in cl.priority_languages %}
+      <div style="background:var(--surface);border:1px solid var(--border);padding:12px 16px;min-width:160px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:8px;">{{ lang }}</div>
+        {% for pk in cl.recommended_platforms.get(lang, []) %}
+        <div style="font-size:10px;color:var(--text-dim);padding:1px 0;">→ {{ pk }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;padding:10px 14px;background:var(--surface2);border-left:3px solid var(--accent);">
+      <span style="color:var(--text-faint);">Esforço:</span> {{ cl.effort }}<br>
+      <span style="color:var(--text-faint);">Impacto:</span> <span style="color:var(--green);">{{ cl.impact }}</span>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Narrative Saturation Detection -->
+  {% if blast.saturation %}
+  {% set sat = blast.saturation %}
+  <section class="section">
+    <div class="section-title">Detecção de Saturação Narrativa</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">
+      Mais não é melhor. O Google detecta footprint artificial quando há repetição excessiva de entidade em múltiplos domínios.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);padding:14px 16px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Releases / Mês</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#0a1a10;color:#6aaa84;border-radius:2px;">{{ sat.releases_por_mes.verde }} ✓</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#1a1a08;color:#d4a017;border-radius:2px;">{{ sat.releases_por_mes.amarelo }} ⚠</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#1a0808;color:#c0392b;border-radius:2px;">{{ sat.releases_por_mes.vermelho }} ✗</span>
+        </div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:6px;">{{ sat.releases_por_mes.nota }}</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:14px 16px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Plataformas / Texto Idêntico</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#0a1a10;color:#6aaa84;border-radius:2px;">{{ sat.plataformas_mesmo_texto.verde }} ✓</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#1a1a08;color:#d4a017;border-radius:2px;">{{ sat.plataformas_mesmo_texto.amarelo }} ⚠</span>
+          <span style="font-family:var(--mono);font-size:10px;padding:3px 8px;background:#1a0808;color:#c0392b;border-radius:2px;">{{ sat.plataformas_mesmo_texto.vermelho }} ✗</span>
+        </div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:6px;">{{ sat.plataformas_mesmo_texto.nota }}</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:14px 16px;margin-bottom:8px;">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Sinais de Saturação a Monitorar</div>
+      {% for s in sat.sinais_de_saturacao %}
+      <div style="font-size:11px;color:var(--orange);padding:3px 0;">⚠ {{ s }}</div>
+      {% endfor %}
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;padding:10px 14px;background:var(--surface2);border-left:3px solid var(--yellow);">
+      {{ sat.acao_recomendada }}
+    </div>
+  </section>
+  {% endif %}
+</div>
+
+<script>
+function togglePhase(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.phase-arrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▼' : '▶';
+}
+</script>
+</body>
+</html>

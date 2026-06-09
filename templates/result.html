@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>CouncilIA — Auditoria de Reputação</h1>
+<p style="margin-bottom:2rem;">
+  <strong>{{ entity_name }}</strong> &nbsp;&mdash;&nbsp; <a href="/">&#8592; Nova auditoria</a>
+</p>
+
+{% if error %}
+  <p style="color:#c00; border:1px solid #c00; padding:12px;">
+    Auditoria falhou: {{ error }}
+  </p>
+{% else %}
+  <pre style="white-space:pre-wrap; line-height:1.7; font-size:0.95rem;">{{ result }}</pre>
+{% endif %}
+{% endblock %}

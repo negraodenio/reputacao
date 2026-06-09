@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SERP Battle Plan — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #040404; --surface: #0a0a0a; --surface-2: #0f0f0f; --border: #181818; --border-mid: #222;
+      --text: #e8e8e8; --text-dim: #888; --text-faint: #444;
+      --accent: #c8a96e; --accent-dim: #7a6040;
+      --red: #c0392b; --orange: #d35400; --yellow: #c9a227; --green: #27ae60;
+      --blue: #2980b9; --purple: #7d3c98;
+      --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.75; }
+    .page { max-width: 1100px; margin: 0 auto; padding: 60px 64px 100px; }
+    .build-version { position: fixed; top: 10px; right: 12px; z-index:10000; background:#111; color:var(--accent); border:1px solid #333; border-radius:3px; padding:4px 8px; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; font-family:var(--mono); }
+    .header { border-bottom:1px solid var(--border); padding-bottom:36px; margin-bottom:48px; }
+    .brand { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; }
+    .brand span { color:var(--accent); }
+    .entity-name { font-family:var(--mono); font-size:1.85rem; font-weight:600; margin-bottom:10px; }
+    .header-meta { font-family:var(--mono); font-size:0.72rem; color:var(--text-faint); letter-spacing:0.04em; }
+    .header-meta span { color:var(--text-dim); margin-right:24px; }
+    .war-tag { font-family:var(--mono); font-size:0.55rem; letter-spacing:0.2em; color:var(--red); border:1px solid #3a1515; padding:3px 10px; text-transform:uppercase; display:inline-block; background:#0a0505; }
+    h2 { font-family:var(--mono); font-size:0.8rem; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:20px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .section { margin-bottom:48px; }
+
+    .summary-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; margin-bottom:48px; }
+    .sg-cell { background:var(--surface); padding:20px 24px; }
+    .sg-label { font-family:var(--mono); font-size:0.55rem; letter-spacing:0.16em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px; }
+    .sg-value { font-family:var(--mono); font-size:1.2rem; font-weight:600; }
+    .tox-high { color:var(--red); } .tox-med { color:var(--orange); } .tox-low { color:var(--green); }
+
+    .disp-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+    .disp-table th { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-faint); padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); }
+    .disp-table td { padding:10px 12px; border-bottom:1px solid var(--border-mid); color:var(--text-dim); vertical-align:middle; }
+    .disp-table tr:hover td { background:var(--surface-2); }
+
+    .diff-easy { color:var(--green); } .diff-medium { color:var(--yellow); } .diff-hard { color:var(--orange); } .diff-very-hard { color:var(--red); }
+    .recov-true { color:var(--green); } .recov-false { color:var(--red); }
+
+    .tag { font-family:var(--mono); font-size:0.6rem; padding:2px 8px; border-radius:2px; border:1px solid var(--border-mid); display:inline-block; }
+    .tag-green { border-color:#1a3d2c; color:#6aaa84; }
+    .tag-red { border-color:#4a1515; color:#c0392b; }
+
+    .warfare-row { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .warfare-box { background:var(--surface); padding:24px; }
+    .wf-title { font-family:var(--mono); font-size:0.75rem; letter-spacing:0.1em; color:var(--accent); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border-mid); }
+    .wf-stat { display:flex; justify-content:space-between; font-size:0.72rem; margin-bottom:4px; }
+    .wf-stat span:last-child { font-family:var(--mono); color:var(--text); }
+
+    .content-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .ct-cell { background:var(--surface); padding:20px; }
+    .ct-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+    .ct-asset { font-family:var(--mono); font-size:0.82rem; color:var(--accent); font-weight:500; }
+    .ct-meta { font-family:var(--mono); font-size:0.6rem; color:var(--text-faint); }
+    .ct-kw { font-family:var(--mono); font-size:0.6rem; color:var(--text-dim); margin-top:4px; }
+    .ct-easy { color:var(--green); } .ct-hard { color:var(--orange); } .ct-perm { color:var(--red); }
+
+    .ads-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .ad-card { background:var(--surface); padding:20px; }
+    .ad-name { font-family:var(--mono); font-size:0.82rem; color:var(--accent); font-weight:500; }
+    .ad-intent { font-family:var(--mono); font-size:0.6rem; color:var(--blue); margin-bottom:4px; }
+    .ad-budget { font-family:var(--mono); font-size:0.72rem; color:var(--yellow); margin-bottom:6px; }
+    .ad-role { font-family:var(--mono); font-size:0.6rem; color:var(--text-faint); margin-bottom:4px; }
+    .ad-kw { font-family:var(--mono); font-size:0.6rem; color:var(--text-faint); }
+    .ad-lp { font-family:var(--mono); font-size:0.6rem; color:var(--blue); margin-top:2px; }
+
+    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .intent-card { background:var(--surface); padding:20px; }
+    .intent-name { font-family:var(--mono); font-size:0.72rem; color:var(--accent); margin-bottom:4px; }
+    .intent-desc { font-size:0.68rem; color:var(--text-dim); margin-bottom:8px; }
+    .intent-lp { font-family:var(--mono); font-size:0.6rem; color:var(--text-faint); }
+    .intent-lp span { color:var(--blue); }
+
+    .sat-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+    .sat-table th { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-faint); padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); }
+    .sat-table td { padding:10px 12px; border-bottom:1px solid var(--border-mid); color:var(--text-dim); }
+    .sat-high { color:var(--red); } .sat-medium { color:var(--yellow); } .sat-low { color:var(--green); }
+
+    .gap-banner { display:flex; gap:24px; align-items:center; padding:24px; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
+    .gap-ring { flex:0 0 80px; height:80px; border-radius:50%; border:6px solid; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:1.5rem; font-weight:600; }
+    .gap-details { flex:1; }
+    .gap-stat { display:flex; gap:32px; font-family:var(--mono); font-size:0.85rem; }
+    .gap-stat div span:first-child { color:var(--text-faint); font-size:0.6rem; text-transform:uppercase; letter-spacing:0.1em; display:block; }
+
+    .recov-box { display:flex; gap:32px; align-items:center; padding:24px; background:var(--surface); border:1px solid var(--border); border-radius:6px; }
+    .recov-gauge { flex:0 0 100px; height:100px; border-radius:50%; border:8px solid; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+    .recov-pct { font-family:var(--mono); font-size:1.8rem; font-weight:600; line-height:1; }
+    .recov-label { font-family:var(--mono); font-size:0.5rem; letter-spacing:0.12em; text-transform:uppercase; margin-top:2px; }
+    .recov-factors { flex:1; }
+    .recov-factor { font-size:0.72rem; color:var(--text-dim); padding:2px 0; padding-left:14px; position:relative; }
+    .recov-factor::before { content:'•'; position:absolute; left:0; color:var(--accent-dim); }
+
+    .tl-block { display:grid; grid-template-columns:140px 1fr 1fr; gap:0; border-bottom:1px solid var(--border-mid); padding:24px 0; }
+    .tl-block:first-child { padding-top:0; }
+    .tl-phase { font-family:var(--mono); font-size:0.72rem; color:var(--accent); }
+    .tl-label { font-family:var(--mono); font-size:0.6rem; color:var(--text-faint); margin-top:2px; }
+    .tl-col-title { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-faint); margin-bottom:8px; }
+    .tl-actions { list-style:none; padding:0; margin:0 0 8px; }
+    .tl-actions li { font-size:0.72rem; color:var(--text); padding:2px 0; padding-left:14px; position:relative; }
+    .tl-actions li::before { content:'→'; position:absolute; left:0; color:var(--accent-dim); }
+    .kpi-tag { display:inline-block; font-family:var(--mono); font-size:0.55rem; color:var(--green); border:1px solid #1a3d2c; padding:2px 6px; border-radius:2px; background:#081e0e; margin:2px; }
+
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .kpi-block { background:var(--surface); padding:20px; }
+    .kpi-period { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:12px; }
+    .kpi-item { display:flex; justify-content:space-between; font-size:0.72rem; margin-bottom:4px; }
+    .kpi-item span:first-child { color:var(--text-dim); }
+    .kpi-item span:last-child { font-family:var(--mono); color:var(--text); }
+
+    .footer { margin-top:72px; padding-top:24px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.62rem; color:var(--text-faint); }
+  </style>
+</head>
+<body>
+<div class="build-version">Build v2026.05.17.16</div>
+<div class="page">
+
+  <div class="header">
+    <div class="brand"><span>CouncilIA</span> · Planejador de Batalha SERP v2</div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>Snapshot: {{ snapshot_date }}</span>
+      <span>Gerado: {{ generated_at }}</span>
+      <span class="war-tag">Sala de Guerra — Plano de Batalha</span>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="summary-grid">
+      <div class="sg-cell"><div class="sg-label">Toxicidade SERP</div><div class="sg-value tox-{{ 'high' if plan.summary.serp_toxicity >= 60 else 'med' if plan.summary.serp_toxicity >= 35 else 'low' }}">{{ plan.summary.serp_toxicity }}</div></div>
+      <div class="sg-cell"><div class="sg-label">Participação Neg.</div><div class="sg-value">{{ plan.summary.neg_share_pct }}%</div></div>
+      <div class="sg-cell"><div class="sg-label">Recuperáveis</div><div class="sg-value" style="color:var(--green);">{{ plan.organic_warfare.recoverable_count }}</div></div>
+      <div class="sg-cell"><div class="sg-label">Permanentes</div><div class="sg-value" style="color:var(--red);">{{ plan.organic_warfare.permanent_count }}</div></div>
+      <div class="sg-cell"><div class="sg-label">Gap de Ativos</div><div class="sg-value" style="color:{{ 'var(--red)' if plan.asset_gap.gap >= 4 else 'var(--yellow)' if plan.asset_gap.gap >= 2 else 'var(--green)' }};">{{ plan.asset_gap.current }}/{{ plan.asset_gap.required }}</div></div>
+      <div class="sg-cell"><div class="sg-label">Prob. Recuperação</div><div class="sg-value">{{ plan.recovery.probability_pct }}%</div></div>
+    </div>
+  </div>
+
+  <!-- 1. DISPLACEMENT + DIFFICULTY -->
+  <div class="section">
+    <h2>1. Alvos de Deslocamento — Classificação por Dificuldade</h2>
+    <table class="disp-table">
+      <thead>
+        <tr><th>#</th><th>Domínio</th><th>Peso</th><th>Dificuldade</th><th>Tempo Est.</th><th>Recuperável</th><th>Tática</th><th>Asset</th></tr>
+      </thead>
+      <tbody>
+        {% for t in plan.displacement %}
+        <tr>
+          <td style="font-family:var(--mono);color:var(--text-faint);">#{{ t.position }}</td>
+          <td style="font-family:var(--mono);color:var(--text);">{{ t.domain[:30] }}</td>
+          <td>{{ t.authority }}</td>
+          <td class="diff-{{ t.difficulty|lower }}">{{ t.difficulty.replace('_',' ') }}</td>
+          <td style="font-family:var(--mono);font-size:0.68rem;">{{ t.estimated_time }}</td>
+          <td>{% if t.is_recoverable %}<span class="recov-true">✓</span>{% elif t.is_non_displaceable %}<span class="recov-false">✗</span>{% else %}<span class="tag tag-green">HARD</span>{% endif %}</td>
+          <td><span class="tag">{{ t.tactic[:18] }}</span></td>
+          <td style="font-family:var(--mono);font-size:0.68rem;color:var(--accent);">{{ t.recommended_asset.replace('_',' ') }}</td>
+        </tr>
+        {% endfor %}
+        {% if not plan.displacement %}
+        <tr><td colspan="8" style="color:var(--text-faint);text-align:center;padding:24px;">Nenhum alvo negativo identificado.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2. ORGANIC WARFARE × PAID DEFENSE -->
+  <div class="section">
+    <h2>2. Guerra de SERP — Frentes Orgânica vs Paga</h2>
+    <div class="warfare-row">
+      <div class="warfare-box">
+        <div class="wf-title">⚔ Guerra Orgânica — Ocupação SEO</div>
+        <div class="wf-stat"><span>Alvos recuperáveis</span><span>{{ plan.organic_warfare.recoverable_count }}</span></div>
+        <div class="wf-stat"><span>Alvos hard (90-180d)</span><span>{{ plan.organic_warfare.hard_count }}</span></div>
+        <div class="wf-stat"><span>Alvos permanentes</span><span>{{ plan.organic_warfare.permanent_count }}</span></div>
+        <div class="wf-stat"><span>Conteúdo a produzir</span><span>{{ plan.organic_warfare.content_assets|length }} peças</span></div>
+        <div style="margin-top:12px;padding:10px;background:var(--surface-2);border-radius:4px;font-size:0.72rem;color:var(--text-dim);">
+          {{ plan.organic_warfare.strategy_note }}
+        </div>
+      </div>
+      <div class="warfare-box">
+        <div class="wf-title">📢 Defesa Paga — Google Ads</div>
+        <div class="wf-stat"><span>Campanhas ativas</span><span>{{ plan.paid_defense.campaigns|length }}</span></div>
+        <div class="wf-stat"><span>Amplificação SEO</span><span>R$ {{ plan.paid_defense.defense_role_summary.seo_amplification.budget_min }}–{{ plan.paid_defense.defense_role_summary.seo_amplification.budget_max }}/m</span></div>
+        <div class="wf-stat"><span>Contenção de Crise</span><span>R$ {{ plan.paid_defense.defense_role_summary.crisis_containment.budget_min }}–{{ plan.paid_defense.defense_role_summary.crisis_containment.budget_max }}/m</span></div>
+        <div class="wf-stat"><span>Budget total</span><span style="color:var(--yellow);">R$ {{ plan.paid_defense.total_monthly_budget_min }}–{{ plan.paid_defense.total_monthly_budget_max }}/m</span></div>
+        <div style="margin-top:12px;padding:10px;background:var(--surface-2);border-radius:4px;font-size:0.72rem;color:var(--text-dim);">
+          {{ plan.paid_defense.strategy_note }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SEARCH INTENT MATRIX -->
+  <div class="section">
+    <h2>3. Matriz de Intenção de Busca — Landing Pages por Intent</h2>
+    <div class="intent-grid">
+      {% for m in plan.organic_warfare.intent_matrix %}
+      <div class="intent-card">
+        <div class="intent-name">{{ m.intent }}</div>
+        <div class="intent-desc">{{ m.landing_pages|join(', ') }}</div>
+        <div class="intent-lp">Ativos: <span>{{ m.assets|join(', ') }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 4. CONTENT MATRIX + ASSET-TO-KEYWORD -->
+  <div class="section">
+    <h2>4. Asset-to-Keyword Mapping — Produção de Conteúdo</h2>
+    <div class="content-grid">
+      {% for c in plan.organic_warfare.content_assets %}
+      <div class="ct-cell">
+        <div class="ct-top">
+          <span class="ct-asset">{{ c.label }}</span>
+          <span class="ct-meta">{{ c.velocity }}</span>
+        </div>
+        <div class="ct-meta">Intent: {{ c.intent }} · Alvo: {{ c.target_position }} · Tática: {{ c.tactic.replace('_',' ') }}</div>
+        <div class="ct-kw">Keywords: {{ c.seo_keywords|join(', ') }}</div>
+        <div class="ct-meta" style="margin-top:4px;">
+          {% if c.difficulty == 'EASY' %}<span class="ct-easy">✔ Recuperável</span>
+          {% elif c.difficulty == 'VERY_HARD' %}<span class="ct-perm">✗ Não deslocável — estratégia de supressão</span>
+          {% elif c.difficulty and c.difficulty != '—' %}<span class="ct-hard">● {{ c.estimated_time }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 5. ADS CAMPAIGNS -->
+  <div class="section">
+    <h2>5. Campanhas de Anúncio — Paid Defense</h2>
+    <div class="ads-grid">
+      {% for ad in plan.paid_defense.campaigns %}
+      <div class="ad-card">
+        <div class="ad-name">{{ ad.name }}</div>
+        <div class="ad-intent">Intent: {{ ad.intent }}</div>
+        <div class="ad-budget">R$ {{ ad.monthly_min }}–{{ ad.monthly_max }}/m · CPC {{ ad.cpc_avg }}</div>
+        <div class="ad-role">Função: {{ ad.role }}</div>
+        <div class="ad-kw">Keywords: {{ ad.keywords|join(', ') }}</div>
+        <div class="ad-lp">Landing pages: {{ ad.landing_pages|join(', ') }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:12px;text-align:right;font-family:var(--mono);font-size:0.85rem;">
+      Orçamento total: <strong style="color:var(--yellow);">R$ {{ plan.paid_defense.total_monthly_budget_min }} – R$ {{ plan.paid_defense.total_monthly_budget_max }}/mês</strong>
+    </div>
+  </div>
+
+  <!-- 6. NARRATIVE SATURATION -->
+  <div class="section">
+    <h2>6. Saturação Narrativa por Domínio</h2>
+    <table class="sat-table">
+      <thead>
+        <tr><th>Domínio</th><th>Resultados</th><th>Autoridade</th><th>Posição Média</th><th>% Neg</th><th>Saturação</th></tr>
+      </thead>
+      <tbody>
+        {% for s in plan.saturation %}
+        <tr>
+          <td style="font-family:var(--mono);color:var(--text);">{{ s.domain[:30] }}</td>
+          <td>{{ s.count }}</td>
+          <td>{{ s.authority }}</td>
+          <td>#{{ s.avg_position }}</td>
+          <td>{{ s.neg_pct }}%</td>
+          <td class="sat-{{ s.saturation_level|lower }}">{{ s.saturation_level }} ({{ s.saturation_score }})</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7. OWNED ASSET GAP -->
+  <div class="section">
+    <h2>7. Owned Asset Gap — Roadmap Operacional</h2>
+    <div class="gap-banner">
+      <div class="gap-ring" style="border-color:{{ 'var(--red)' if plan.asset_gap.gap >= 4 else 'var(--yellow)' if plan.asset_gap.gap >= 2 else 'var(--green)' }};color:{{ 'var(--red)' if plan.asset_gap.gap >= 4 else 'var(--yellow)' if plan.asset_gap.gap >= 2 else 'var(--green)' }};">
+        {{ plan.asset_gap.current }}
+      </div>
+      <div class="gap-details">
+        <div class="gap-stat">
+          <div><span>Atuais</span><span style="font-size:1.2rem;">{{ plan.asset_gap.current }}</span></div>
+          <div><span>Necessários</span><span style="font-size:1.2rem;">{{ plan.asset_gap.required }}</span></div>
+          <div><span>Gap</span><span style="font-size:1.2rem;color:{{ 'var(--red)' if plan.asset_gap.gap >= 4 else 'var(--yellow)' if plan.asset_gap.gap >= 2 else 'var(--green)' }};">{{ plan.asset_gap.gap }}</span></div>
+          <div><span>Status</span><span style="font-size:0.85rem;color:{{ 'var(--red)' if plan.asset_gap.status == 'CRÍTICO' else 'var(--yellow)' if plan.asset_gap.status == 'MODERADO' else 'var(--green)' }};">{{ plan.asset_gap.status }}</span></div>
+        </div>
+        {% if plan.asset_gap.gap > 0 %}
+        <div style="margin-top:12px;font-size:0.72rem;color:var(--text-dim);">
+          Produzir {{ plan.asset_gap.gap }} ativos adicionais: LinkedIn → Medium → Perfil Institucional → Site → FAQ → Biografia (sequência por velocidade).
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. RECOVERY PROBABILITY -->
+  <div class="section">
+    <h2>8. Probabilidade de Recuperação — Viabilidade</h2>
+    <div class="recov-box">
+      {% set prob = plan.recovery.probability_pct %}
+      <div class="recov-gauge" style="border-color:{{ 'var(--green)' if prob >= 65 else 'var(--yellow)' if prob >= 40 else 'var(--red)' }};">
+        <div class="recov-pct" style="color:{{ 'var(--green)' if prob >= 65 else 'var(--yellow)' if prob >= 40 else 'var(--red)' }};">{{ prob }}%</div>
+        <div class="recov-label">{{ plan.recovery.confidence }}</div>
+      </div>
+      <div class="recov-factors">
+        <div style="font-family:var(--mono);font-size:0.65rem;color:var(--text-faint);margin-bottom:8px;">Fatores considerados:</div>
+        {% for f in plan.recovery.factors %}
+        <div class="recov-factor">{{ f }}</div>
+        {% endfor %}
+        <div style="margin-top:8px;padding:8px;background:var(--surface-2);border-radius:4px;font-size:0.72rem;color:var(--text-dim);">
+          {{ plan.recovery.breakeven }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. TIMELINE -->
+  <div class="section">
+    <h2>9. Timeline Operacional — Organic × Paid</h2>
+    {% for phase in plan.timeline %}
+    <div class="tl-block">
+      <div>
+        <div class="tl-phase">FASE {{ phase.phase }}</div>
+        <div class="tl-label">Dias 1–{{ phase.phase * 30 }}</div>
+      </div>
+      <div>
+        <div class="tl-col-title">⚔ Organic Warfare</div>
+        <ul class="tl-actions">
+          {% for a in phase.organic %}<li>{{ a }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div>
+        <div class="tl-col-title">📢 Paid Defense</div>
+        <ul class="tl-actions">
+          {% for a in phase.paid %}<li>{{ a }}</li>{% endfor %}
+        </ul>
+        <div style="margin-top:8px;">
+          {% for k in phase.target_kpis %}<span class="kpi-tag">{{ k }}</span>{% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- 10. KPI PROJECTION -->
+  <div class="section">
+    <h2>10. Projeção de KPIs</h2>
+    <div class="kpi-grid">
+      <div class="kpi-block">
+        <div class="kpi-period">Atual</div>
+        <div class="kpi-item"><span>Toxicity</span><span>{{ plan.kpis.current.serp_toxicity }}</span></div>
+        <div class="kpi-item"><span>Participação Neg.</span><span>{{ plan.kpis.current.negative_share_pct }}%</span></div>
+        <div class="kpi-item"><span>Controlados</span><span>{{ plan.kpis.current.controlled_count }}</span></div>
+      </div>
+      <div class="kpi-block">
+        <div class="kpi-period">30 Dias</div>
+        <div class="kpi-item"><span>Toxicity</span><span>≤ {{ plan.kpis.target_30d.serp_toxicity }}</span></div>
+        <div class="kpi-item"><span>Part. Neg.</span><span>{{ plan.kpis.target_30d.negative_share_target }}</span></div>
+        <div class="kpi-item"><span>Controlados</span><span>{{ plan.kpis.target_30d.controlled_growth }}</span></div>
+      </div>
+      <div class="kpi-block">
+        <div class="kpi-period">60 Dias</div>
+        <div class="kpi-item"><span>Toxicity</span><span>≤ {{ plan.kpis.target_60d.serp_toxicity }}</span></div>
+        <div class="kpi-item"><span>Part. Neg.</span><span>{{ plan.kpis.target_60d.negative_share_target }}</span></div>
+        <div class="kpi-item"><span>Controlados</span><span>{{ plan.kpis.target_60d.controlled_growth }}</span></div>
+      </div>
+      <div class="kpi-block">
+        <div class="kpi-period">90 Dias</div>
+        <div class="kpi-item"><span>Toxicity</span><span>≤ {{ plan.kpis.target_90d.serp_toxicity }}</span></div>
+        <div class="kpi-item"><span>Part. Neg.</span><span>{{ plan.kpis.target_90d.negative_share_target }}</span></div>
+        <div class="kpi-item"><span>Prob. Recuperação</span><span style="color:var(--green);">{{ plan.kpis.recovery_probability }}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>CouncilIA · Planejador de Batalha SERP v2 — Operações Narrativas Digitais</span>
+    <span>CONFIDENCIAL</span>
+    <span>{{ generated_at }}</span>
+  </div>
+
+  <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:10000;display:flex;gap:12px;">
+    <a href="/content/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--accent);color:#000;border:none;border-radius:4px;letter-spacing:0.04em;text-decoration:none;">✎ Produzir Conteúdo</a>
+    <a href="/youtube/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">📺 YouTube Warfare</a>
+    <a href="/knowledge-panel/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">📋 Knowledge Panel</a>
+    <a href="/recovery/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">📊 Prob. Recuperação</a>
+    <a href="/news-distribution/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">📰 News Dist</a>
+    <a href="/monitor/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">👁 Monitor</a>
+    <a href="/linkedin-ads/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">🔗 LinkedIn Ads</a>
+    <a href="/distribution/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:var(--text);border:1px solid var(--border-mid);border-radius:4px;letter-spacing:0.04em;text-decoration:none;">🌐 Distribuir</a>
+    <a href="/narrative-blast/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--accent);color:#000;border:none;border-radius:4px;letter-spacing:0.04em;text-decoration:none;">🚀 Narrative Blast</a>
+    <a href="/publish-assist/{{ entity_slug }}" style="padding:12px 28px;font-family:var(--mono);font-size:0.82rem;background:var(--surface-2);color:#6a9aaa;border:1px solid #1a2c3d;border-radius:4px;letter-spacing:0.04em;text-decoration:none;">📤 Publicar</a>
+  </div>
+
+</div>
+</body>
+</html>

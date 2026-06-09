@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicação Rápida — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#0a0a0a; --surface:#111; --surface2:#161616; --border:#222; --border-mid:#2a2a2a;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#8a6e3e;
+      --red:#c0392b; --orange:#d35400; --yellow:#d4a017; --green:#27ae60;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1000px; margin:0 auto; padding:44px 32px 80px; }
+    .nav-bar { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+    .nav-link { font-family:var(--mono); font-size:9px; padding:4px 12px; border:1px solid var(--border-mid); color:var(--text-dim); text-decoration:none; border-radius:3px; }
+    .nav-link:hover { color:var(--accent); border-color:var(--accent-dim); }
+    .header { border-bottom:1px solid var(--border); padding-bottom:18px; margin-bottom:28px; }
+    .entity-name { font-size:24px; font-weight:600; margin-bottom:4px; }
+    .header-meta { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+    h2 { font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:0.16em; color:var(--accent); text-transform:uppercase; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .section { margin-bottom:32px; }
+
+    /* Credentials grid */
+    .creds-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; margin-bottom:16px; }
+    .cred-card { background:var(--surface); border:1px solid var(--border); padding:12px 14px; display:flex; align-items:center; gap:10px; }
+    .cred-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .cred-dot.ok { background:var(--green); }
+    .cred-dot.missing { background:var(--text-faint); }
+    .cred-name { font-family:var(--mono); font-size:11px; }
+    .cred-status { font-family:var(--mono); font-size:9px; margin-left:auto; }
+    .cred-status.ok { color:var(--green); }
+    .cred-status.missing { color:var(--text-faint); }
+
+    /* Article list */
+    .article-list { border:1px solid var(--border); overflow:hidden; }
+    .article-row { display:grid; grid-template-columns:24px 1.4fr 2fr 1fr; padding:10px 14px; border-bottom:1px solid var(--border-mid); font-size:11px; align-items:center; gap:8px; }
+    .article-row:last-child { border-bottom:none; }
+    .article-row.header { font-family:var(--mono); font-size:9px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; background:var(--surface2); }
+    .art-check { }
+    .art-type { font-family:var(--mono); font-size:10px; color:var(--accent); }
+    .art-title { color:var(--text-dim); font-size:11px; }
+    .art-date { font-family:var(--mono); font-size:9px; color:var(--text-faint); }
+
+    /* Platform checkboxes */
+    .plat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:8px; }
+    .plat-label { display:flex; align-items:center; gap:8px; padding:10px 12px; background:var(--surface); border:1px solid var(--border); cursor:pointer; font-size:12px; }
+    .plat-label:hover { border-color:var(--border-mid); }
+    .plat-label input[type=checkbox]:checked + span { color:var(--text); }
+    .plat-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .plat-dot.ready { background:var(--green); }
+    .plat-dot.no-cred { background:var(--text-faint); }
+    .plat-name { font-family:var(--mono); font-size:10px; }
+    .plat-api { font-family:var(--mono); font-size:8px; color:var(--text-faint); margin-left:auto; }
+    .plat-api.ok { color:var(--green); }
+
+    /* Action buttons */
+    .btn-primary { padding:10px 24px; font-family:var(--mono); font-size:11px; font-weight:600; background:var(--accent); color:#000; border:none; border-radius:3px; cursor:pointer; }
+    .btn-secondary { padding:10px 20px; font-family:var(--mono); font-size:11px; background:var(--surface2); color:var(--text-dim); border:1px solid var(--border-mid); border-radius:3px; cursor:pointer; }
+    .btn-manual { padding:10px 20px; font-family:var(--mono); font-size:11px; background:transparent; color:#6a9aaa; border:1px solid #1a3d4d; border-radius:3px; text-decoration:none; display:inline-block; }
+
+    /* Results */
+    .result-banner { padding:14px 18px; border:1px solid; margin-bottom:20px; }
+    .result-ok { background:rgba(39,174,96,.08); border-color:rgba(39,174,96,.3); color:var(--green); }
+    .result-dry { background:rgba(200,169,110,.06); border-color:var(--accent-dim); color:var(--accent); }
+    .result-item { display:flex; justify-content:space-between; padding:8px 14px; border-bottom:1px solid var(--border-mid); font-size:11px; font-family:var(--mono); }
+    .result-item:last-child { border-bottom:none; }
+    .status-published { color:var(--green); }
+    .status-draft { color:var(--yellow); }
+    .status-submitted { color:var(--accent); }
+    .status-payload_ready { color:#6a8aaa; }
+    .status-error { color:var(--red); }
+    .status-manual { color:var(--text-faint); }
+
+    /* Warning */
+    .warning { padding:12px 16px; background:rgba(211,84,0,.08); border-left:3px solid var(--orange); font-size:12px; color:var(--orange); margin-bottom:16px; }
+    .env-setup { background:var(--surface2); border:1px solid var(--border-mid); padding:14px 16px; font-family:var(--mono); font-size:10px; color:var(--text-dim); line-height:2; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="nav-bar">
+    <a href="/snapshots" class="nav-link">← Entidades</a>
+    <a href="/content/{{ slug }}" class="nav-link">Content Studio</a>
+    <a href="/publish-assist/{{ slug }}" class="nav-link">Assistente Manual</a>
+    <a href="/distribution/{{ slug }}" class="nav-link">Distribution Matrix</a>
+  </div>
+
+  <header class="header">
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">Publicação via API — {{ generated_at }}</div>
+  </header>
+
+  <!-- Results (se acabou de publicar) -->
+  {% if pub_results %}
+  {% if pub_results.dry_run %}
+  <div class="result-banner result-dry">
+    Simulação (dry run): {{ pub_results.count }} publicações seriam disparadas. Nenhum dado foi enviado.
+  </div>
+  {% if pub_results.preview %}
+  <div class="section">
+    <h2>Preview do Que Seria Publicado</h2>
+    <div class="article-list">
+      {% for key, p in pub_results.preview.items() %}
+      <div class="result-item">
+        <span>{{ key }}</span>
+        <span>{{ p.title[:60] }}</span>
+        <span class="status-dry">simulação</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="result-banner result-ok">
+    Publicação disparada: {{ pub_results.successful }}/{{ pub_results.total_publishes }} com sucesso.
+  </div>
+  {% if pub_results.results %}
+  <div class="section">
+    <h2>Resultado por Plataforma</h2>
+    <div class="article-list">
+      {% for key, r in pub_results.results.items() %}
+      <div class="result-item">
+        <span>{{ key }}</span>
+        <span style="color:var(--text-dim);font-size:10px;">{{ r.get('message', r.get('url', ''))[:60] }}</span>
+        <span class="status-{{ r.get('status','error') }}">{{ r.get('status','—') }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endif %}
+
+  {% if pub_error %}
+  <div class="warning">{{ pub_error }}</div>
+  {% endif %}
+
+  <!-- Credenciais configuradas -->
+  <div class="section">
+    <h2>Credenciais de API</h2>
+    {% if not has_any_creds %}
+    <div class="warning">
+      Nenhuma credencial de publicação configurada. Adicionar ao ficheiro .env e reiniciar o servidor.
+    </div>
+    <div class="env-setup">
+      # Adicionar ao .env:<br>
+      MEDIUM_TOKEN=seu_token_medium<br>
+      LINKEDIN_TOKEN=seu_token_linkedin_oauth<br>
+      WP_URL=https://site-do-cliente.com<br>
+      WP_USER=admin<br>
+      WP_PASS=xxxx xxxx xxxx xxxx  (Application Password)<br>
+      EIN_API_KEY=sua_chave_ein_presswire<br>
+      GHOST_URL=https://blog.cliente.com<br>
+      GHOST_ADMIN_KEY=id:secret<br>
+      DINO_API_KEY=sua_chave_dino<br>
+      GLOBENEWSWIRE_TOKEN=seu_token_globenewswire
+    </div>
+    {% else %}
+    <div class="creds-grid">
+      {% for plat, ok in creds_status.items() %}
+      <div class="cred-card">
+        <div class="cred-dot {% if ok %}ok{% else %}missing{% endif %}"></div>
+        <span class="cred-name">{{ plat }}</span>
+        <span class="cred-status {% if ok %}ok{% else %}missing{% endif %}">{% if ok %}✓{% else %}—{% endif %}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Artigos em cache -->
+  <div class="section">
+    <h2>Artigos em Cache</h2>
+    {% if not has_articles %}
+    <div class="warning">
+      Nenhum artigo em cache. Aceder ao <a href="/content/{{ slug }}" style="color:var(--accent);">Content Studio</a> e gerar os artigos primeiro.
+    </div>
+    {% else %}
+    <div class="article-list">
+      <div class="article-row header">
+        <span></span>
+        <span>Tipo</span>
+        <span>Título SEO</span>
+        <span>Gerado em</span>
+      </div>
+      {% for a in articles %}
+      <div class="article-row">
+        <input type="checkbox" class="art-check" name="art_{{ a.asset_type }}" value="{{ a.asset_type }}" checked style="accent-color:var(--accent);">
+        <span class="art-type">{{ a.asset_type }}</span>
+        <span class="art-title">{{ a.seo.title[:55] if a.seo else a.entity_name }}{% if a.seo and a.seo.title|length > 55 %}…{% endif %}</span>
+        <span class="art-date">{{ a.generated_at[:10] if a.generated_at else '' }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Plataformas disponíveis -->
+  {% if has_articles %}
+  <form method="post" action="/quick-publish/{{ slug }}/trigger" id="pub-form">
+    <div class="section">
+      <h2>Plataformas para Publicar</h2>
+      <div class="plat-grid">
+        {% set all_plats = [
+          ("medium","Medium","free"),
+          ("linkedin","LinkedIn Articles","free"),
+          ("wordpress","WordPress","credencial"),
+          ("einpresswire","EIN Presswire","pago"),
+          ("ghost","Ghost CMS","credencial"),
+          ("dino","Dino BR","pago"),
+          ("globenewswire","GlobeNewswire","pago"),
+        ] %}
+        {% for pk, pname, pricing in all_plats %}
+        {% set is_ready = pk in ready_platforms %}
+        <label class="plat-label">
+          <input type="checkbox" name="plat_{{ pk }}" value="{{ pk }}"
+                 {% if is_ready %}checked{% endif %}
+                 {% if not is_ready %}disabled{% endif %}>
+          <div class="plat-dot {% if is_ready %}ready{% else %}no-cred{% endif %}"></div>
+          <span class="plat-name">{{ pname }}</span>
+          <span class="plat-api {% if is_ready %}ok{% endif %}">{% if is_ready %}API OK{% else %}sem credencial{% endif %}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text-faint);">
+        Plataformas sem credencial estão desativadas. Configurar no .env para ativar publicação automática.
+        Para plataformas manuais usar o <a href="/publish-assist/{{ slug }}" style="color:var(--accent);">Assistente de Publicação</a>.
+      </div>
+    </div>
+
+    <input type="hidden" name="platforms" id="platforms-input" value="">
+    <input type="hidden" name="asset_types" id="asset-types-input" value="">
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+      {% if has_any_creds %}
+      <button type="button" onclick="submitPublish(false)" class="btn-primary">🚀 Publicar Agora via API</button>
+      <button type="button" onclick="submitPublish(true)" class="btn-secondary">👁 Simular (Dry Run)</button>
+      {% endif %}
+      <a href="/publish-assist/{{ slug }}" class="btn-manual">📋 Publicação Manual</a>
+    </div>
+    <input type="hidden" name="dry_run" id="dry-run-input" value="false">
+  </form>
+  {% endif %}
+
+</div>
+
+<script>
+function submitPublish(isDryRun) {
+  // Coleta plataformas selecionadas
+  const platChecks = document.querySelectorAll('input[name^="plat_"]:checked');
+  const platforms = Array.from(platChecks).map(c => c.value).join(',');
+
+  // Coleta artigos selecionados
+  const artChecks = document.querySelectorAll('input[name^="art_"]:checked');
+  const assets = Array.from(artChecks).map(c => c.value).join(',');
+
+  if (!platforms && !isDryRun) {
+    alert('Selecione pelo menos uma plataforma com credencial configurada.');
+    return;
+  }
+
+  document.getElementById('platforms-input').value = platforms;
+  document.getElementById('asset-types-input').value = assets;
+  document.getElementById('dry-run-input').value = isDryRun ? 'true' : 'false';
+  document.getElementById('pub-form').submit();
+}
+</script>
+</body>
+</html>

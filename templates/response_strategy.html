@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estratégia de Resposta Operacional — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0a0a0a;
+      --surface:    #111111;
+      --surface-2:  #161616;
+      --border:     #222222;
+      --border-mid: #2a2a2a;
+      --text:       #e8e8e8;
+      --text-dim:   #888888;
+      --text-faint: #444444;
+      --accent:     #c8a96e;
+      --accent-dim: #7a6040;
+      --red:        #c0392b;
+      --orange:     #d35400;
+      --yellow:     #c9a227;
+      --green:      #27ae60;
+      --blue:       #2980b9;
+      --mono:       'IBM Plex Mono', monospace;
+      --sans:       'IBM Plex Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 64px 100px;
+    }
+
+    /* ── HEADER ────────────────────────────────────── */
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 36px;
+      margin-bottom: 52px;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .brand {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .brand span { color: var(--accent); }
+    .header-badges { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border-radius: 2px;
+      border: 1px solid;
+      text-transform: uppercase;
+    }
+    .badge-confidential { color: var(--accent); border-color: var(--accent-dim); }
+    .badge-response     { color: #5dade2;        border-color: #1a4a6a; background: #0d2133; }
+
+    .entity-name {
+      font-family: var(--mono);
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .header-meta {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+    }
+    .header-meta span { color: var(--text-dim); margin-right: 24px; }
+
+    /* ── POSTURA BANNER ────────────────────────────── */
+    .posture-banner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr) 2fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .posture-cell {
+      background: var(--surface);
+      padding: 20px 24px;
+    }
+    .posture-cell-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .posture-cell-value {
+      font-family: var(--mono);
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .posture-cell-value.threat-critical { color: var(--red); }
+    .posture-cell-value.threat-high     { color: var(--orange); }
+    .posture-cell-value.threat-medium   { color: var(--yellow); }
+    .posture-cell-value.threat-low      { color: var(--green); }
+    .posture-cell-value.vis-low         { color: var(--red); }
+    .posture-cell-value.vis-moderate    { color: var(--yellow); }
+    .posture-cell-value.vis-high        { color: var(--green); }
+    .posture-cell-value.temp-low        { color: var(--blue); }
+    .posture-cell-value.temp-moderate   { color: var(--yellow); }
+    .posture-cell-value.temp-aggressive { color: var(--orange); }
+    .posture-cell-value.posture-name    { color: var(--accent); }
+
+    /* ── HEURISTICS ROW ────────────────────────────── */
+    .heuristics-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .heuristic-cell {
+      background: var(--surface-2);
+      padding: 20px 24px;
+    }
+    .heuristic-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .heuristic-value {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .heuristic-value ul { list-style: none; padding: 0; }
+    .heuristic-value ul li::before { content: "→ "; color: var(--accent); font-family: var(--mono); }
+    .heuristic-value ul li { margin-bottom: 4px; }
+
+    /* ── SEÇÕES ────────────────────────────────────── */
+    .sections-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .section-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border-mid);
+      background: var(--surface-2);
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      min-width: 28px;
+    }
+    .section-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      flex: 1;
+    }
+    .section-body {
+      padding: 24px 28px;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    /* ── ASSET SEQUENCE TABLE ──────────────────────── */
+    .asset-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 24px;
+    }
+    .asset-table th {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 8px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .asset-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-mid);
+      color: var(--text-dim);
+      vertical-align: top;
+    }
+    .asset-table td:first-child {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .asset-table td.janela {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+    .asset-table tr:last-child td { border-bottom: none; }
+
+    /* ── STAKEHOLDER PRIORITY ──────────────────────── */
+    .priority-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 20px 28px;
+    }
+    .priority-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .priority-num {
+      background: var(--border);
+      color: var(--accent);
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .priority-arrow { color: var(--text-faint); font-size: 0.7rem; }
+
+    /* ── REDIRECTION MAP ───────────────────────────── */
+    .redirection-map {
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .redirection-pair {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+    .redir-from {
+      color: var(--red);
+      padding: 3px 10px;
+      border: 1px solid #3a1515;
+      border-radius: 2px;
+      background: #1a0a0a;
+      min-width: 140px;
+    }
+    .redir-arrow { color: var(--text-faint); }
+    .redir-to {
+      color: var(--green);
+      padding: 3px 10px;
+      border: 1px solid #0e3020;
+      border-radius: 2px;
+      background: #081510;
+    }
+
+    /* ── FOOTER ────────────────────────────────────── */
+    .footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-faint);
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .page { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="brand"><span>CouncilIA</span> · Narrative Response Operations</div>
+      <div class="header-badges">
+        <span class="badge badge-confidential">Confidential</span>
+        <span class="badge badge-response">Response Layer</span>
+      </div>
+    </div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>Gerado em {{ generated_at }}</span>
+      <span>Camada: Resposta Operacional</span>
+      <span>Uso restrito ao operador</span>
+    </div>
+  </div>
+
+  <!-- POSTURA BANNER -->
+  <div class="posture-banner">
+    <div class="posture-cell">
+      <div class="posture-cell-label">Nível de Ameaça</div>
+      <div class="posture-cell-value threat-{{ threat_level | lower }}">{{ threat_level }}</div>
+    </div>
+    <div class="posture-cell">
+      <div class="posture-cell-label">Visibilidade</div>
+      <div class="posture-cell-value vis-{{ meta.visibility | lower }}">{{ meta.visibility }}</div>
+    </div>
+    <div class="posture-cell">
+      <div class="posture-cell-label">Temperatura de Resposta</div>
+      <div class="posture-cell-value temp-{{ meta.response_temperature | lower }}">{{ meta.response_temperature }}</div>
+    </div>
+    <div class="posture-cell">
+      <div class="posture-cell-label">Postura Recomendada</div>
+      <div class="posture-cell-value posture-name">{{ meta.posture }}</div>
+    </div>
+  </div>
+
+  <!-- ARQUÉTIPO BANNER -->
+  <div class="section-block" style="margin-bottom: 16px;">
+    <div class="section-header" style="border-bottom-color: var(--accent-dim);">
+      <div class="section-num">▼</div>
+      <div class="section-title">Arquétipo de Ameaça · Engine Operacional</div>
+    </div>
+    <div style="padding: 20px 28px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em;
+                     color: var(--text-faint); text-transform: uppercase; min-width: 100px;">Arquétipo</span>
+        <span style="font-family: var(--mono); font-size: 1rem; font-weight: 600; color: var(--accent);
+                     padding: 4px 14px; border: 1px solid var(--accent-dim); border-radius: 4px;">
+          {{ meta.archetype_label or "Não classificado" }}
+        </span>
+      </div>
+      {% if meta.archetype_principio %}
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <span style="font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em;
+                     color: var(--text-faint); text-transform: uppercase; min-width: 100px;">Princípio</span>
+        <span style="font-size: 0.85rem; color: var(--text-dim); font-style: italic;">{{ meta.archetype_principio }}</span>
+      </div>
+      {% endif %}
+      {% if meta.posture_desc %}
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <span style="font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em;
+                     color: var(--text-faint); text-transform: uppercase; min-width: 100px; padding-top: 2px;">Descrição da Postura</span>
+        <span style="font-size: 0.85rem; color: var(--text-dim);">{{ meta.posture_desc }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- HEURISTICS ROW -->
+  <div class="heuristics-row">
+    <div class="heuristic-cell">
+      <div class="heuristic-label">Prioridade de Stakeholders</div>
+      <div class="heuristic-value">
+        <ul>
+          {% for s in meta.stakeholder_order %}
+          <li>{{ loop.index }}. {{ s }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="heuristic-cell">
+      <div class="heuristic-label">Gatilhos de Escalonamento</div>
+      <div class="heuristic-value">
+        <ul>
+          {% for t in meta.escalation_triggers %}
+          <li>{{ t }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAPA DE REDIRECIONAMENTO (determinístico) -->
+  {% if meta.redirection_pairs %}
+  <div class="section-block" style="margin-bottom: 2px;">
+    <div class="section-header">
+      <div class="section-num">—</div>
+      <div class="section-title">Mapa de Redirecionamento Narrativo · Heurística</div>
+    </div>
+    <div class="redirection-map">
+      {% for pair in meta.redirection_pairs %}
+      <div class="redirection-pair">
+        <div class="redir-from">{{ pair.from }}</div>
+        <div class="redir-arrow">→</div>
+        <div class="redir-to">{{ pair.to }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- 8 SEÇÕES GERADAS -->
+  <div class="sections-grid" style="margin-top: 2px;">
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Postura de Resposta Recomendada</div>
+      </div>
+      <div class="section-body">{{ sections.postura_recomendada or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Estratégia de Resposta Imediata · 0-7 dias</div>
+      </div>
+      <div class="section-body">{{ sections.estrategia_imediata or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">Mapa de Redirecionamento Narrativo</div>
+      </div>
+      <div class="section-body">{{ sections.mapa_redirecionamento or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Linguagem Segura para Porta-Vozes</div>
+      </div>
+      <div class="section-body">{{ sections.linguagem_segura or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Orientação de Defesa Narrativa</div>
+      </div>
+      <div class="section-body">{{ sections.defesa_narrativa or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Mensagens por Stakeholder</div>
+      </div>
+      <div class="section-body">{{ sections.mensagens_stakeholder or "—" }}</div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Alertas de Escalonamento</div>
+      </div>
+      <div class="section-body">{{ sections.alertas_escalonamento or "—" }}</div>
+    </div>
+
+    <!-- SEQUÊNCIA DE ATIVOS -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-title">Sequência de Deploy de Ativos</div>
+      </div>
+
+      {% if sections.sequencia_ativos %}
+      <div style="padding: 16px 28px 4px;">
+        <div style="font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em;
+                    color: var(--text-faint); text-transform: uppercase; margin-bottom: 8px;">
+          Análise Estratégica · Gerado pelo Modelo
+        </div>
+      </div>
+      <div class="section-body" style="padding-top: 0;">{{ sections.sequencia_ativos }}</div>
+      {% endif %}
+
+      {% if meta.asset_sequence %}
+      <div style="padding: 16px 28px 4px; border-top: 1px solid var(--border-mid);">
+        <div style="font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em;
+                    color: var(--accent); text-transform: uppercase; margin-bottom: 8px;">
+          Sequência Operacional · Determinístico por Nível de Ameaça
+        </div>
+      </div>
+      <div style="padding: 0 28px 28px;">
+        <table class="asset-table">
+          <thead>
+            <tr>
+              <th>Ativo</th>
+              <th>Janela</th>
+              <th>Objetivo Estratégico</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in meta.asset_sequence %}
+            <tr>
+              <td>{{ a.ativo }}</td>
+              <td class="janela">{{ a.janela }}</td>
+              <td>{{ a.objetivo }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>CouncilIA · Narrative Response Operations</span>
+    <span>CONFIDENTIAL — uso exclusivo do operador</span>
+    <span>{{ generated_at }}</span>
+  </div>
+
+</div>
+</body>
+</html>

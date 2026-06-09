@@ -1,0 +1,121 @@
+{
+  "entity": "Thiago Schiettini Batista",
+  "date": "2026-05-16",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Mendonça mantém prisão de sócio oculto do Careca do ...",
+      "link": "https://www.metropoles.com/colunas/tacio-lorran/mendonca-mantem-prisao-de-socio-oculto-do-careca-do-inss",
+      "snippet": "Tiago Schettini, apontado como sócio oculto do Careca do INSS, pediu a Mendonça a substituição de preventiva por cautelares.",
+      "domain": "metropoles.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 2,
+      "title": "André Mendonça mantém prisão de Tiago Schettini Batista ...",
+      "link": "https://www.instagram.com/reel/DX1SM23uIac/",
+      "snippet": "Quem é Tiago Schettini Batista • Empresário investigado pela Operação Sem Desconto. • Apontado pela PF como sócio oculto do lobista “Careca do ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 3,
+      "title": "Sócio oculto do Careca do INSS está nos EUA e ainda não ...",
+      "link": "https://www.gazetaweb.com/noticias/brasil/socio-oculto-do-careca-do-inss-esta-nos-eua-e-ainda-nao-foi-preso-882343",
+      "snippet": "Tiago Schettini é apontado pela PF como um dos controladores, em parceria com o Careca do INSS, de uma entidade envolvida na fraude do INSS.",
+      "domain": "gazetaweb.com",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "Uma empresa de tecnologia do empresário Tiago Schettini ...",
+      "link": "https://www.instagram.com/p/DVa3W2ZEd0d/",
+      "snippet": "Uma empresa de tecnologia do empresário Tiago Schettini Batista, que esteve no passado no centro de investigações sobre fraudes contratuais ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "negative",
+      "controlled": true
+    },
+    {
+      "position": 5,
+      "title": "Mendonça decide manter a prisão de Tiago Schettini ...",
+      "link": "https://www.folhadoestado.com.br/judiciario/mendonca-decide-manter-a-prisao-de-tiago-schettini-investigado-ligado-ao-careca-do-inss/637245",
+      "snippet": "O ministro do Supremo Tribunal Federal, André Mendonça, decidiu não acolher o pedido da defesa e manteve a prisão preventiva do empresário ...",
+      "domain": "folhadoestado.com.br",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 6,
+      "title": "00534/2025 CPMI - INSS",
+      "link": "https://legis.senado.leg.br/sdleg-getter/documento?dm=10026368&ts=1756223583029&disposition=inline",
+      "snippet": "A adoção da medida de quebra do sigilo bancário, fiscal, telefônico e telemático do senhor Tiago Schettini Batista revela-se absolutamente necessária diante da ...",
+      "domain": "legis.senado.leg.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 7,
+      "title": "Tiago Schettini Batista",
+      "link": "https://www.escavador.com/sobre/3945608/tiago-schettini-batista",
+      "snippet": "Não perca informações importantes da justiça sobre Tiago Schettini Batista! O assistente jurídico do Escavador monitora nomes nos Diários Oficiais e envia todos ...",
+      "domain": "escavador.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 8,
+      "title": "Fellipe Sampaio/STF ASSINE A OESTE. Leia a matéria",
+      "link": "https://www.facebook.com/oesterevista/posts/o-ministro-andr%C3%A9-mendon%C3%A7a-do-supremo-tribunal-federal-stf-barrou-a-tentativa-de-/1556826763110588/",
+      "snippet": "O ministro André Mendonça, do Supremo Tribunal Federal (STF), barrou a tentativa de Tiago Schettini Batista de derrubar sua ordem de prisão.",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "negative",
+      "controlled": true
+    },
+    {
+      "position": 9,
+      "title": "Mendonça nega liberdade a sócio oculto do 'Careca do ...",
+      "link": "https://revistaoeste.com/politica/mendonca-nega-liberdade-a-socio-oculto-do-careca-do-inss/",
+      "snippet": "O ministro André Mendonça, do Supremo Tribunal Federal (STF), barrou a tentativa de Tiago Schettini Batista de derrubar sua ordem de prisão.",
+      "domain": "revistaoeste.com",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    }
+  ],
+  "domains": [
+    "metropoles.com",
+    "instagram.com",
+    "gazetaweb.com",
+    "instagram.com",
+    "folhadoestado.com.br",
+    "legis.senado.leg.br",
+    "escavador.com",
+    "facebook.com",
+    "revistaoeste.com"
+  ],
+  "sentiment_counts": {
+    "negative": 5,
+    "neutral": 4,
+    "positive": 0
+  },
+  "controlled_assets": 3,
+  "page_1_negative_ratio": 0.556,
+  "top_3_negative_count": 1,
+  "narrative_pressure": {
+    "count_7d": 0,
+    "count_30d": 0,
+    "momentum": "Declining",
+    "most_aggressive": null
+  }
+}

@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>CouncilIA — Resposta Operacional Narrativa</h1>
+
+<form method="post" action="/response">
+  <table style="border-collapse:collapse; width:100%; max-width:720px;">
+
+    <tr>
+      <td style="padding:10px 0; width:200px; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Entidade</td>
+      <td>
+        <input type="text" name="entity_name" required placeholder="ex: Thiago Nigro"
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px;">
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Nível de Ameaça</td>
+      <td>
+        <select name="threat_level" required
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px; background:#fff;">
+          <option value="CRITICAL">CRITICAL</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MEDIUM" selected>MEDIUM</option>
+          <option value="LOW">LOW</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Estado Narrativo</td>
+      <td>
+        <textarea name="narrative_state" required rows="3"
+          placeholder="Descreva o estado narrativo atual: o que o audit revelou sobre a percepção pública da entidade."
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.9rem; border:1px solid #ccc; border-radius:3px; resize:vertical;"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Temas Dominantes</td>
+      <td>
+        <input type="text" name="dominant_themes" required
+          placeholder="ex: fraude, investigação, crise financeira"
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px;">
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Concentração de Fontes</td>
+      <td>
+        <select name="source_concentration" required
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px; background:#fff;">
+          <option value="mainstream">Mainstream (Folha, Globo, Estadão…)</option>
+          <option value="legal">Jurídico (Conjur, Jusbrasil, JOTA…)</option>
+          <option value="blog">Blogs e portais setoriais</option>
+          <option value="social">Redes sociais</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Exposição Jurídica</td>
+      <td>
+        <select name="legal_exposure" required
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px; background:#fff;">
+          <option value="sim">Sim — há menções jurídicas, processos ou investigações</option>
+          <option value="nao" selected>Não — sem exposição jurídica identificada</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Vácuo de Autoridade</td>
+      <td>
+        <select name="authority_vacuum" required
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px; background:#fff;">
+          <option value="HIGH">HIGH — menos de 30% de ativos controlados na página 1</option>
+          <option value="MODERATE" selected>MODERATE — entre 30% e 50% de ativos controlados</option>
+          <option value="LOW">LOW — mais de 50% de ativos controlados</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Associações Descobertas</td>
+      <td>
+        <textarea name="discovered_associations" rows="3"
+          placeholder="Cole as associações identificadas no audit (opcional). Ex: Grupo Primo — company — HIGH risk."
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.9rem; border:1px solid #ccc; border-radius:3px; resize:vertical;"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px 0; vertical-align:top; font-family:monospace; font-size:0.9rem; color:#555;">Arquétipo de Ameaça</td>
+      <td>
+        <select name="threat_archetype"
+          style="width:100%; padding:7px 10px; font-family:monospace; font-size:0.95rem; border:1px solid #ccc; border-radius:3px; background:#fff;">
+          <option value="">Detecção Automática (do snapshot)</option>
+          <option value="criminal">Criminal / Investigação</option>
+          <option value="reputacional">Reputacional / Corporativo</option>
+          <option value="politico">Político / Agente Público</option>
+          <option value="media">Mídia / Veículo de Comunicação</option>
+          <option value="administrativo">Administrativo / Órgão Público</option>
+          <option value="associativo">Associativo / Risco por Vínculo</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td style="padding-top:20px;">
+        <button type="submit"
+          style="padding:10px 28px; font-family:monospace; font-size:1rem; cursor:pointer; background:#111; color:#fff; border:none; border-radius:3px; letter-spacing:0.04em;">
+          Gerar Estratégia de Resposta
+        </button>
+      </td>
+    </tr>
+
+  </table>
+</form>
+{% endblock %}

@@ -1,0 +1,132 @@
+{
+  "entity": "Danielle Fonteles",
+  "date": "2026-05-16",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Danielle Fonteles - nobot",
+      "link": "https://pt.linkedin.com/in/danielle-fonteles-3753b813",
+      "snippet": "Director. No.bot Comunicação. jan. de 2015 - o momento 11 anos 5 meses. Portugal. Director. Pepper Comunicação.",
+      "domain": "pt.linkedin.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 2,
+      "title": "Daniele Fonteles (@danisfonteles)",
+      "link": "https://www.instagram.com/danisfonteles/",
+      "snippet": "1.5K+ followers · 893 following · 659 posts · @danisfonteles: “Siga @mundomix01”",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 3,
+      "title": "Quem é a publicitária do PT que era sócia do “Careca” ...",
+      "link": "https://www.gazetadopovo.com.br/republica/quem-e-a-publicitaria-do-pt-que-era-socia-do-careca-do-inss/",
+      "snippet": "Marketeira de Dilma, Danielle Miranda Fonteles virou alvo da CPMI do INSS por movimentação; Confira na Gazeta do Povo.",
+      "domain": "gazetadopovo.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "2 \"Danielle Fonteles\" profiles",
+      "link": "https://www.linkedin.com/pub/dir/Danielle/Fonteles",
+      "snippet": "View the profiles of professionals named \"Danielle Fonteles\" on LinkedIn. There are 2 professionals named \"Danielle Fonteles\", who use LinkedIn to exchange ...",
+      "domain": "linkedin.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 5,
+      "title": "Danielle Fonteles | Lauro Jardim - O Globo",
+      "link": "https://blogs.oglobo.globo.com/lauro-jardim/tag/danielle-fonteles/",
+      "snippet": "Formada em Jornalismo e Publicidade pela PUC, está no Globo desde 2015. Apaixonada por jornalismo, escreve sobre cultura, saúde e internet, mas está sempre ...",
+      "domain": "blogs.oglobo.globo.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 6,
+      "title": "Ex-secretária do Careca confirma negócios com Danielle ...",
+      "link": "https://www.youtube.com/watch?v=qMXnoBdj4OM",
+      "snippet": "... Danielle Miranda Fonteles, ex-marqueteira do PT. Em depoimento à CPMI (Comissão Parlamentar Mista de Inquérito) do INSS, a ex-secretária ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 7,
+      "title": "Ex-publicitária do PT atuou com Careca do INSS em ...",
+      "link": "https://www.metropoles.com/colunas/tacio-lorran/ex-publicitaria-do-pt-atuou-com-careca-do-inss-em-negocio-de-cannabis",
+      "snippet": "Ex-publicitária do PT atuou com Careca do INSS em negócio de cannabis. Danielle Fonteles recebeu R$ 5 milhões do Careca do INSS em meio à farra ...",
+      "domain": "metropoles.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 8,
+      "title": "Photos by Dra.Daniele Fonteles|Cirurgiã Dentista ...",
+      "link": "https://www.instagram.com/p/DYIafqqgaOG/",
+      "snippet": "Photo by Dra.Daniele Fonteles|Cirurgiã Dentista on May 09, ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 9,
+      "title": "Governistas protegem publicitária que delatou PT e ...",
+      "link": "https://platobr.com.br/governo-protegeu-publicitaria-que-delatou-pt-e-recebeu-milhoes-do-careca-do-inss",
+      "snippet": "Como dona da agência Pepper, Fonteles atuou em campanhas eleitorais do PT, como a de Dilma, em 2010. Ela foi investigada pela Lava Jato e ...",
+      "domain": "platobr.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 10,
+      "title": "PF aponta Danielle Fonteneles como operadora no exterior",
+      "link": "https://claudiodantas.com.br/pf-aponta-danielle-fonteneles-como-operadora/",
+      "snippet": "Danielle Fonteneles ganhou projeção nacional como fundadora da agência Pepper Comunicação, que atuou em campanhas eleitorais de grande ...",
+      "domain": "claudiodantas.com.br",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false
+    }
+  ],
+  "domains": [
+    "pt.linkedin.com",
+    "instagram.com",
+    "gazetadopovo.com.br",
+    "linkedin.com",
+    "blogs.oglobo.globo.com",
+    "youtube.com",
+    "metropoles.com",
+    "instagram.com",
+    "platobr.com.br",
+    "claudiodantas.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 9,
+    "positive": 1
+  },
+  "controlled_assets": 5,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "narrative_pressure": {
+    "count_7d": 0,
+    "count_30d": 0,
+    "momentum": "Declining",
+    "most_aggressive": null
+  }
+}

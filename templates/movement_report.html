@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movement Report — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0a0a0a;
+      --surface:    #111111;
+      --surface2:   #161616;
+      --border:     #222222;
+      --border-mid: #2a2a2a;
+      --text:       #e8e8e8;
+      --text-dim:   #888888;
+      --text-faint: #444444;
+      --accent:     #c8a96e;
+      --accent-dim: #8a6e3e;
+      --red:        #c0392b;
+      --orange:     #d35400;
+      --yellow:     #d4a017;
+      --green:      #27ae60;
+      --green-dim:  #1a7a42;
+      --mono:       'IBM Plex Mono', monospace;
+      --sans:       'IBM Plex Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 64px 80px;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 32px;
+      margin-bottom: 48px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .confidential {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid var(--red);
+      padding: 3px 10px;
+      opacity: 0.85;
+    }
+
+    .entity-name {
+      font-family: var(--sans);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .header-meta span::before {
+      content: attr(data-label) ': ';
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    /* ── PERIOD BAR ─────────────────────────────────── */
+    .period-bar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .period-arrow {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text-faint);
+    }
+
+    .period-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── RECOVERY BANNER ────────────────────────────── */
+    .recovery-banner {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .recovery-score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .recovery-number {
+      font-family: var(--mono);
+      font-size: 42px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .recovery-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .status-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border: 1px solid;
+    }
+
+    .status-Critical          { color: var(--red);    border-color: var(--red);    }
+    .status-Stabilization     { color: var(--orange); border-color: var(--orange); }
+    .status-Recovery          { color: var(--yellow); border-color: var(--yellow); }
+    .status-Repositioning     { color: var(--accent); border-color: var(--accent); }
+    .status-Stable            { color: var(--green);  border-color: var(--green);  }
+
+    .recovery-detail {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    /* ── SECTIONS ───────────────────────────────────── */
+    .section {
+      margin-bottom: 48px;
+      page-break-inside: avoid;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-number {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: 0.12em;
+      min-width: 24px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* ── METRICS GRID ───────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .metric-card {
+      background: var(--surface);
+      padding: 18px 20px;
+    }
+
+    .metric-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .metric-before {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 2px;
+    }
+
+    .metric-after {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .metric-delta {
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .delta-positive { color: var(--green);  }
+    .delta-negative { color: var(--red);    }
+    .delta-neutral  { color: var(--text-faint); }
+
+    /* ── BEFORE / AFTER COLUMNS ─────────────────────── */
+    .ba-row {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 8px;
+    }
+
+    .ba-cell {
+      flex: 1;
+      background: var(--surface);
+      padding: 12px 16px;
+    }
+
+    .ba-cell-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .ba-cell-value {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .ba-cell-value.neg { color: var(--red); }
+    .ba-cell-value.pos { color: var(--green); }
+
+    /* ── DOMAIN LIST ────────────────────────────────── */
+    .domain-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .domain-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .domain-item:last-child { border-bottom: none; }
+
+    .domain-name { color: var(--text); }
+
+    .domain-arrow { letter-spacing: 0.1em; }
+
+    .domain-from {
+      color: var(--text-faint);
+      margin: 0 8px;
+    }
+
+    .domain-to { font-weight: 500; }
+
+    .domain-marker {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      padding: 1px 8px;
+      margin-left: 8px;
+      text-transform: uppercase;
+    }
+
+    .marker-controlled {
+      background: rgba(200,169,110,0.12);
+      color: var(--accent);
+    }
+
+    .marker-negative {
+      background: rgba(192,57,43,0.12);
+      color: var(--red);
+    }
+
+    /* ── LEVERAGE ASSET ─────────────────────────────── */
+    .leverage-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--accent-dim);
+    }
+
+    .leverage-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .leverage-domain {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .leverage-move {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ── STRATEGIC TEXT ─────────────────────────────── */
+    .strategic-body {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    .footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    }
+
+    .footer-brand {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .footer-ts {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── TOOLBAR ────────────────────────────────────── */
+    .toolbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; gap: 12px; justify-content: center;
+      padding: 12px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+    .toolbar button {
+      padding: 8px 20px;
+      border: 1px solid var(--border-mid);
+      border-radius: 4px;
+      background: var(--surface2);
+      color: var(--text);
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 12px;
+      transition: background 0.15s;
+    }
+    .toolbar button:hover { background: var(--border); }
+    .toolbar button.primary {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .toolbar button.primary:hover { background: var(--accent-dim); }
+    body { padding-top: 52px; }
+
+    /* ── PRINT ──────────────────────────────────────── */
+    .serp-compare {
+      display: flex;
+      gap: 16px;
+      margin-left: 38px;
+      margin-top: 16px;
+    }
+    .serp-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .serp-col-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .serp-img {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .serp-img:hover { opacity: 0.85; }
+    .serp-placeholder {
+      height: 200px;
+      border: 1px dashed var(--border-mid);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    @media print {
+      body { background: #fff; color: #111; padding-top: 0; }
+      :root {
+        --bg: #fff; --surface: #f8f8f8; --surface2: #f4f4f4;
+        --border: #ddd; --border-mid: #ccc;
+        --text: #111; --text-dim: #555; --text-faint: #999;
+        --accent: #7a5c20; --accent-dim: #9a7a40;
+      }
+      .toolbar { display: none !important; }
+      .page { padding: 20px 32px; }
+      .confidential { color: #c0392b; border-color: #c0392b; }
+      .section { page-break-inside: avoid; }
+      .footer { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="primary" onclick="window.print()">Salvar como PDF / Print</button>
+  <button onclick="downloadHTML()">Download HTML</button>
+  <button onclick="window.location.href='/snapshots/{{ entity_name | lower | replace(' ', '_') | replace('/', '_') }}/compare/pdf'" style="border-color: #3d1a1a; color: #e74c3c;">PDF Relatório</button>
+</div>
+<div class="page">
+
+<script>
+function downloadHTML() {
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob([html], {type: 'text/html;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'movement_report_{{ entity_name|replace(" ", "_") }}.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="brand">CouncilIA &mdash; Relatório de Movimento Narrativo</div>
+      <div class="confidential">Confidencial &mdash; Relatório de Inteligência Interno</div>
+    </div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="period-bar">
+      <div>
+        <div class="period-label">Linha de Base</div>
+        <div class="period-date" style="font-family:var(--mono); font-size:16px;">{{ old.date }}</div>
+      </div>
+      <div class="period-arrow">→</div>
+      <div>
+        <div class="period-label">Atual</div>
+        <div class="period-date" style="font-family:var(--mono); font-size:16px;">{{ new.date }}</div>
+      </div>
+    </div>
+    <div class="recovery-banner">
+      <div class="recovery-score">
+        <div class="recovery-number" style="color: {% if recovery_score >= 70 %}{{ 'var(--green)' }}{% elif recovery_score >= 40 %}{{ 'var(--yellow)' }}{% else %}{{ 'var(--red)' }}{% endif %}">{{ recovery_score }}</div>
+        <div class="recovery-label">Pontuação de Recuperação</div>
+      </div>
+      <span class="status-badge status-{{ strategic_status_class }}">{{ strategic_status }}</span>
+      <div class="recovery-detail">
+        {{ strategic_one_liner }}
+      </div>
+    </div>
+  </header>
+
+  <!-- 00 · SERP SCREENSHOT BEFORE / AFTER -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">00</span>
+      <span class="section-title">Evolução da SERP</span>
+    </div>
+    <div class="serp-compare">
+      <div class="serp-col">
+        <div class="serp-col-label">ANTES — {{ old.date }}</div>
+        {% if old_serp_png %}
+        <a href="{{ old_serp_png }}" target="_blank"><img src="{{ old_serp_png }}" class="serp-img" alt="SERP antes"></a>
+        {% else %}
+        <div class="serp-placeholder">Screenshot não disponível</div>
+        {% endif %}
+      </div>
+      <div class="serp-col">
+        <div class="serp-col-label">DEPOIS — {{ new.date }}</div>
+        {% if new_serp_png %}
+        <a href="{{ new_serp_png }}" target="_blank"><img src="{{ new_serp_png }}" class="serp-img" alt="SERP depois"></a>
+        {% else %}
+        <div class="serp-placeholder">Screenshot não disponível</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 · EXECUTIVE DELTA -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-title">Delta Executivo</span>
+    </div>
+    <p style="padding-left:38px; margin-bottom:16px; color:var(--text-dim); font-size:13px;">
+      De <strong style="color:var(--text)">{{ old.date }}</strong> até
+      <strong style="color:var(--text)">{{ new.date }}</strong>
+    </p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Proporção Negativa</div>
+        <div class="metric-before">{{ old_neg_ratio_pct }}%</div>
+        <div class="metric-after {% if neg_ratio_delta_pp < 0 %}delta-positive{% else %}delta-negative{% endif %}">{{ new_neg_ratio_pct }}%</div>
+        <div class="metric-delta {% if neg_ratio_delta_pp < 0 %}delta-positive{% elif neg_ratio_delta_pp > 0 %}delta-negative{% else %}delta-neutral{% endif %}">
+          {{ neg_ratio_delta_str }}
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Ativos Controlados</div>
+        <div class="metric-before">{{ old.controlled_assets }}</div>
+        <div class="metric-after {% if asset_growth > 0 %}delta-positive{% elif asset_growth < 0 %}delta-negative{% else %}delta-neutral{% endif %}">{{ new.controlled_assets }}</div>
+        <div class="metric-delta {% if asset_growth > 0 %}delta-positive{% elif asset_growth < 0 %}delta-negative{% else %}delta-neutral{% endif %}">
+          {% if asset_growth > 0 %}+{% endif %}{{ asset_growth }}
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Top 3 Negativos</div>
+        <div class="metric-before">{{ old.top_3_negative_count }}</div>
+        <div class="metric-after {% if top3_delta < 0 %}delta-positive{% elif top3_delta > 0 %}delta-negative{% else %}delta-neutral{% endif %}">{{ new.top_3_negative_count }}</div>
+        <div class="metric-delta {% if top3_delta < 0 %}delta-positive{% elif top3_delta > 0 %}delta-negative{% else %}delta-neutral{% endif %}">
+          {% if top3_delta > 0 %}+{% endif %}{{ top3_delta }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · NARRATIVE MOVEMENT METRICS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <span class="section-title">Métricas de Movimento Narrativo</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Deslocamento Negativo</div>
+        <div class="metric-after {% if neg_displacement > 0 %}delta-positive{% elif neg_displacement < 0 %}delta-negative{% else %}delta-neutral{% endif %}">
+          {% if neg_displacement > 0 %}+{% endif %}{{ neg_displacement }}
+        </div>
+        <div class="metric-delta delta-neutral">positivo = melhora</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Participação Narrativa</div>
+        <div class="metric-before">{{ old_ns_pct }}%</div>
+        <div class="metric-after {% if ns_delta > 0 %}delta-positive{% elif ns_delta < 0 %}delta-negative{% else %}delta-neutral{% endif %}">{{ new_ns_pct }}%</div>
+        <div class="metric-delta {% if ns_delta > 0 %}delta-positive{% elif ns_delta < 0 %}delta-negative{% else %}delta-neutral{% endif %}">
+          {% if ns_delta > 0 %}+{% endif %}{{ ns_delta }} pp
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Momentum</div>
+        <div class="metric-before">{{ old_npa.momentum }}</div>
+        <div class="metric-after">{{ new_npa.momentum }}</div>
+        <div class="metric-delta {% if momentum_improved %}delta-positive{% elif momentum_worsened %}delta-negative{% else %}delta-neutral{% endif %}">
+          {{ momentum_label }}
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Exposição Jurídica</div>
+        {% if old_legal_domain_count is none %}
+        <div class="metric-before">N/A</div>
+        <div class="metric-after">{{ new_legal_domain_count }}</div>
+        <div class="metric-delta delta-neutral">N/A</div>
+        {% else %}
+        <div class="metric-before">{{ old_legal_domain_count }}</div>
+        <div class="metric-after {% if new_legal_domain_count < old_legal_domain_count %}delta-positive{% elif new_legal_domain_count > old_legal_domain_count %}delta-negative{% else %}delta-neutral{% endif %}">{{ new_legal_domain_count }}</div>
+        <div class="metric-delta {% if new_legal_domain_count < old_legal_domain_count %}delta-positive{% elif new_legal_domain_count > old_legal_domain_count %}delta-negative{% else %}delta-neutral{% endif %}">
+          {% set legal_delta = new_legal_domain_count - old_legal_domain_count %}
+          {% if legal_delta > 0 %}+{% endif %}{{ legal_delta }} fontes
+        </div>
+        {% endif %}
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Vácuo de Autoridade</div>
+        {% if old_authority_vacuum is none %}
+        <div class="metric-before">N/A</div>
+        <div class="metric-after" style="color:{% if new_authority_vacuum == 'HIGH' %}var(--red){% elif new_authority_vacuum == 'MODERATE' %}var(--yellow){% else %}var(--green){% endif %};">{{ new_authority_vacuum }}</div>
+        <div class="metric-delta delta-neutral">N/A</div>
+        {% else %}
+        <div class="metric-before" style="color:{% if old_authority_vacuum == 'HIGH' %}var(--red){% elif old_authority_vacuum == 'MODERATE' %}var(--yellow){% else %}var(--green){% endif %};">{{ old_authority_vacuum }}</div>
+        <div class="metric-after" style="color:{% if new_authority_vacuum == 'HIGH' %}var(--red){% elif new_authority_vacuum == 'MODERATE' %}var(--yellow){% else %}var(--green){% endif %};">{{ new_authority_vacuum }}</div>
+        <div class="metric-delta {% if authority_vacuum_improved %}delta-positive{% elif authority_vacuum_worsened %}delta-negative{% else %}delta-neutral{% endif %}">
+          {{ authority_vacuum_label }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · PAGE 1 EVOLUTION -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <span class="section-title">Evolução da Página 1</span>
+    </div>
+
+    {% if ranking_movement.moved_up or ranking_movement.moved_down %}
+    <div class="ba-row">
+      <div class="ba-cell">
+        <div class="ba-cell-label">Subiu</div>
+        <ul class="domain-list">
+        {% for d in ranking_movement.moved_up %}
+          <li class="domain-item">
+            <span class="domain-name">{% if d.domain %}⬆ {{ d.domain }}{% endif %}</span>
+            <span>#{{ d.from }} → #{{ d.to }}</span>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+      <div class="ba-cell">
+        <div class="ba-cell-label">Desceu</div>
+        <ul class="domain-list">
+        {% for d in ranking_movement.moved_down %}
+          <li class="domain-item">
+            <span class="domain-name">{% if d.domain %}⬇ {{ d.domain }}{% endif %}</span>
+            <span>#{{ d.from }} → #{{ d.to }}</span>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="ba-row">
+      <div class="ba-cell">
+        <div class="ba-cell-label">Entrou no Top 10</div>
+        <ul class="domain-list">
+        {% for d in ranking_movement.entered %}
+          <li class="domain-item">
+            <span class="domain-name">+ {{ d.domain }}</span>
+            <span>at #{{ d.position }}</span>
+          </li>
+        {% else %}
+          <li class="domain-item"><span style="color:var(--text-faint)">Nenhuma nova entrada</span></li>
+        {% endfor %}
+        </ul>
+      </div>
+      <div class="ba-cell">
+        <div class="ba-cell-label">Saiu do Top 10</div>
+        <ul class="domain-list">
+        {% for d in ranking_movement.exited %}
+          <li class="domain-item">
+            <span class="domain-name">− {{ d.domain }}</span>
+            <span>was #{{ d.last_position }}</span>
+          </li>
+        {% else %}
+          <li class="domain-item"><span style="color:var(--text-faint)">Nenhuma saída</span></li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    {% if ranking_movement.new_negative_entrants %}
+    <div style="margin-top:12px; padding:12px 16px; background:var(--surface); border:1px solid var(--red);">
+      <span style="font-family:var(--mono); font-size:10px; color:var(--red); letter-spacing:0.15em; text-transform:uppercase;">Novas Entradas Negativas</span>
+      <ul class="domain-list" style="margin-top:8px;">
+      {% for d in ranking_movement.new_negative_entrants %}
+        <li class="domain-item">
+          <span class="domain-name" style="color:var(--red);">⚠ {{ d.domain }}</span>
+          <span style="color:var(--red);">at #{{ d.position }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- 04 · CONTROLLED ASSET GROWTH -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <span class="section-title">Crescimento de Ativos Controlados</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Antes</div>
+        <div class="metric-before" style="font-size:28px;">{{ old.controlled_assets }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Depois</div>
+        <div class="metric-after" style="font-size:28px;">{{ new.controlled_assets }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Crescimento</div>
+        <div class="metric-after {% if asset_growth > 0 %}delta-positive{% elif asset_growth < 0 %}delta-negative{% else %}delta-neutral{% endif %}" style="font-size:28px;">
+          {% if asset_growth > 0 %}+{% endif %}{{ asset_growth }}
+        </div>
+      </div>
+    </div>
+
+    {% if leverage_asset %}
+    <div class="leverage-card">
+      <span class="leverage-label">Ativo de Maior Alavancagem</span>
+      <span class="leverage-domain">{{ leverage_asset.domain }}</span>
+      <span class="leverage-move">#{{ leverage_asset.from_pos }} → #{{ leverage_asset.to_pos }}</span>
+    </div>
+    {% endif %}
+
+    <ul class="domain-list" style="margin-top:16px; border:1px solid var(--border);">
+    {% for r in new_controlled_list %}
+      <li class="domain-item" style="padding:10px 16px;">
+        <span class="domain-name">{{ r.domain }}</span>
+        <span>
+          <span style="color:var(--text-faint)">#{{ r.position }}</span>
+          <span class="domain-marker marker-controlled">controlado</span>
+        </span>
+      </li>
+    {% else %}
+      <li class="domain-item" style="padding:10px 16px;">
+        <span style="color:var(--text-faint)">Nenhum ativo controlado no top 10</span>
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+
+  <!-- 05 · STRATEGIC INTERPRETATION -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <span class="section-title">Interpretação Estratégica</span>
+    </div>
+    <div class="strategic-body">{{ strategic_interpretation }}</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">CouncilIA Inteligência de Reputação &mdash; Distribuição Restrita</div>
+    <div class="footer-ts">Gerado em {{ generated_at }}</div>
+  </footer>
+
+</div>
+</body>
+</html>

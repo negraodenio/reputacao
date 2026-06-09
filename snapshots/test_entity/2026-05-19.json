@@ -1,0 +1,235 @@
+{
+  "entity": "Test Entity",
+  "date": "2026-05-19",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Overview of testing applications that use EF Core",
+      "link": "https://learn.microsoft.com/en-us/ef/core/testing/",
+      "snippet": "This introductory section provides a quick overview of various testing strategies for applications using EF Core. Involving the database (or not).",
+      "domain": "learn.microsoft.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "How are people unit testing there code which happens to ...",
+      "link": "https://www.reddit.com/r/dotnet/comments/1ckh71s/how_are_people_unit_testing_there_code_which/",
+      "snippet": "👋🏻 G'day folks, As the title suggests, I have code I wish to test so I wish to make unit tests. Code happens to use EF to make DB calls. Fine. ...",
+      "domain": "reddit.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "How are people unit testing with Entity Framework 6 ...",
+      "link": "https://stackoverflow.com/questions/22690877/how-are-people-unit-testing-with-entity-framework-6-should-you-bother",
+      "snippet": "I am just starting out with Unit testings and TDD in general. I have dabbled before but now I am determined to add it to my workflow and write better software. ...",
+      "domain": "stackoverflow.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Entity Test Plan | Targetprocess - Enterprise Agility Solution",
+      "link": "https://targetprocess.com/guide/qa-area/entity-test-plan/",
+      "snippet": "A test plan can be created on a Tests tab on an entity view. It can be created as empty or automatically include related entities' test plans.",
+      "domain": "targetprocess.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 5,
+      "title": "Reliably testing components that use Entity Framework Core",
+      "link": "https://renatogolia.com/2024/08/04/reliably-testing-components-using-ef-core/",
+      "snippet": "Entity Framework Core is a powerful ORM able to abstract the access to a plethora of databases, both relational and document-based.",
+      "domain": "renatogolia.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Efficient Testing with Entity Framework In-Memory ...",
+      "link": "https://medium.com/@robertdennyson/efficient-testing-with-entity-framework-in-memory-database-mediatr-and-cqrs-a-comprehensive-189cd846d66b",
+      "snippet": "This article explores using the EF In-Memory Database to test an Azure Function Blob Trigger implemented with CQRS and MediatR. We'll cover unit ...",
+      "domain": "medium.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Writing unit tests for EF Core",
+      "link": "https://dev.to/jasonsultana/writing-unit-tests-for-ef-core-4lji",
+      "snippet": "It should be as simple as extracting an interface out of your context, mocking it with Moq and you're done!",
+      "domain": "dev.to",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "Automated Testing with Entity Framework 6",
+      "link": "https://www.swms.de/en/blog/automated-testing-with-entity-framework-6/",
+      "snippet": "Automated testing with Entity Framework 6 makes it easy for software developers to test database-connected applications and troubleshoot problems.",
+      "domain": "swms.de",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "learn.microsoft.com",
+    "reddit.com",
+    "stackoverflow.com",
+    "targetprocess.com",
+    "renatogolia.com",
+    "medium.com",
+    "dev.to",
+    "swms.de"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 8,
+    "positive": 0
+  },
+  "controlled_assets": 0,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 0,
+  "authority_vacuum": "HIGH",
+  "expansion_associations": [
+    {
+      "entity": "Ask Learn",
+      "type": "unknown",
+      "frequency": 7,
+      "domains": [
+        "learn.microsoft.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Bloggs",
+      "type": "media",
+      "frequency": 6,
+      "domains": [
+        "stackoverflow.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Azure Cosmos",
+      "type": "unknown",
+      "frequency": 2,
+      "domains": [
+        "learn.microsoft.com"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Stack Internal",
+      "type": "unknown",
+      "frequency": 2,
+      "domains": [
+        "stackoverflow.com"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Integration Tests",
+      "type": "unknown",
+      "frequency": 2,
+      "domains": [
+        "stackoverflow.com"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Core Applications",
+      "type": "unknown",
+      "frequency": 1,
+      "domains": [
+        "learn.microsoft.com"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Entity Framework Core",
+      "type": "unknown",
+      "frequency": 1,
+      "domains": [
+        "learn.microsoft.com"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Microsoft Certified",
+      "type": "unknown",
+      "frequency": 1,
+      "domains": [
+        "learn.microsoft.com"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 16,
+    "count_30d": 24,
+    "momentum": "Escalating",
+    "most_aggressive": "washingtonpost.com"
+  },
+  "generated_at": "2026-05-19T12:21:23.209807+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": []
+}

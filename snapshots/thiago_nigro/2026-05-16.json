@@ -1,0 +1,121 @@
+{
+  "entity": "Thiago Nigro",
+  "date": "2026-05-16",
+  "serp": [
+    {
+      "position": 1,
+      "title": "O Primo Rico (@thiago.nigro)",
+      "link": "https://www.instagram.com/thiago.nigro/",
+      "snippet": "11M followers · 2.5K+ following · 897 posts · @thiago.nigro: “Casado @mairacardi Fundador do Grupo Primo Autor do livro Do Mil ao Milhão APRENDA COM O GRUPO ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true
+    },
+    {
+      "position": 2,
+      "title": "O Primo Rico",
+      "link": "https://www.youtube.com/channel/UCT4nDeU5pv1XIGySbSK-GgA",
+      "snippet": "Thiago Nigro, Bruno Perini, Érico Rocha e Leandro Ladeira se uniram para traçar o Plano Perfeito: uma bancada onde qualquer negócio digital — seja de quem ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 3,
+      "title": "Thiago Nigro – Wikipédia, a enciclopédia livre",
+      "link": "https://pt.wikipedia.org/wiki/Thiago_Nigro",
+      "snippet": "Thiago Lolkus Nigro (São Paulo, 7 de outubro de 1990) é um coach, influenciador digital, escritor e empresário brasileiro. ... É conhecido como Primo Rico no ...",
+      "domain": "pt.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "Thiago Nigro (@oprimorico)",
+      "link": "https://www.tiktok.com/@oprimorico",
+      "snippet": "Thiago Nigro (@oprimorico) no TikTok |31.8M curtidas.2.8M seguidores.GARANTA O MELHOR COMBO PRA FICAR RICO INVESTINDO:Assista aos vídeos populares de Thiago ...",
+      "domain": "tiktok.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 5,
+      "title": "See thiago.nigro's story before it disappears",
+      "link": "https://www.instagram.com/stories/thiago.nigro/",
+      "snippet": "11M Followers, 2541 Following, 897 Posts.",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 6,
+      "title": "Thiago Nigro (@ThiagoNigro) / Posts / X",
+      "link": "https://x.com/ThiagoNigro?lang=en",
+      "snippet": "Thiago Nigro (@ThiagoNigro) - Posts - O Primo Rico | Investimentos, Empreendedorismo e Finanças. | X (formerly Twitter)",
+      "domain": "x.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true
+    },
+    {
+      "position": 7,
+      "title": "Thiago Lolkus Nigro - CEO e Fundador do Grupo PRIMO",
+      "link": "https://br.linkedin.com/in/thiago-nigro",
+      "snippet": "Fundador e CEO do Grupo PRIMO; - Criador do Primo Rico, o maior canal de finanças e investimentos do mundo; - Autor do Livro Do Mil ao Milhão, ...",
+      "domain": "br.linkedin.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true
+    },
+    {
+      "position": 8,
+      "title": "O Primo Rico: Um dos investidores mais influentes do país",
+      "link": "https://www.oprimorico.com.br/thiago.nigro/",
+      "snippet": "Já teve aquela vontade de dar tudo de si para se tornar um milionário? Era esse sentimento que rondava a vida de Thiago Nigro aos 18 anos de idade. Thiago teve ...",
+      "domain": "oprimorico.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 9,
+      "title": "Thiago Nigro: quem é, história e fortuna do 'Primo Rico'",
+      "link": "https://querobolsa.com.br/revista/thiago-nigro",
+      "snippet": "Thiago Nigro, mais conhecido como “Primo Rico”, é empresário, escritor e um dos maiores influenciadores de finanças do Brasil. Nascido em São Paulo em 7 de ...",
+      "domain": "querobolsa.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    }
+  ],
+  "domains": [
+    "instagram.com",
+    "youtube.com",
+    "pt.wikipedia.org",
+    "tiktok.com",
+    "instagram.com",
+    "x.com",
+    "br.linkedin.com",
+    "oprimorico.com.br",
+    "querobolsa.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 6,
+    "positive": 3
+  },
+  "controlled_assets": 6,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "narrative_pressure": {
+    "count_7d": 3,
+    "count_30d": 8,
+    "momentum": "Stable",
+    "most_aggressive": "dgabc.com.br"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "entity": "Daniel Bueno Vorcaro",
+  "date": "2026-05-17",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Daniel Vorcaro",
+      "link": "https://en.wikipedia.org/wiki/Daniel_Vorcaro",
+      "snippet": "Daniel Bueno Vorcaro (born October 6, 1983) is a Brazilian entrepreneur active in the financial, real estate, healthcare, and retail sectors.",
+      "domain": "en.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "positive",
+      "controlled": false
+    },
+    {
+      "position": 2,
+      "title": "The Rise and Fall of Daniel Vorcaro and Banco Master",
+      "link": "https://medium.com/@GlobalTimesSingapore/the-anarchy-of-the-system-the-rise-and-fall-of-daniel-vorcaro-and-banco-master-fd02118cd8c4",
+      "snippet": "Daniel Bueno Vorcaro was born in Belo Horizonte in 1983, the son of a real estate broker and grandson of an Italian immigrant pastor. His ...",
+      "domain": "medium.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 3,
+      "title": "Brazil's Banco Master liquidator files U.S. lawsuit against ...",
+      "link": "https://www.offshorealert.com/brazils-banco-master-liquidator-files-u-s-lawsuit-against-father-sister-of-us1b-fraudster-daniel-vorcaro/?srsltid=AfmBOop90PUkCPlRpDsgRxQGHK5W_7gnHoXk9HeLFJncuWYXdWyheq2T",
+      "snippet": "Brazil's Banco Master liquidator files U.S. lawsuit against father & sister of 'US$1B+ fraudster' Daniel Vorcaro · You're only seeing part of ...",
+      "domain": "offshorealert.com",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false
+    },
+    {
+      "position": 4,
+      "title": "The Fall of Vorcaro: What the Master Case Reveals About ...",
+      "link": "https://ground.news/article/the-fall-of-vorcaro-what-the-master-case-reveals-about-the-brazilian-way",
+      "snippet": "The owner and main person responsible for controlling the company, Daniel Bueno Vorcaro, became the target of an ongoing investigation ...",
+      "domain": "ground.news",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 5,
+      "title": "Daniel Vorcaro - Crunchbase Person Profile",
+      "link": "https://www.crunchbase.com/person/daniel-vorcaro-baf8",
+      "snippet": "Daniel Bueno Vorcaro, a banker and entrepreneur from Minas Gerais, Brazil, is the CEO of Banco Master, renowned for his visionary leadership in the financial ...",
+      "domain": "crunchbase.com",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false
+    },
+    {
+      "position": 6,
+      "title": "Banco Master collapse ripples through Brazilian companies",
+      "link": "https://valorinternational.globo.com/business/news/2025/11/19/master-bank-collapse-ripples-through-brazilian-companies.ghtml",
+      "snippet": "Arrest of Daniel Vorcaro and court-ordered liquidation may affect firms tied to the bank through investments or debt.",
+      "domain": "valorinternational.globo.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 7,
+      "title": "Polícia Federal prende Daniel Vorcaro, dono do Banco Master ...",
+      "link": "https://www.youtube.com/watch?v=FCEC2ZIliiE",
+      "snippet": "A Polícia Federal prendeu nesta terça-feira (18), Daniel Vorcaro, CEO do Banco Master, em São Paulo. #CNNBrasil Inscreva-se no canal da CNN ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 8,
+      "title": "Daniel Bueno Vorcaro",
+      "link": "https://www.instagram.com/popular/daniel-bueno-vorcaro/",
+      "snippet": "A Polícia Federal revelou que o banqueiro Daniel Vorcaro, ligado ao Banco Master, teria utilizado um documento falsificado para tentar descobrir com quem ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 9,
+      "title": "Daniel Vorcaro",
+      "link": "https://grokipedia.com/page/daniel_vorcaro",
+      "snippet": "Daniel Bueno Vorcaro (born October 6, 1983) is a Brazilian banker and entrepreneur who founded and served as the controlling shareholder of Banco Master, a ...",
+      "domain": "grokipedia.com",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false
+    },
+    {
+      "position": 10,
+      "title": "For months Flávio Bolsonaro has publicly denied any links ...",
+      "link": "https://www.facebook.com/TheEconomist/posts/for-months-fl%C3%A1vio-bolsonaro-has-publicly-denied-any-links-to-daniel-vorcaro-a-di/1480785687413280/",
+      "snippet": "For months Flávio Bolsonaro has publicly denied any links to Daniel Vorcaro, a disgraced banker at the centre of Brazil’s largest-ever bank fraud. ...",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "negative",
+      "controlled": true
+    }
+  ],
+  "domains": [
+    "en.wikipedia.org",
+    "medium.com",
+    "offshorealert.com",
+    "ground.news",
+    "crunchbase.com",
+    "valorinternational.globo.com",
+    "youtube.com",
+    "instagram.com",
+    "grokipedia.com",
+    "facebook.com"
+  ],
+  "sentiment_counts": {
+    "negative": 2,
+    "neutral": 5,
+    "positive": 3
+  },
+  "controlled_assets": 3,
+  "page_1_negative_ratio": 0.2,
+  "top_3_negative_count": 1,
+  "legal_domain_count": 0,
+  "authority_vacuum": "MODERATE",
+  "narrative_pressure": {
+    "count_7d": 28,
+    "count_30d": 28,
+    "momentum": "Escalating",
+    "most_aggressive": "otempo.com.br"
+  }
+}

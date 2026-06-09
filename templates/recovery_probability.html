@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recovery Probability — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0a;--surface:#111;--surface2:#161616;
+      --border:#222;--border-mid:#2a2a2a;
+      --text:#e8e8e8;--text-dim:#888;--text-faint:#444;
+      --accent:#c8a96e;--accent-dim:#8a6e3e;
+      --red:#c0392b;--orange:#d35400;--yellow:#d4a017;--green:#27ae60;--green-dim:#1a7a42;
+      --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+    .page{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+    h1{font-size:24px;font-weight:600;margin-bottom:4px}
+    .subtitle{color:var(--text-dim);font-family:var(--mono);font-size:11px;margin-bottom:32px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px}
+    .card-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+    .card-value{font-size:28px;font-weight:600;font-family:var(--mono)}
+    .gauge{position:relative;width:160px;height:160px;margin:0 auto 16px}
+    .gauge svg{transform:rotate(-90deg)}
+    .gauge-bg{fill:none;stroke:var(--border);stroke-width:8}
+    .gauge-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s}
+    .gauge-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+    .gauge-pct{font-size:36px;font-weight:600;font-family:var(--mono)}
+    .gauge-label{font-size:10px;color:var(--text-dim);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
+    .section-title{font-size:16px;font-weight:600;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;margin-bottom:24px}
+    th{text-align:left;font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;padding:10px 12px;border-bottom:1px solid var(--border)}
+    td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+    .impact-positive{color:var(--green)}
+    .impact-negative{color:var(--red)}
+    .badge{display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--mono);font-size:11px;font-weight:500}
+    .badge-very_high{background:rgba(39,174,96,.2);color:var(--green)}
+    .badge-high{background:rgba(39,174,96,.15);color:var(--green-dim)}
+    .badge-medium{background:rgba(212,160,23,.2);color:var(--yellow)}
+    .badge-low{background:rgba(211,84,0,.2);color:var(--orange)}
+    .badge-very_low{background:rgba(192,57,43,.2);color:var(--red)}
+    .stage-banner{background:var(--surface2);border:1px solid var(--border-mid);border-radius:6px;padding:16px;margin-bottom:24px}
+    .stage-label{font-size:18px;font-weight:600;margin-bottom:4px}
+    .stage-detail{font-size:12px;color:var(--text-dim);margin-bottom:8px}
+    .stage-meta{display:flex;gap:24px;flex-wrap:wrap}
+    .stage-meta-item{font-family:var(--mono);font-size:11px;color:var(--text-faint)}
+    .stage-meta-item strong{color:var(--text)}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>Probabilidade de Recuperação</h1>
+  <div class="subtitle">{{ entity_name }} — Gerado em {{ generated_at }}</div>
+
+  {% if crisis_stage and crisis_stage.stale_warning %}
+  <div style="background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.4);padding:12px 16px;margin-bottom:20px;border-radius:4px;font-size:13px;color:var(--yellow)">
+    ⚠ {{ crisis_stage.stale_warning }}
+  </div>
+  {% endif %}
+
+  {% if crisis_stage %}
+  <div class="stage-banner">
+    <div class="stage-label" style="color:{% if crisis_stage.severity >= 4 %}var(--red){% elif crisis_stage.severity >= 2 %}var(--yellow){% else %}var(--green){% endif %}">{{ crisis_stage.stage_label }}</div>
+    <div class="stage-detail">{{ crisis_stage.description }}</div>
+    <div class="stage-meta">
+      <span class="stage-meta-item"><strong>Janela:</strong> {{ crisis_stage.response_window }}</span>
+      <span class="stage-meta-item"><strong>Tom:</strong> {{ crisis_stage.tone }}</span>
+      <span class="stage-meta-item"><strong>Visibilidade:</strong> {{ crisis_stage.visibility }}</span>
+      <span class="stage-meta-item"><strong>Ads:</strong> {{ crisis_stage.ads_mode }}</span>
+      <span class="stage-meta-item"><strong>Asset Principal:</strong> {{ crisis_stage.primary_asset }}</span>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if recovery %}
+  {% set r = recovery %}
+  <div class="grid">
+    <div class="card" style="text-align:center">
+      <div class="gauge">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="gauge-bg" cx="80" cy="80" r="68"/>
+          {% set circumference = 2 * 3.14159 * 68 %}
+          {% set offset = circumference - (r.probability_pct / 100 * circumference) %}
+          <circle class="gauge-fill" cx="80" cy="80" r="68"
+            stroke="{% if r.probability_pct >= 75 %}var(--green){% elif r.probability_pct >= 55 %}var(--green-dim){% elif r.probability_pct >= 35 %}var(--yellow){% elif r.probability_pct >= 15 %}var(--orange){% else %}var(--red){% endif %}"
+            stroke-dasharray="{{ circumference }}"
+            stroke-dashoffset="{{ offset }}"/>
+        </svg>
+        <div class="gauge-text">
+          <div class="gauge-pct">{{ r.probability_pct }}%</div>
+          <div class="gauge-label">Probabilidade</div>
+        </div>
+      </div>
+      <div class="card-label" style="text-align:center;margin-top:8px">{{ r.level_label }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Nível</div>
+      <div><span class="badge badge-{{ r.level|lower }}">{{ r.level }}</span></div>
+      <div style="margin-top:12px;font-size:12px;color:var(--text-dim)">{{ r.label }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Tempo Estimado</div>
+      <div class="card-value" style="font-size:18px">{{ r.estimated_time }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Budget Estimado</div>
+      <div class="card-value" style="font-size:16px">{{ r.estimated_budget }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Dificuldade</div>
+      <div class="card-value" style="font-size:14px;font-weight:400">{{ r.difficulty }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Fatores</div>
+      <div class="card-value" style="font-size:18px">{{ r.positive_factors }} positivos / {{ r.negative_factors }} negativos</div>
+    </div>
+  </div>
+
+  <div class="section-title">Fatores de Recuperação (9 fatores, peso total = 100%)</div>
+  <table>
+    <tr><th>Fator</th><th>Peso</th><th>Valor</th><th>Impacto</th></tr>
+    {% for f in r.factors %}
+    <tr>
+      <td>{{ f.factor }}</td>
+      <td style="font-family:var(--mono)">{{ f.weight }}</td>
+      <td style="font-family:var(--mono)">{{ f.value }}</td>
+      <td class="impact-{{ f.impact }}">{{ f.impact|title }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <div style="background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;font-size:12px;color:var(--text-dim)">
+    <strong>Penalidade bruta:</strong> {{ r.raw_penalty }} | 
+    <strong>Fórmula:</strong> probabilidade = 0.90 - penalidade_ponderada + bônus_assets_controlados
+  </div>
+  {% endif %}
+
+  {% if serp_score %}
+  <div class="section-title">SERP Score Atual</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">SERP Toxicity</div>
+      <div class="card-value" style="color:{% if serp_score.total >= 60 %}var(--red){% elif serp_score.total >= 35 %}var(--yellow){% else %}var(--green){% endif %}">{{ serp_score.total }}/100</div>
+    </div>
+    {% for key, comp in serp_score.breakdown.items() %}
+    <div class="card">
+      <div class="card-label">{{ key|replace('_', ' ')|title }}</div>
+      <div class="card-value" style="font-size:16px">{{ comp.score }}/{{ comp.max }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <p style="color:var(--text-faint);font-size:11px;margin-top:48px;font-family:var(--mono)">CouncilIA — Motor de Probabilidade de Recuperação</p>
+</div>
+</body>
+</html>

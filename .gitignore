@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+snapshots/**/serp_*.png
+*.log
+.DS_Store
+articles_cache/
+cache/
+content_sites/
+outputs/
+costs/cost_log.json
+monitoring/
+snapshots/entities.json

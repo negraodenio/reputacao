@@ -1,0 +1,287 @@
+{
+  "entity": "Danielle Fonteles",
+  "date": "2026-05-18",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Daniele Fonteles (@danisfonteles)",
+      "link": "https://www.instagram.com/danisfonteles/",
+      "snippet": "1.5K+ followers · 893 following · 659 posts · @danisfonteles: “Siga @mundomix01”",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "2 \"Danielle Fonteles\" profiles",
+      "link": "https://www.linkedin.com/pub/dir/Danielle/Fonteles",
+      "snippet": "View the profiles of professionals named \"Danielle Fonteles\" on LinkedIn. There are 2 professionals named \"Danielle Fonteles\", who use LinkedIn to exchange ...",
+      "domain": "linkedin.com",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "Quem é a publicitária do PT que era sócia do “Careca” ...",
+      "link": "https://www.gazetadopovo.com.br/republica/quem-e-a-publicitaria-do-pt-que-era-socia-do-careca-do-inss/",
+      "snippet": "Marketeira de Dilma, Danielle Miranda Fonteles virou alvo da CPMI do INSS por movimentação; Confira na Gazeta do Povo.",
+      "domain": "gazetadopovo.com.br",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Ex-secretária do Careca confirma negócios com Danielle ...",
+      "link": "https://www.youtube.com/watch?v=qMXnoBdj4OM",
+      "snippet": "... Danielle Miranda Fonteles, ex-marqueteira do PT. Em depoimento à CPMI (Comissão Parlamentar Mista de Inquérito) do INSS, a ex-secretária ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": true
+    },
+    {
+      "position": 5,
+      "title": "Danielle Fonteles | Lauro Jardim - O Globo",
+      "link": "https://blogs.oglobo.globo.com/lauro-jardim/tag/danielle-fonteles/",
+      "snippet": "Formada em Jornalismo e Publicidade pela PUC, está no Globo desde 2015. Apaixonada por jornalismo, escreve sobre cultura, saúde e internet, mas está sempre ...",
+      "domain": "blogs.oglobo.globo.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Danielle Fonteles - nobot",
+      "link": "https://pt.linkedin.com/in/danielle-fonteles-3753b813",
+      "snippet": "Director. No.bot Comunicação. jan. de 2015 - o momento 11 anos 5 meses. Portugal. Director. Pepper Comunicação.",
+      "domain": "pt.linkedin.com",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Photos by Dra.Daniele Fonteles|Cirurgiã Dentista ...",
+      "link": "https://www.instagram.com/p/DYIafqqgaOG/",
+      "snippet": "Photo by Dra.Daniele Fonteles|Cirurgiã Dentista on May 09, ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "PF aponta Danielle Fonteneles como operadora no exterior",
+      "link": "https://claudiodantas.com.br/pf-aponta-danielle-fonteneles-como-operadora/",
+      "snippet": "Danielle Fonteneles ganhou projeção nacional como fundadora da agência Pepper Comunicação, que atuou em campanhas eleitorais de grande ...",
+      "domain": "claudiodantas.com.br",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 9,
+      "title": "Governistas protegem publicitária que delatou PT e ...",
+      "link": "https://platobr.com.br/governo-protegeu-publicitaria-que-delatou-pt-e-recebeu-milhoes-do-careca-do-inss",
+      "snippet": "Como dona da agência Pepper, Fonteles atuou em campanhas eleitorais do PT, como a de Dilma, em 2010. Ela foi investigada pela Lava Jato e ...",
+      "domain": "platobr.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 10,
+      "title": "Coronel - De acordo com a Veja, Danielle Miranda ...",
+      "link": "https://www.facebook.com/photo.php?fbid=1310954290707512&set=a.495889772213972&id=100053788592819",
+      "snippet": "De acordo com a Veja, Danielle Miranda Fonteles, publicitária que presta serviço ao PT, é mais uma potencial integrante do esquema hediOndo ...",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "instagram.com",
+    "linkedin.com",
+    "gazetadopovo.com.br",
+    "youtube.com",
+    "blogs.oglobo.globo.com",
+    "pt.linkedin.com",
+    "instagram.com",
+    "claudiodantas.com.br",
+    "platobr.com.br",
+    "facebook.com"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 9,
+    "positive": 1
+  },
+  "controlled_assets": 6,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 0,
+  "authority_vacuum": "LOW",
+  "expansion_associations": [
+    {
+      "entity": "Polícia Federal",
+      "type": "legal",
+      "frequency": 4,
+      "domains": [
+        "gazetadopovo.com.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Danielle Miranda Fonteles",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br",
+        "platobr.com.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "globo.com",
+      "type": "unknown",
+      "frequency": 14,
+      "domains": [
+        "blogs.oglobo.globo.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Vinícius Sales",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Agência Senado",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br",
+        "platobr.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Lava Jato",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "platobr.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Sílvio Ribas",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br"
+      ],
+      "risk": "LOW"
+    },
+    {
+      "entity": "Bruna Lima",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "platobr.com.br"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 30,
+    "count_30d": 30,
+    "momentum": "Escalating",
+    "most_aggressive": "meionews.com"
+  },
+  "generated_at": "2026-05-18T17:34:08.485199+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [
+      {
+        "title": "Ex-secretária do Careca confirma negócios com Danielle ...",
+        "channel": "YouTube",
+        "url": "",
+        "video_id": "",
+        "position": 4,
+        "sentiment": "neutral",
+        "is_negative": false,
+        "domain": "youtube.com",
+        "authority": 100,
+        "thumbnail_url": ""
+      }
+    ],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": [
+    {
+      "title": "Ex-secretária do Careca confirma negócios com Danielle ...",
+      "channel": "YouTube",
+      "url": "",
+      "video_id": "",
+      "position": 4,
+      "sentiment": "neutral",
+      "is_negative": false,
+      "domain": "youtube.com",
+      "authority": 100,
+      "thumbnail_url": ""
+    }
+  ]
+}

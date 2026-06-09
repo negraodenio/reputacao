@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistente de Publicação — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#0a0a0a; --surface:#111; --surface2:#161616; --surface3:#1a1a1a;
+      --border:#222; --border-mid:#2a2a2a; --border-light:#333;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#8a6e3e;
+      --red:#c0392b; --orange:#d35400; --yellow:#d4a017; --green:#27ae60;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1000px; margin:0 auto; padding:40px 28px 80px; }
+
+    .nav-bar { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+    .nav-link { font-family:var(--mono); font-size:9px; padding:4px 12px; border:1px solid var(--border-mid); color:var(--text-dim); text-decoration:none; border-radius:3px; }
+    .nav-link:hover { color:var(--accent); border-color:var(--accent-dim); }
+
+    .header { border-bottom:1px solid var(--border); padding-bottom:20px; margin-bottom:28px; }
+    .entity-name { font-size:24px; font-weight:600; margin-bottom:4px; }
+    .header-meta { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+
+    /* Status bar */
+    .status-bar { display:flex; gap:12px; margin-bottom:28px; padding:12px 16px; background:var(--surface); border:1px solid var(--border); flex-wrap:wrap; align-items:center; }
+    .status-item { font-family:var(--mono); font-size:10px; }
+    .status-ok { color:var(--green); }
+    .status-warn { color:var(--yellow); }
+    .status-err { color:var(--red); }
+
+    /* Platform card */
+    .platform-card { border:1px solid var(--border); margin-bottom:12px; background:var(--surface); }
+    .platform-header { display:flex; gap:12px; align-items:center; padding:14px 18px; cursor:pointer; user-select:none; border-bottom:1px solid var(--border); }
+    .platform-header:hover { background:var(--surface2); }
+    .platform-icon { font-size:18px; flex-shrink:0; }
+    .platform-name { font-size:14px; font-weight:600; flex:1; }
+    .platform-meta { font-size:11px; color:var(--text-dim); }
+    .platform-badges { display:flex; gap:6px; align-items:center; }
+    .badge { font-family:var(--mono); font-size:9px; padding:2px 8px; border-radius:2px; white-space:nowrap; }
+    .badge-auto { background:#1a3d2c; color:#6aaa84; border:1px solid #1a5c3c; }
+    .badge-manual { background:#1a1a2c; color:#6a6aaa; border:1px solid #2a2a5c; }
+    .badge-content { background:#2c1a0a; color:#aa8a6a; border:1px solid #5c3a1a; }
+    .badge-no-content { background:#2a1a1a; color:#888; border:1px solid #444; }
+    .expand-arrow { font-family:var(--mono); font-size:10px; color:var(--text-faint); margin-left:8px; }
+
+    /* Platform body */
+    .platform-body { display:none; padding:20px 18px; }
+    .platform-body.open { display:block; }
+
+    .section-label { font-family:var(--mono); font-size:9px; color:var(--accent); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:10px; margin-top:20px; }
+    .section-label:first-child { margin-top:0; }
+
+    /* Open button */
+    .open-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--accent); color:#000; font-family:var(--mono); font-size:11px; font-weight:600; text-decoration:none; border-radius:3px; margin-bottom:16px; }
+    .open-btn:hover { opacity:0.9; }
+    .open-btn-secondary { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; background:var(--surface2); color:var(--text-dim); font-family:var(--mono); font-size:10px; text-decoration:none; border:1px solid var(--border-mid); border-radius:3px; margin-left:8px; }
+    .open-btn-secondary:hover { color:var(--accent); border-color:var(--accent-dim); }
+
+    /* Steps */
+    .steps-list { list-style:none; counter-reset:step; }
+    .steps-list li { counter-increment:step; display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--border-mid); font-size:12px; }
+    .steps-list li:last-child { border-bottom:none; }
+    .steps-list li::before { content:counter(step); font-family:var(--mono); font-size:10px; font-weight:600; color:var(--accent); min-width:20px; height:20px; display:flex; align-items:center; justify-content:center; background:var(--surface2); border:1px solid var(--border-mid); border-radius:2px; flex-shrink:0; margin-top:1px; }
+    .step-action { color:var(--text); line-height:1.6; }
+
+    /* Tips */
+    .tips-list { list-style:none; }
+    .tips-list li { padding:5px 0; font-size:11px; color:var(--text-dim); padding-left:16px; position:relative; }
+    .tips-list li::before { content:"→"; position:absolute; left:0; color:var(--accent); }
+
+    /* SEO impact + warning */
+    .seo-impact { font-size:11px; padding:10px 14px; background:rgba(39,174,96,.08); border-left:3px solid var(--green); color:var(--text-dim); margin-top:12px; }
+    .warning-box { font-size:11px; padding:10px 14px; background:rgba(211,84,0,.08); border-left:3px solid var(--orange); color:var(--orange); margin-top:8px; }
+
+    /* Content preview */
+    .content-preview { background:var(--surface2); border:1px solid var(--border-mid); padding:16px; font-family:var(--mono); font-size:11px; line-height:1.7; max-height:300px; overflow-y:auto; position:relative; white-space:pre-wrap; color:var(--text-dim); margin-top:8px; }
+    .copy-bar { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    .copy-btn { font-family:var(--mono); font-size:9px; padding:5px 12px; border:1px solid var(--border-mid); background:var(--surface2); color:var(--text-dim); border-radius:3px; cursor:pointer; }
+    .copy-btn:hover { color:var(--accent); border-color:var(--accent-dim); }
+    .copy-btn.copied { color:var(--green); border-color:var(--green); }
+
+    /* No content state */
+    .no-content { padding:16px; background:var(--surface2); border:1px dashed var(--border-mid); font-size:12px; color:var(--text-faint); text-align:center; }
+
+    /* API available banner */
+    .api-banner { padding:10px 14px; background:rgba(200,169,110,.08); border:1px solid var(--accent-dim); font-size:11px; color:var(--accent); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="nav-bar">
+    <a href="/snapshots" class="nav-link">← Entidades</a>
+    <a href="/content/{{ slug }}" class="nav-link">Content Studio</a>
+    <a href="/distribution/{{ slug }}" class="nav-link">Distribution Matrix</a>
+    <a href="/narrative-blast/{{ slug }}" class="nav-link">Narrative Blast</a>
+    <a href="/semantic-variations/{{ slug }}" class="nav-link">Variação Semântica</a>
+  </div>
+
+  <header class="header">
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">Assistente de Publicação &mdash; {{ generated_at }}</div>
+  </header>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-item {% if articles_cached >= 4 %}status-ok{% elif articles_cached > 0 %}status-warn{% else %}status-err{% endif %}">
+      {% if articles_cached >= 4 %}✅{% elif articles_cached > 0 %}⚠{% else %}❌{% endif %}
+      {{ articles_cached }} artigos em cache
+    </span>
+    <span class="status-item" style="color:var(--text-faint);">|</span>
+    <span class="status-item">{{ platform_data|length }} plataformas mapeadas</span>
+    <span class="status-item" style="color:var(--text-faint);">|</span>
+    <span class="status-item">Arquétipo: <span style="color:var(--accent);">{{ archetype }}</span></span>
+    {% if articles_cached == 0 %}
+    <a href="/content/{{ slug }}" style="margin-left:auto;font-family:var(--mono);font-size:9px;padding:5px 12px;background:var(--accent);color:#000;text-decoration:none;border-radius:3px;">⚡ Gerar Conteúdo Primeiro</a>
+    {% endif %}
+  </div>
+
+  <!-- Platform cards -->
+  {% for p in platform_data %}
+  {% set g = p.guide %}
+  <div class="platform-card">
+    <div class="platform-header" onclick="toggleCard(this)">
+      <span class="platform-icon">{{ g.icon }}</span>
+      <div style="flex:1;">
+        <div class="platform-name">{{ g.name }}</div>
+        <div class="platform-meta">{{ g.best_for[:80] }}</div>
+      </div>
+      <div class="platform-badges">
+        {% if g.automatable %}
+        <span class="badge badge-auto">API</span>
+        {% else %}
+        <span class="badge badge-manual">manual</span>
+        {% endif %}
+        {% if p.has_content %}
+        <span class="badge badge-content">conteúdo pronto</span>
+        {% else %}
+        <span class="badge badge-no-content">sem conteúdo</span>
+        {% endif %}
+      </div>
+      <span class="expand-arrow">▶</span>
+    </div>
+
+    <div class="platform-body">
+
+      {% if g.automatable and g.api_status and 'configurar' in g.api_status %}
+      <div class="api-banner">
+        ⚡ <strong>Automação disponível:</strong> {{ g.api_status }}
+      </div>
+      {% endif %}
+
+      <!-- Botão principal -->
+      <div style="margin-bottom:16px;">
+        {% if g.publish_url %}
+        <a href="{{ g.publish_url }}" target="_blank" rel="noopener" class="open-btn">
+          🔗 Abrir {{ g.name }}
+        </a>
+        {% endif %}
+        {% if g.login_url and g.login_url != g.publish_url %}
+        <a href="{{ g.login_url }}" target="_blank" rel="noopener" class="open-btn-secondary">
+          Login
+        </a>
+        {% endif %}
+        <span style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-left:12px;">⏱ {{ g.time_estimate }}</span>
+      </div>
+
+      <!-- Conteúdo formatado -->
+      {% if p.has_content and p.formatted %}
+      {% set fmt = p.formatted %}
+      <div class="section-label">Conteúdo Pronto para Colar</div>
+
+      {% if fmt.get('headline') or fmt.get('title') %}
+      <div style="margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-bottom:4px;">TÍTULO / HEADLINE</div>
+        <div style="background:var(--surface2);border:1px solid var(--border-mid);padding:10px 14px;font-size:13px;font-weight:500;" id="title-{{ p.key }}">{{ fmt.get('headline') or fmt.get('title', '') }}</div>
+        <div class="copy-bar">
+          <button class="copy-btn" onclick="copyElement('title-{{ p.key }}', this)">Copiar título</button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if fmt.get('body') or fmt.get('body_markdown') or fmt.get('description') %}
+      <div style="margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-bottom:4px;">CORPO DO ARTIGO</div>
+        <div class="content-preview" id="body-{{ p.key }}">{{ fmt.get('body') or fmt.get('body_markdown') or fmt.get('description', '') }}</div>
+        <div class="copy-bar">
+          <button class="copy-btn" onclick="copyElement('body-{{ p.key }}', this)">Copiar texto completo</button>
+          {% if fmt.get('tags') %}
+          <span style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-left:8px;">Tags: {{ fmt.get('tags', [])|join(', ') }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if fmt.get('payload') %}
+      <div style="margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-bottom:4px;">PAYLOAD JSON (para API)</div>
+        <div class="content-preview" id="payload-{{ p.key }}">{{ fmt.get('payload', {})|tojson(indent=2) }}</div>
+        <div class="copy-bar">
+          <button class="copy-btn" onclick="copyElement('payload-{{ p.key }}', this)">Copiar JSON</button>
+        </div>
+      </div>
+      {% endif %}
+
+      {% else %}
+      <div class="no-content">
+        Sem artigo em cache para esta plataforma.
+        <a href="/content/{{ slug }}" style="color:var(--accent);">Gerar conteúdo →</a>
+      </div>
+      {% endif %}
+
+      <!-- Passos -->
+      <div class="section-label">Passo a Passo</div>
+      <ol class="steps-list">
+        {% for s in g.steps %}
+        <li><span class="step-action">{{ s.action }}</span></li>
+        {% endfor %}
+      </ol>
+
+      <!-- Dicas -->
+      {% if g.tips %}
+      <div class="section-label">Dicas Operacionais</div>
+      <ul class="tips-list">
+        {% for t in g.tips %}
+        <li>{{ t }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <!-- SEO impact -->
+      {% if g.seo_impact %}
+      <div class="seo-impact">📈 <strong>Impacto SEO:</strong> {{ g.seo_impact }}</div>
+      {% endif %}
+
+      <!-- Warning -->
+      {% if g.warning %}
+      <div class="warning-box">⚠ {{ g.warning }}</div>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+<script>
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.expand-arrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▼' : '▶';
+}
+
+// Abrir automaticamente o primeiro card com conteúdo
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.platform-card');
+  for (const card of cards) {
+    const hasBadge = card.querySelector('.badge-content');
+    if (hasBadge) {
+      const header = card.querySelector('.platform-header');
+      const body = card.querySelector('.platform-body');
+      const arrow = card.querySelector('.expand-arrow');
+      body.classList.add('open');
+      arrow.textContent = '▼';
+      break;
+    }
+  }
+});
+
+function copyElement(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

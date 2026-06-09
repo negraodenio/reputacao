@@ -1,0 +1,330 @@
+{
+  "entity": "deolane bezerra santos",
+  "date": "2026-05-22",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Deolane Bezerra",
+      "link": "https://en.wikipedia.org/wiki/Deolane_Bezerra",
+      "snippet": "Deolane Bezerra Santos (born November 1, 1987) is a Brazilian lawyer, former singer and influencer. She became known after the death of her husband, ...",
+      "domain": "en.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "Deolane Bezerra (@deolane) • Instagram photos and videos",
+      "link": "https://www.instagram.com/deolane/?hl=en",
+      "snippet": "22M followers · 1.6K+ following · 349 posts · @deolane: “Em Ti confio, Deus @deolanepessoal @zeroum.bet”",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "Deolane Bezerra Santos - Processos",
+      "link": "https://www.jusbrasil.com.br/processos/nome/42565960/deolane-bezerra-santos",
+      "snippet": "O Jusbrasil encontrou 343 processos que mencionam o nome Deolane Bezerra Santos. A maioria é do TJSP, seguido por tjsp. Desses processos encontrados ...",
+      "domain": "jusbrasil.com.br",
+      "type": "legal",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Deolane Bezerra - Topic",
+      "link": "https://www.youtube.com/channel/UC_noYfEd5aG22NLbw0pQ_XA",
+      "snippet": "Deolane Bezerra Santos is a Brazilian lawyer, former singer and influencer. She became known after the death of her husband, MC Kevin.",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": true
+    },
+    {
+      "position": 5,
+      "title": "Deolane Bezerra Santos - Processos",
+      "link": "https://www.escavador.com/nomes/deolane-bezerra-santos-1fc8ad7815",
+      "snippet": "O nome Deolane Bezerra Santos aparece em 421 processos e em sua maioria, como advogado(a). Com 362 desses processos no estado de Estado de São Paulo, além de 18 ...",
+      "domain": "escavador.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Deolane Bezerra | Tudo Sobre | G1",
+      "link": "https://g1.globo.com/tudo-sobre/deolane-bezerra/",
+      "snippet": "Deolane Bezerra foi casada com MC Kevin: relembre a morte trágica do funkeiro. Influenciadora e advogada foi presa na manhã desta quinta-feira (21) acusada de ...",
+      "domain": "g1.globo.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Deolane Bezerra arrested in money laundering operation ...",
+      "link": "https://www.youtube.com/watch?v=SUo_-942cLc",
+      "snippet": "A influenciadora e advogada Deolane Bezerra foi presa nesta quinta-feira (21) durante operação do Ministério Público e da Polícia Civil de ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": true
+    },
+    {
+      "position": 8,
+      "title": "quem é a influenciadora Deolane Bezerra",
+      "link": "https://www.gazetadopovo.com.br/brasil/deolane-bezerra-sacoleira-advogada-pcc-perfil-influenciadora/",
+      "snippet": "Deolane tem 38 anos, nasceu em Vitória de Santo Antão, em Pernambuco, e foi criada em São Paulo. Antes da fama, trabalhou como sacoleira e ...",
+      "domain": "gazetadopovo.com.br",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 9,
+      "title": "Influenciadora Deolane Bezerra é presa em operação ...",
+      "link": "https://www.folhape.com.br/noticia/amp/488829/influenciadora-deolane-bezerra-e-presa-em-operacao-contra-lavagem-de/",
+      "snippet": "Influenciadora Deolane Bezerra é presa em operação contra lavagem de dinheiro em São Paulo. Pernambucana, que já havia sido presa em 2024, seria ...",
+      "domain": "folhape.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "en.wikipedia.org",
+    "instagram.com",
+    "jusbrasil.com.br",
+    "youtube.com",
+    "escavador.com",
+    "g1.globo.com",
+    "youtube.com",
+    "gazetadopovo.com.br",
+    "folhape.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 9,
+    "positive": 0
+  },
+  "controlled_assets": 3,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 1,
+  "authority_vacuum": "MODERATE",
+  "expansion_associations": [
+    {
+      "entity": "Solange Bezerra",
+      "type": "unknown",
+      "frequency": 7,
+      "domains": [
+        "en.wikipedia.org",
+        "gazetadopovo.com.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Operação Integration",
+      "type": "unknown",
+      "frequency": 6,
+      "domains": [
+        "g1.globo.com",
+        "gazetadopovo.com.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Gusttavo Lima",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "g1.globo.com"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Andréa Calado",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "g1.globo.com"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Santo Antão",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "en.wikipedia.org",
+        "gazetadopovo.com.br"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Fábio Teruel",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "g1.globo.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Beverly Hills",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "g1.globo.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Civil Police",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "en.wikipedia.org"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 27,
+    "count_30d": 27,
+    "momentum": "Escalating",
+    "most_aggressive": "cnnbrasil.com.br",
+    "most_aggressive_count": 4,
+    "top_domains": [
+      [
+        "cnnbrasil.com.br",
+        4,
+        "mainstream"
+      ],
+      [
+        "g1.globo.com",
+        3,
+        "mainstream"
+      ],
+      [
+        "otempo.com.br",
+        4,
+        "mainstream"
+      ],
+      [
+        "metropoles.com",
+        2,
+        "mainstream"
+      ],
+      [
+        "veja.abril.com.br",
+        1,
+        "mainstream"
+      ]
+    ],
+    "concentration": "Distributed"
+  },
+  "generated_at": "2026-05-22T13:29:22.094038+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "threat_level": "CRITICAL",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 2,
+    "negative_videos": 0,
+    "videos": [
+      {
+        "title": "Deolane Bezerra - Topic",
+        "channel": "YouTube",
+        "url": "",
+        "video_id": "",
+        "position": 4,
+        "sentiment": "neutral",
+        "is_negative": false,
+        "domain": "youtube.com",
+        "authority": 100,
+        "thumbnail_url": ""
+      },
+      {
+        "title": "Deolane Bezerra arrested in money laundering operation ...",
+        "channel": "YouTube",
+        "url": "",
+        "video_id": "",
+        "position": 7,
+        "sentiment": "neutral",
+        "is_negative": false,
+        "domain": "youtube.com",
+        "authority": 100,
+        "thumbnail_url": ""
+      }
+    ],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": [
+    {
+      "title": "Deolane Bezerra - Topic",
+      "channel": "YouTube",
+      "url": "",
+      "video_id": "",
+      "position": 4,
+      "sentiment": "neutral",
+      "is_negative": false,
+      "domain": "youtube.com",
+      "authority": 100,
+      "thumbnail_url": ""
+    },
+    {
+      "title": "Deolane Bezerra arrested in money laundering operation ...",
+      "channel": "YouTube",
+      "url": "",
+      "video_id": "",
+      "position": 7,
+      "sentiment": "neutral",
+      "is_negative": false,
+      "domain": "youtube.com",
+      "authority": 100,
+      "thumbnail_url": ""
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribution — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#0a0a0a; --surface:#111; --surface2:#161616;
+      --border:#222; --border-mid:#2a2a2a;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#8a6e3e;
+      --red:#c0392b; --orange:#d35400; --yellow:#d4a017; --green:#27ae60;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1200px; margin:0 auto; padding:48px 32px 80px; }
+    .header { border-bottom:1px solid var(--border); padding-bottom:24px; margin-bottom:40px; }
+    .entity-name { font-size:28px; font-weight:600; margin-bottom:4px; }
+    .header-meta { font-family:var(--mono); font-size:10px; color:var(--text-dim); letter-spacing:0.06em; }
+
+    .section { margin-bottom:40px; }
+    .section-title { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:0.16em; color:var(--accent); text-transform:uppercase; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+
+    .tier-row { display:flex; gap:1px; margin-bottom:8px; }
+    .tier-label { font-family:var(--mono); font-size:10px; font-weight:600; padding:4px 12px; min-width:32px; text-align:center; }
+    .tier-S { background:#1a3d2c; color:#6aaa84; }
+    .tier-A { background:#1a2a3d; color:#6a8aaa; }
+    .tier-B { background:#3d2a1a; color:#aa8a6a; }
+    .tier-C { background:#2a1a1a; color:#aa6a6a; }
+
+    .platform-grid { display:grid; gap:1px; background:var(--border); border:1px solid var(--border); }
+    .platform-row { display:grid; grid-template-columns:1.8fr 1fr 0.8fr 0.8fr 0.6fr 0.6fr 0.8fr; background:var(--surface); padding:10px 16px; align-items:center; gap:8px; font-size:12px; }
+    .platform-row.header { font-family:var(--mono); font-size:9px; color:var(--text-faint); letter-spacing:0.1em; text-transform:uppercase; }
+    .platform-name { font-family:var(--mono); font-weight:500; }
+    .platform-tier { font-size:9px; padding:1px 6px; border-radius:2px; text-align:center; width:fit-content; }
+    .platform-score { font-family:var(--mono); font-weight:600; }
+    .score-high { color:var(--green); }
+    .score-mid { color:var(--yellow); }
+    .score-low { color:var(--orange); }
+    .tag { font-size:9px; padding:1px 6px; border-radius:2px; text-align:center; width:fit-content; }
+    .tag-free { background:#1a3d2c; color:#6aaa84; }
+    .tag-paid { background:#3d2a1a; color:#aa8a6a; }
+    .tag-enterprise { background:#2a1a3d; color:#8a6aaa; }
+    .tag-freemium { background:#1a2a3d; color:#6a8aaa; }
+    .tag-api { border:1px solid var(--accent-dim); color:var(--accent); }
+    .region { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+
+    .articles-section { margin-top:24px; }
+    .article-card { background:var(--surface); border:1px solid var(--border); padding:16px 20px; margin-bottom:8px; }
+    .article-title { font-family:var(--mono); font-size:12px; font-weight:500; margin-bottom:4px; }
+    .article-meta { font-size:10px; color:var(--text-dim); }
+    .format-row { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    .platform-btn { font-family:var(--mono); font-size:9px; padding:4px 10px; border:1px solid var(--border-mid); background:var(--surface2); color:var(--text-dim); border-radius:3px; cursor:pointer; text-decoration:none; transition:all 0.1s; }
+    .platform-btn:hover { border-color:var(--accent-dim); color:var(--accent); }
+    .platform-btn.api { border-color:#1a3d2c; color:#6aaa84; }
+    .platform-btn.api:hover { background:#0a1f15; }
+    .platform-btn.paid { border-color:#3d2a1a; color:#aa8a6a; }
+    .platform-btn.paid:hover { background:#1f150a; }
+
+    .format-preview { background:var(--surface2); border:1px solid var(--border); padding:20px; margin-top:16px; font-family:var(--mono); font-size:11px; white-space:pre-wrap; max-height:400px; overflow-y:auto; color:var(--text-dim); display:none; }
+    .format-preview.active { display:block; }
+
+    .badge { font-size:9px; padding:2px 8px; border-radius:2px; text-transform:uppercase; letter-spacing:0.08em; }
+    .badge-S { background:#1a3d2c; color:#6aaa84; }
+    .badge-A { background:#1a2a3d; color:#6a8aaa; }
+    .badge-B { background:#3d2a1a; color:#aa8a6a; }
+    .badge-C { background:#2a1a1a; color:#aa6a6a; }
+
+    /* Summary bar */
+    .summary-bar { display:flex; gap:24px; margin-bottom:24px; flex-wrap:wrap; }
+    .summary-stat { background:var(--surface); border:1px solid var(--border); padding:14px 20px; min-width:140px; }
+    .summary-number { font-family:var(--mono); font-size:22px; font-weight:500; }
+    .summary-label { font-family:var(--mono); font-size:8px; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-top:2px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">Distribution Engine &mdash; {{ generated_at }}</div>
+  </header>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="summary-stat">
+      <div class="summary-number">{{ ranked|length }}</div>
+      <div class="summary-label">Plataformas</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-number">{{ articles|length }}</div>
+      <div class="summary-label">Artigos em Cache</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-number">{{ free_api_platforms|length }}</div>
+      <div class="summary-label">APIs Gratuitas</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-number">
+        {% set ns = namespace(api=0) %}
+        {% for p in ranked if p.api %}{% set ns.api = ns.api + 1 %}{% endfor %}
+        {{ ns.api }}
+      </div>
+      <div class="summary-label">Com API</div>
+    </div>
+  </div>
+
+  <!-- Distribution Authority Matrix -->
+  <section class="section">
+    <div class="section-title">Distribution Authority Matrix</div>
+    <div class="tier-row">
+      <span class="tier-label tier-S">S</span>
+      <span style="font-size:10px;color:var(--text-dim);">Máxima prioridade — indexação instantânea + alta autoridade</span>
+    </div>
+    <div class="tier-row">
+      <span class="tier-label tier-A">A</span>
+      <span style="font-size:10px;color:var(--text-dim);">Alta prioridade — excelente custo-benefício</span>
+    </div>
+    <div class="tier-row">
+      <span class="tier-label tier-B">B</span>
+      <span style="font-size:10px;color:var(--text-dim);">Portais setoriais — curadoria manual necessária</span>
+    </div>
+    <div class="tier-row">
+      <span class="tier-label tier-C">C</span>
+      <span style="font-size:10px;color:var(--text-dim);">Distribuição complementar</span>
+    </div>
+  </section>
+
+  {% for tier_key in ['S', 'A', 'B', 'C'] %}
+  {% set group = tiers.get(tier_key, []) %}
+  {% if group %}
+  <section class="section">
+    <div class="section-title">
+      <span class="badge badge-{{ tier_key }}">{{ tier_key }}</span>
+      Tier {{ tier_key }} — {{ group|length }} plataformas
+    </div>
+    <div class="platform-grid">
+      <div class="platform-row header">
+        <span>Plataforma</span>
+        <span>Tipo</span>
+        <span>Região</span>
+        <span>DA</span>
+        <span>API</span>
+        <span>Custo</span>
+        <span>Persist.</span>
+        <span>Cit. IA</span>
+        <span>Potencial</span>
+      </div>
+      {% for p in group %}
+      <div class="platform-row" style="grid-template-columns:1.8fr 1fr 0.8fr 0.6fr 0.5fr 0.7fr 0.7fr 0.6fr 0.7fr;">
+        <span class="platform-name">{{ p.name }}</span>
+        <span style="font-size:10px;color:var(--text-dim);">{{ p.type }}</span>
+        <span class="region">{{ p.region }}</span>
+        <span class="platform-score">
+          <span class="{% if p.scores.domain_authority >= 90 %}score-high{% elif p.scores.domain_authority >= 75 %}score-mid{% else %}score-low{% endif %}">{{ p.scores.domain_authority }}</span>
+        </span>
+        <span>
+          {% if p.scores.api_available %}
+          <span class="tag tag-api">API</span>
+          {% else %}
+          <span style="color:var(--text-faint);font-size:9px;">manual</span>
+          {% endif %}
+        </span>
+        <span class="tag tag-{{ p.pricing }}">{{ p.pricing }}</span>
+        <span style="font-family:var(--mono);font-size:9px;color:{% if p.persistence == 'Muito Alta' %}var(--green){% elif p.persistence == 'Alta' %}var(--accent){% elif p.persistence == 'Média' %}var(--yellow){% else %}var(--orange){% endif %};">{{ p.persistence }}</span>
+        <span class="platform-score">
+          <span class="{% if p.ai_citation >= 80 %}score-high{% elif p.ai_citation >= 60 %}score-mid{% else %}score-low{% endif %}">{{ p.ai_citation }}</span>
+        </span>
+        <span class="platform-score">
+          <span class="{% if p.outranking_potential >= 90 %}score-high{% elif p.outranking_potential >= 70 %}score-mid{% else %}score-low{% endif %}">{{ p.outranking_potential }}</span>
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+  {% endfor %}
+
+  <!-- Articles + Publish -->
+  <section class="section">
+    <div class="section-title">Artigos em Cache — Publicação Multicanal</div>
+    {% if articles %}
+    {% for a in articles %}
+    {% set asset_type = a.get('asset_type', 'unknown') %}
+    {% set seo_title = a.get('seo', {}).get('title', 'Artigo') %}
+    <div class="article-card">
+      <div class="article-title">{{ seo_title }}</div>
+      <div class="article-meta">{{ a.get('label', asset_type) }} &middot; {{ a.get('generated_at', '')[:10] }}</div>
+      <div class="format-row">
+        {% for pk in free_api_platforms %}
+        {% set pdata = {'key': pk} %}
+        <a href="#" class="platform-btn api" onclick="showFormat('{{ asset_type }}', '{{ pk }}', this); return false;">
+          {{ pk }}
+        </a>
+        {% endfor %}
+        {% for pk in ['globenewswire','einpresswire','dino','maxpress'] %}
+        <a href="#" class="platform-btn paid" onclick="showFormat('{{ asset_type }}', '{{ pk }}', this); return false;">
+          {{ pk }}
+        </a>
+        {% endfor %}
+      </div>
+      <div class="format-preview" id="fmt-{{ asset_type }}"></div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p style="color:var(--text-dim);font-size:12px;">Nenhum artigo em cache. Gere artigos primeiro em <a href="/content/{{ slug }}" style="color:var(--accent);">Content Studio</a>.</p>
+    {% endif %}
+  </section>
+</div>
+
+<script>
+async function showFormat(assetType, platform, btn) {
+  const preview = document.getElementById('fmt-' + assetType);
+  if (!preview) return;
+
+  // Toggle off if clicking same platform
+  if (preview.classList.contains('active') && preview.dataset.platform === platform) {
+    preview.classList.remove('active');
+    return;
+  }
+
+  preview.innerHTML = 'Carregando...';
+  preview.classList.add('active');
+  preview.dataset.platform = platform;
+
+  try {
+    const r = await fetch(`/distribution/format/{{ slug }}/${assetType}/${platform}`);
+    const data = await r.json();
+    preview.innerHTML = '';
+    if (data.error) {
+      preview.textContent = 'Erro: ' + data.error;
+      return;
+    }
+    // Title
+    const title = document.createElement('div');
+    title.style.cssText = 'font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;';
+    title.textContent = data.title || data.headline || '';
+    preview.appendChild(title);
+
+    // Body
+    const body = document.createElement('div');
+    body.style.cssText = 'color:var(--text-dim);line-height:1.7;font-size:11px;';
+    body.textContent = data.body || data.body_markdown || data.description || '';
+    preview.appendChild(body);
+
+    // Steps
+    if (data.steps && data.steps.length) {
+      const stepsTitle = document.createElement('div');
+      stepsTitle.style.cssText = 'margin-top:16px;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;';
+      stepsTitle.textContent = 'Como publicar:';
+      preview.appendChild(stepsTitle);
+      const list = document.createElement('div');
+      list.style.cssText = 'margin-top:4px;';
+      data.steps.forEach(s => {
+        const item = document.createElement('div');
+        item.style.cssText = 'padding:2px 0;font-size:10px;';
+        item.textContent = '→ ' + s;
+        list.appendChild(item);
+      });
+      preview.appendChild(list);
+    }
+
+    // Tags if present
+    if (data.tags && data.tags.length) {
+      const tagsLine = document.createElement('div');
+      tagsLine.style.cssText = 'margin-top:12px;font-size:9px;color:var(--text-faint);';
+      tagsLine.textContent = 'Tags: ' + data.tags.join(', ');
+      preview.appendChild(tagsLine);
+    }
+  } catch(e) {
+    preview.textContent = 'Erro ao carregar: ' + e.message;
+  }
+}
+</script>
+</body>
+</html>

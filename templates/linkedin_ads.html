@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Ads Targeting — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0a;--surface:#111;--surface2:#161616;--border:#222;--border-mid:#2a2a2a;--text:#e8e8e8;--text-dim:#888;--text-faint:#444;--accent:#c8a96e;--accent-dim:#8a6e3e;--red:#c0392b;--orange:#d35400;--yellow:#d4a017;--green:#27ae60;--blue:#3498db;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+    .page{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+    h1{font-size:24px;font-weight:600;margin-bottom:4px}
+    .subtitle{color:var(--text-dim);font-family:var(--mono);font-size:11px;margin-bottom:32px}
+    h2{font-size:18px;font-weight:600;margin:36px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    h3{font-size:14px;font-weight:600;margin:24px 0 12px;color:var(--accent)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px}
+    .card-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+    .card-value{font-size:24px;font-weight:600;font-family:var(--mono)}
+    table{width:100%;border-collapse:collapse;margin-bottom:24px}
+    th{text-align:left;font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;padding:10px 12px;border-bottom:1px solid var(--border)}
+    td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+    .badge{padding:2px 8px;border-radius:3px;font-size:10px;font-family:var(--mono)}
+    .seg-block{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:12px}
+    .seg-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+    .tag{display:inline-block;padding:2px 8px;background:var(--surface2);border:1px solid var(--border-mid);border-radius:3px;font-size:11px;margin:2px}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>LinkedIn Ads — Público-Alvo</h1>
+  <div class="subtitle">{{ entity_name }} — Arquétipo: {{ archetype }} — Gerado em {{ generated_at }}</div>
+
+  {% if ads_plan %}
+  {% set plan = ads_plan %}
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Arquétipo</div>
+      <div class="card-value" style="font-size:18px">{{ plan.archetype|upper }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Estimativa de Audiência</div>
+      <div class="card-value" style="font-size:18px">{{ plan.segmentation.audience_estimate|default('?', true) }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">CPM Estimado</div>
+      <div class="card-value" style="font-size:18px">{{ plan.segmentation.cpm_estimate|default('?', true) }}</div>
+    </div>
+  </div>
+
+  {% if plan.segmentation.audience_validation %}
+  <div style="background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;margin-bottom:24px;font-size:13px">
+    <strong>Validação de Audiência:</strong> {{ plan.segmentation.audience_validation }}
+  </div>
+  {% endif %}
+
+  {% if plan.campaigns %}
+  <h2>Estrutura de Campanhas</h2>
+  {% for camp in plan.campaigns %}
+  <div class="seg-block">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:14px;font-weight:600">{{ camp.name }}</span>
+      {% if camp.budget %}<span style="font-family:var(--mono);font-size:12px">Orçamento: {{ camp.budget }}</span>{% endif %}
+    </div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px">{{ camp.objective }} — {{ camp.format }}</div>
+    {% if camp.bid_strategy %}<div style="font-size:12px;color:var(--text-dim)">Estratégia de Lance: {{ camp.bid_strategy }}</div>{% endif %}
+    {% if camp.audience %}
+    <div style="margin-top:8px">
+      {% for seg_key, seg_val in camp.audience.items() %}
+      <div style="font-size:11px;color:var(--text-faint);margin-bottom:2px">
+        <span style="color:var(--text-dim)">{{ seg_key }}:</span> {{ seg_val if seg_val is string else seg_val|join(', ') }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <h2>Segmentação Detalhada</h2>
+  {% set seg = plan.segmentation %}
+  <div class="seg-block">
+    <div class="seg-label">Funções de Cargo</div>
+    <div>{% for jf in seg.job_functions %}<span class="tag">{{ jf }}</span>{% endfor %}</div>
+  </div>
+  <div class="seg-block">
+    <div class="seg-label">Títulos de Cargo</div>
+    <div>{% for jt in seg.job_titles %}<span class="tag">{{ jt }}</span>{% endfor %}</div>
+  </div>
+  <div class="seg-block">
+    <div class="seg-label">Senioridades</div>
+    <div>{% for s in seg.seniority %}<span class="tag">{{ s }}</span>{% endfor %}</div>
+  </div>
+  <div class="seg-block">
+    <div class="seg-label">Setores</div>
+    <div>{% for ind in seg.industries %}<span class="tag">{{ ind }}</span>{% endfor %}</div>
+  </div>
+  <div class="seg-block">
+    <div class="seg-label">Interesses</div>
+    <div>{% for int in seg.interests %}<span class="tag">{{ int }}</span>{% endfor %}</div>
+  </div>
+
+  {% if plan.stakeholder_exposure %}
+  <h2>Matriz de Exposição por Stakeholder</h2>
+  <table>
+    <tr><th>Stakeholder</th><th>Relevância</th><th>Cobertura Esperada</th></tr>
+    {% for key, sh in plan.stakeholder_exposure.items() %}
+    <tr>
+      <td>{{ sh.name }}</td>
+      <td>{{ sh.relevance }}/10</td>
+      <td style="font-size:12px;color:var(--text-dim)">{{ sh.coverage_description }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  {% endif %}
+
+  <p style="color:var(--text-faint);font-size:11px;margin-top:48px;font-family:var(--mono)">CouncilIA — LinkedIn Ads Targeting Engine</p>
+</div>
+</body>
+</html>

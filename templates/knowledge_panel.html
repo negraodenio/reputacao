@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Panel — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0a;--surface:#111;--surface2:#161616;
+      --border:#222;--border-mid:#2a2a2a;
+      --text:#e8e8e8;--text-dim:#888;--text-faint:#444;
+      --accent:#c8a96e;--accent-dim:#8a6e3e;
+      --red:#c0392b;--orange:#d35400;--yellow:#d4a017;--green:#27ae60;
+      --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+    .page{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+    h1{font-size:24px;font-weight:600;margin-bottom:4px}
+    .subtitle{color:var(--text-dim);font-family:var(--mono);font-size:11px;margin-bottom:32px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px}
+    .card-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+    .card-value{font-size:28px;font-weight:600;font-family:var(--mono)}
+    .card-bar{margin-top:12px;height:4px;border-radius:2px;background:var(--border)}
+    .card-bar-fill{height:100%;border-radius:2px}
+    .card-bar-fill.optimized{background:var(--green)}
+    .card-bar-fill.parcial{background:var(--yellow)}
+    .card-bar-fill.inicial{background:var(--orange)}
+    .card-bar-fill.ausente{background:var(--red)}
+    .section-title{font-size:16px;font-weight:600;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .step{background:var(--surface2);border:1px solid var(--border-mid);border-radius:6px;padding:16px;margin-bottom:12px}
+    .step-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .step-num{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600}
+    .step-status{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+    .step-status.done{color:var(--green)}
+    .step-status.pending{color:var(--orange)}
+    .step-title{font-weight:600;font-size:14px;margin-bottom:4px}
+    .step-detail{font-size:12px;color:var(--text-dim);margin-bottom:4px}
+    .step-time{font-size:11px;color:var(--text-faint);font-family:var(--mono)}
+    pre{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px;font-family:var(--mono);font-size:12px;overflow-x:auto;margin-bottom:24px;white-space:pre-wrap;word-break:break-word}
+    .tabs{display:flex;gap:4px;margin-bottom:24px}
+    .tab{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+    .tab.active{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>Engenharia de Painel de Conhecimento</h1>
+  <div class="subtitle">{{ entity_name }} — Gerado em {{ generated_at }}</div>
+
+  {% if kp_score %}
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Pontuação do Painel de Conhecimento</div>
+      <div class="card-value" style="color:{% if kp_score.total >= 80 %}var(--green){% elif kp_score.total >= 50 %}var(--yellow){% elif kp_score.total >= 25 %}var(--orange){% else %}var(--red){% endif %}">{{ kp_score.total }}/100</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">{{ kp_score.label }}</div>
+      <div class="card-bar"><div class="card-bar-fill {% if kp_score.total >= 80 %}optimized{% elif kp_score.total >= 50 %}parcial{% elif kp_score.total >= 25 %}inicial{% else %}ausente{% endif %}" style="width:{{ kp_score.total }}%"></div></div>
+    </div>
+    {% for key, comp in kp_score.breakdown.items() %}
+    <div class="card">
+      <div class="card-label">{{ key|replace('_', ' ')|title }}</div>
+      <div class="card-value" style="font-size:18px">{{ comp.score }}/{{ comp.max }}</div>
+      <div style="font-size:11px;color:var(--text-dim)">{{ comp.raw }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if kp_score.needs_wikidata %}<div style="background:rgba(211,84,0,.15);border-left:3px solid var(--orange);padding:12px 16px;margin-bottom:16px;font-size:13px"><strong>Wikidata ausente:</strong> Entidade não possui perfil Wikidata — primeiro passo para gerar Knowledge Panel.</div>{% endif %}
+  {% if kp_score.needs_search_console_claim %}<div style="background:rgba(212,160,23,.15);border-left:3px solid var(--yellow);padding:12px 16px;margin-bottom:16px;font-size:13px"><strong>Reivindicação pendente:</strong> Entidade tem presença suficiente para reivindicar o Knowledge Panel via Google Search Console.</div>{% endif %}
+  {% endif %}
+
+  {% if setup_guide %}
+  <div class="section-title">Guia de Configuração ({{ setup_guide.completed_count }}/{{ setup_guide.total_steps }})</div>
+  {% for s in setup_guide.steps %}
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">PASSO {{ s.order }}</span>
+      <span class="step-status {% if s.done %}done{% else %}pending{% endif %}">{{ "CONCLUÍDO" if s.done else "PENDENTE" }}</span>
+    </div>
+    <div class="step-title">{{ s.action }}</div>
+    <div class="step-detail">{{ s.detail }}</div>
+    <div class="step-time">⏱ {{ s.time }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <div class="section-title">Perfil Wikidata</div>
+  <pre>{{ wikidata_profile }}</pre>
+
+  <div class="section-title">Schema.org / Person JSON-LD</div>
+  <div style="background:rgba(200,169,110,.1);border-left:3px solid var(--accent);padding:12px 16px;margin-bottom:16px;font-size:13px">
+    Inserir este código no <strong>&lt;head&gt;</strong> do site institucional para habilitar rich snippets e alimentar o Knowledge Panel.
+  </div>
+  <pre>{{ schema_html }}</pre>
+
+  <p style="color:var(--text-faint);font-size:11px;margin-top:48px;font-family:var(--mono)">CouncilIA — Engenharia de Painel de Conhecimento</p>
+</div>
+</body>
+</html>

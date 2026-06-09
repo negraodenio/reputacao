@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plano de Ocupação de SERP — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #050505;
+      --surface:    #0d0d0d;
+      --surface-2:  #111111;
+      --border:     #1a1a1a;
+      --border-mid: #222222;
+      --text:       #e8e8e8;
+      --text-dim:   #888888;
+      --text-faint: #444444;
+      --accent:     #c8a96e;
+      --accent-dim: #7a6040;
+      --red:        #c0392b;
+      --orange:     #d35400;
+      --yellow:     #c9a227;
+      --green:      #27ae60;
+      --blue:       #2980b9;
+      --mono:       'IBM Plex Mono', monospace;
+      --sans:       'IBM Plex Sans', sans-serif;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.75; }
+    .page { max-width: 1100px; margin: 0 auto; padding: 60px 64px 100px; }
+
+    /* HEADER */
+    .header { border-bottom: 1px solid var(--border); padding-bottom: 36px; margin-bottom: 52px; }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+    .brand { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; }
+    .brand span { color: var(--accent); }
+    .header-badges { display: flex; gap: 8px; }
+    .badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; padding: 4px 10px; border-radius: 2px; border: 1px solid; text-transform: uppercase; }
+    .badge-conf { color: var(--accent); border-color: var(--accent-dim); }
+    .badge-war  { color: #e74c3c; border-color: #4a1515; background: #140808; }
+    .entity-name { font-family: var(--mono); font-size: 1.85rem; font-weight: 600; color: var(--text); letter-spacing: -0.02em; margin-bottom: 10px; }
+    .header-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); letter-spacing: 0.04em; }
+    .header-meta span { color: var(--text-dim); margin-right: 24px; }
+
+    /* BANNER */
+    .war-banner { display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 48px; }
+    .war-cell { background: var(--surface); padding: 20px 24px; }
+    .war-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 8px; }
+    .war-value { font-family: var(--mono); font-size: 0.92rem; font-weight: 500; letter-spacing: 0.04em; }
+    .t-critical { color: var(--red); }
+    .t-high     { color: var(--orange); }
+    .t-medium   { color: var(--yellow); }
+    .t-low      { color: var(--green); }
+
+    /* SERP STATUS */
+    .serp-grid { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 48px; background: var(--surface); }
+    .serp-row { display: grid; grid-template-columns: 40px 200px 1fr 100px; border-bottom: 1px solid var(--border-mid); padding: 10px 20px; align-items: center; font-size: 0.8rem; }
+    .serp-header { background: var(--surface-2); font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--text-faint); text-transform: uppercase; }
+    .serp-pos { font-family: var(--mono); color: var(--accent); font-weight: 500; }
+    .serp-domain { font-family: var(--mono); color: var(--text-dim); }
+    .serp-title { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* SECTIONS */
+    .section-block { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 2px; }
+    .section-header { display: flex; align-items: center; gap: 16px; padding: 14px 28px; border-bottom: 1px solid var(--border-mid); background: var(--surface-2); }
+    .section-num { font-family: var(--mono); font-size: 0.6rem; color: var(--text-faint); letter-spacing: 0.1em; min-width: 24px; }
+    .section-title { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; flex: 1; }
+    .section-body { padding: 24px 28px; font-size: 0.88rem; color: var(--text-dim); line-height: 1.8; white-space: pre-wrap; }
+    .section-body-md { padding: 24px 28px; font-size: 0.88rem; color: var(--text-dim); line-height: 1.8; }
+    .section-body-md table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.8rem; }
+    .section-body-md th { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+    .section-body-md td { padding: 9px 12px; border-bottom: 1px solid var(--border-mid); vertical-align: top; }
+    .section-body-md td:first-child { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); }
+    .section-body-md strong { color: var(--text); }
+    .section-body-md a { color: var(--accent); }
+
+    /* ASSET TABLE */
+    .op-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .op-table th { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    .op-table td { padding: 9px 12px; border-bottom: 1px solid var(--border-mid); color: var(--text-dim); vertical-align: top; }
+    .op-table td:first-child { font-family: var(--mono); font-size: 0.76rem; color: var(--accent); }
+    .op-table .eta { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); white-space: nowrap; }
+    .op-table .high   { color: var(--green); font-weight: 500; }
+    .op-table .medium { color: var(--yellow); }
+    .op-table .low    { color: var(--text-dim); }
+
+    .build-version { position: fixed; top: 10px; right: 12px; z-index: 10000; background: #111; color: var(--accent); border: 1px solid #333; border-radius: 3px; padding: 4px 8px; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--mono); }
+
+    .footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.62rem; color: var(--text-faint); }
+  </style>
+</head>
+<body>
+<div class="build-version">Build v2026.05.17.12</div>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div class="brand"><span>CouncilIA</span> · Narrative Dominance Engine</div>
+      <div class="header-badges">
+        <span class="badge badge-conf">Confidential</span>
+        <span class="badge badge-war">War Room</span>
+      </div>
+    </div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>Gerado em {{ generated_at }}</span>
+      <span>Camada: Ocupação de SERP</span>
+      <span>Uso exclusivo do operador</span>
+    </div>
+  </div>
+
+  <!-- WAR BANNER -->
+  <div class="war-banner">
+    <div class="war-cell">
+      <div class="war-label">Nível de Ameaça</div>
+      <div class="war-value t-{{ threat_level | lower }}">{{ threat_level }}</div>
+    </div>
+    <div class="war-cell">
+      <div class="war-label">Vácuo de Autoridade</div>
+      <div class="war-value">{{ meta.authority_vacuum }}</div>
+    </div>
+    <div class="war-cell">
+      <div class="war-label">Concentração de Fontes</div>
+      <div class="war-value">{{ meta.source_concentration }}</div>
+    </div>
+    <div class="war-cell">
+      <div class="war-label">Objetivo da Missão</div>
+      <div class="war-value" style="color: var(--red); text-transform: uppercase; letter-spacing: 0.06em;">Ocupar Página 1</div>
+    </div>
+  </div>
+
+  <!-- SERP STATUS -->
+  {% if meta.serp_results %}
+  <div class="serp-grid">
+    <div class="serp-row serp-header">
+      <div style="text-align:center;">#</div>
+      <div>Domínio</div>
+      <div>Título</div>
+      <div style="text-align:center;">Status</div>
+    </div>
+    {% for r in meta.serp_results %}
+    <div class="serp-row">
+      <div class="serp-pos" style="text-align:center;">{{ r.position }}</div>
+      <div class="serp-domain">{{ r.domain[:35] }}</div>
+      <div class="serp-title">{{ r.title[:80] }}</div>
+      <div style="text-align:center; font-size:0.7rem;">{{ r.type }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- 8 SECTIONS -->
+  <div style="display:flex; flex-direction:column; gap:2px;">
+
+    <!-- 01 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Situação Atual do SERP</div>
+      </div>
+      <div class="section-body">{{ sections.situacao_atual or "—" }}</div>
+    </div>
+
+    <!-- 02 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Mapa de Ocupação Prioritária</div>
+      </div>
+      <div class="section-body">{{ sections.mapa_ocupacao or "—" }}</div>
+      {% if meta.asset_table %}
+      <div style="padding: 0 28px 28px;">
+        <table class="op-table">
+          <thead>
+            <tr><th>Ativo</th><th>Ranking</th><th>Velocidade</th><th>Dificuldade</th><th>Impacto</th></tr>
+          </thead>
+          <tbody>
+            {% for a in meta.asset_table %}
+            <tr>
+              <td>{{ a.asset }}</td>
+              <td class="high">{{ a.ranking }}</td>
+              <td class="eta">{{ a.velocity }}</td>
+              <td>{{ a.difficulty }}</td>
+              <td class="high">{{ a.impact }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- 03 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">Estratégia de Deslocamento Narrativo</div>
+      </div>
+      <div class="section-body">{{ sections.deslocamento or "—" }}</div>
+    </div>
+
+    <!-- 04 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Domínio de Entidades</div>
+      </div>
+      <div class="section-body">{{ sections.dominio_entidades or "—" }}</div>
+    </div>
+
+    <!-- 05 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Plano de Ativos Controlados</div>
+      </div>
+      <div class="section-body-md">{{ sections.plano_ativos | markdown }}</div>
+    </div>
+
+    <!-- 06 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Estratégia de Distribuição</div>
+      </div>
+      <div class="section-body-md">{{ sections.distribuicao | markdown }}</div>
+    </div>
+
+    <!-- 07 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Velocidade de Recuperação</div>
+      </div>
+      <div class="section-body-md">{{ sections.velocidade | markdown }}</div>
+    </div>
+
+    <!-- 08 -->
+    <div class="section-block">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-title">War Room Operacional</div>
+      </div>
+      <div class="section-body-md">{{ sections.war_room | markdown }}</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>CouncilIA · Narrative Dominance Engine</span>
+    <span>CONFIDENTIAL — War Room</span>
+    <span>{{ generated_at }}</span>
+  </div>
+
+</div>
+</body>
+</html>

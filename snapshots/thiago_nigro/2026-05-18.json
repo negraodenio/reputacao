@@ -1,0 +1,278 @@
+{
+  "entity": "Thiago Nigro",
+  "date": "2026-05-18",
+  "serp": [
+    {
+      "position": 1,
+      "title": "O Primo Rico (@thiago.nigro)",
+      "link": "https://www.instagram.com/thiago.nigro/",
+      "snippet": "11M followers · 2.5K+ following · 900 posts · @thiago.nigro: “Casado @mairacardi Fundador do Grupo Primo Autor do livro Do Mil ao Milhão APRENDA COM O GRUPO ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "O Primo Rico",
+      "link": "https://www.youtube.com/channel/UCT4nDeU5pv1XIGySbSK-GgA",
+      "snippet": "Thiago Nigro, Bruno Perini, Érico Rocha e Leandro Ladeira se uniram para traçar o Plano Perfeito: uma bancada onde qualquer negócio digital — seja de quem ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": true
+    },
+    {
+      "position": 3,
+      "title": "Thiago Nigro – Wikipédia, a enciclopédia livre",
+      "link": "https://pt.wikipedia.org/wiki/Thiago_Nigro",
+      "snippet": "Thiago Lolkus Nigro (São Paulo, 7 de outubro de 1990) é um coach, influenciador digital, escritor e empresário brasileiro. ... É conhecido como Primo Rico no ...",
+      "domain": "pt.wikipedia.org",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Thiago Nigro (@oprimorico)",
+      "link": "https://www.tiktok.com/@oprimorico",
+      "snippet": "Thiago Nigro (@oprimorico) no TikTok |31.9M curtidas.2.8M seguidores.GARANTA O MELHOR COMBO PRA FICAR RICO INVESTINDO:Assista aos vídeos populares de Thiago ...",
+      "domain": "tiktok.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 5,
+      "title": "See thiago.nigro's story before it disappears",
+      "link": "https://www.instagram.com/stories/thiago.nigro/",
+      "snippet": "11M Followers, 2544 Following, 898 Posts.",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Thiago Lolkus Nigro - CEO e Fundador do Grupo PRIMO",
+      "link": "https://br.linkedin.com/in/thiago-nigro",
+      "snippet": "Fundador e CEO do Grupo PRIMO; - Criador do Primo Rico, o maior canal de finanças e investimentos do mundo; - Autor do Livro Do Mil ao Milhão, ...",
+      "domain": "br.linkedin.com",
+      "type": "institutional",
+      "sentiment": "positive",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Thiago Nigro (@ThiagoNigro) / Posts / X",
+      "link": "https://x.com/ThiagoNigro?lang=en",
+      "snippet": "Thiago Nigro (@ThiagoNigro) - Posts - O Primo Rico | Investimentos, Empreendedorismo e Finanças. | X (formerly Twitter)",
+      "domain": "x.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "O Primo Rico: Um dos investidores mais influentes do país",
+      "link": "https://www.oprimorico.com.br/thiago.nigro/",
+      "snippet": "Já teve aquela vontade de dar tudo de si para se tornar um milionário? Era esse sentimento que rondava a vida de Thiago Nigro aos 18 anos de idade. Thiago teve ...",
+      "domain": "oprimorico.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 9,
+      "title": "Thiago Nigro: quem é, história e fortuna do 'Primo Rico'",
+      "link": "https://querobolsa.com.br/revista/thiago-nigro",
+      "snippet": "Thiago Nigro, mais conhecido como “Primo Rico”, é empresário, escritor e um dos maiores influenciadores de finanças do Brasil. Nascido em São Paulo em 7 de ...",
+      "domain": "querobolsa.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "instagram.com",
+    "youtube.com",
+    "pt.wikipedia.org",
+    "tiktok.com",
+    "instagram.com",
+    "br.linkedin.com",
+    "x.com",
+    "oprimorico.com.br",
+    "querobolsa.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 6,
+    "positive": 3
+  },
+  "controlled_assets": 6,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 0,
+  "authority_vacuum": "LOW",
+  "expansion_associations": [
+    {
+      "entity": "Primo Rico",
+      "type": "unknown",
+      "frequency": 35,
+      "domains": [
+        "oprimorico.com.br",
+        "pt.wikipedia.org",
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Quero Bolsa",
+      "type": "unknown",
+      "frequency": 9,
+      "domains": [
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Maíra Cardi",
+      "type": "unknown",
+      "frequency": 6,
+      "domains": [
+        "pt.wikipedia.org",
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Grupo Primo",
+      "type": "company",
+      "frequency": 5,
+      "domains": [
+        "pt.wikipedia.org",
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Educação Digital",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Educação Financeira",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "querobolsa.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Escritor",
+      "type": "unknown",
+      "frequency": 9,
+      "domains": [
+        "pt.wikipedia.org"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Escola Superior",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "pt.wikipedia.org",
+        "querobolsa.com.br"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 0,
+    "count_30d": 0,
+    "momentum": "Declining",
+    "most_aggressive": null
+  },
+  "generated_at": "2026-05-18T17:46:21.692518+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "stable",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [
+      {
+        "title": "O Primo Rico",
+        "channel": "YouTube",
+        "url": "",
+        "video_id": "",
+        "position": 2,
+        "sentiment": "neutral",
+        "is_negative": false,
+        "domain": "youtube.com",
+        "authority": 100,
+        "thumbnail_url": ""
+      }
+    ],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": [
+    {
+      "title": "O Primo Rico",
+      "channel": "YouTube",
+      "url": "",
+      "video_id": "",
+      "position": 2,
+      "sentiment": "neutral",
+      "is_negative": false,
+      "domain": "youtube.com",
+      "authority": 100,
+      "thumbnail_url": ""
+    }
+  ]
+}

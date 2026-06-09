@@ -1,0 +1,265 @@
+{
+  "entity": "Tiago Schettini Batista",
+  "date": "2026-05-22",
+  "serp": [
+    {
+      "position": 1,
+      "title": "00534/2025 CPMI - INSS",
+      "link": "https://legis.senado.leg.br/sdleg-getter/documento?dm=10026368&ts=1756223583029&disposition=inline",
+      "snippet": "A adoção da medida de quebra do sigilo bancário, fiscal, telefônico e telemático do senhor Tiago Schettini Batista revela-se absolutamente necessária diante da ...",
+      "domain": "legis.senado.leg.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "Sócio oculto do Careca do INSS pede para PF investigar ...",
+      "link": "https://www.metropoles.com/colunas/tacio-lorran/socio-oculto-do-careca-do-inss-pede-para-pf-investigar-vazamento",
+      "snippet": "Metrópoles revelou atuação de Tiago Schettini, sócio oculto do Careca do INSS, para se blindar de investigações.",
+      "domain": "metropoles.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "Tiago Schettini Batista",
+      "link": "https://www.escavador.com/sobre/3945608/tiago-schettini-batista",
+      "snippet": "Não perca informações importantes da justiça sobre Tiago Schettini Batista! O assistente jurídico do Escavador monitora nomes nos Diários Oficiais e envia todos ...",
+      "domain": "escavador.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Tiago Schettini Batista - Sócio de 8 empresas",
+      "link": "https://advdinamico.com.br/socios/tiago-schettini-batista-ba4ca523",
+      "snippet": "Tiago Schettini Batista é uma pessoa física que atua como sócio em 8 empresa(s) no Brasil. Com qualificação de Sócio-Administrador, Tiago Schettini Batista tem ...",
+      "domain": "advdinamico.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 5,
+      "title": "Mensagens obtidas pela Polícia Federal (PF) revelam a ...",
+      "link": "https://www.instagram.com/p/DVqO6keiROf/",
+      "snippet": "Mensagens obtidas pela Polícia Federal (PF) revelam a atuação do empresário Tiago Schettini Batista para se blindar e não ser identificado ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Mensagens obtidas pela Polícia Federal (PF) revelam ...",
+      "link": "https://www.facebook.com/metropolesdf/posts/mensagens-obtidas-pela-pol%C3%ADcia-federal-pf-revelam-a-atua%C3%A7%C3%A3o-do-empres%C3%A1rio-tiago-/1238639435086900/",
+      "snippet": "Mensagens obtidas pela Polícia Federal (PF) revelam a atuação do empresário Tiago Schettini Batista para se blindar e não ser identificado ...",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Tiago Schettini Batista - Processos",
+      "link": "https://www.jusbrasil.com.br/processos/nome/66532738/tiago-schettini-batista",
+      "snippet": "O Jusbrasil encontrou 13 processos que mencionam o nome Tiago Schettini Batista. A maioria é do TRF1, seguido por tjdft. Desses processos encontrados ...",
+      "domain": "jusbrasil.com.br",
+      "type": "legal",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "Mendonça nega liberdade a sócio oculto do 'Careca do ...",
+      "link": "https://revistaoeste.com/politica/mendonca-nega-liberdade-a-socio-oculto-do-careca-do-inss/",
+      "snippet": "O ministro André Mendonça, do Supremo Tribunal Federal (STF), barrou a tentativa de Tiago Schettini Batista de derrubar sua ordem de prisão.",
+      "domain": "revistaoeste.com",
+      "type": "blog",
+      "sentiment": "negative",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "legis.senado.leg.br",
+    "metropoles.com",
+    "escavador.com",
+    "advdinamico.com.br",
+    "instagram.com",
+    "facebook.com",
+    "jusbrasil.com.br",
+    "revistaoeste.com"
+  ],
+  "sentiment_counts": {
+    "negative": 1,
+    "neutral": 7,
+    "positive": 0
+  },
+  "controlled_assets": 2,
+  "page_1_negative_ratio": 0.125,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 1,
+  "authority_vacuum": "HIGH",
+  "expansion_associations": [
+    {
+      "entity": "Tácio Lorran",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "André Mendonça",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Redes Sociais",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Diários Oficiais",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "escavador.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Relatórios Jurídicos",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "escavador.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Luiz Lima",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "legis.senado.leg.br"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Carlos Camilo Antunes",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "MEDIUM"
+    },
+    {
+      "entity": "Decisão André Mendonça",
+      "type": "unknown",
+      "frequency": 2,
+      "domains": [
+        "metropoles.com"
+      ],
+      "risk": "MEDIUM"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 10,
+    "count_30d": 10,
+    "momentum": "Escalating",
+    "most_aggressive": "cnnbrasil.com.br",
+    "most_aggressive_count": 2,
+    "top_domains": [
+      [
+        "cnnbrasil.com.br",
+        2,
+        "mainstream"
+      ],
+      [
+        "g1.globo.com",
+        1,
+        "mainstream"
+      ],
+      [
+        "metropoles.com",
+        1,
+        "mainstream"
+      ],
+      [
+        "diariodocentrodomundo.com.br",
+        1,
+        "blog"
+      ],
+      [
+        "vogue.globo.com",
+        1,
+        "blog"
+      ]
+    ],
+    "concentration": "Distributed"
+  },
+  "generated_at": "2026-05-22T13:14:01.726242+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "threat_level": "CRITICAL",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": []
+}

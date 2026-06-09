@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reputation Intelligence Report — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0a0a0a;
+      --surface:    #111111;
+      --border:     #222222;
+      --border-mid: #2a2a2a;
+      --text:       #e8e8e8;
+      --text-dim:   #888888;
+      --text-faint: #444444;
+      --accent:     #c8a96e;
+      --accent-dim: #8a6e3e;
+      --red:        #c0392b;
+      --orange:     #d35400;
+      --yellow:     #d4a017;
+      --green:      #27ae60;
+      --mono:       'IBM Plex Mono', monospace;
+      --sans:       'IBM Plex Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 64px 80px;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 32px;
+      margin-bottom: 48px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .confidential {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid var(--red);
+      padding: 3px 10px;
+      opacity: 0.85;
+    }
+
+    .entity-name {
+      font-family: var(--sans);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 32px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .header-meta span::before {
+      content: attr(data-label) ': ';
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    /* ── THREAT BADGE ───────────────────────────────── */
+    .threat-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .threat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+
+    .threat-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border: 1px solid;
+    }
+
+    .threat-LOW      { color: var(--green);  border-color: var(--green);  }
+    .threat-MEDIUM   { color: var(--yellow); border-color: var(--yellow); }
+    .threat-HIGH     { color: var(--orange); border-color: var(--orange); }
+    .threat-CRITICAL { color: var(--red);    border-color: var(--red);    background: rgba(192,57,43,0.08); }
+
+    /* ── SECTIONS ───────────────────────────────────── */
+    .section {
+      margin-bottom: 48px;
+      page-break-inside: avoid;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-number {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent-dim);
+      letter-spacing: 0.12em;
+      min-width: 24px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .section-body {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      padding-left: 38px;
+    }
+
+    /* ── NPA BLOCK ──────────────────────────────────── */
+    .npa-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      margin-left: 38px;
+    }
+
+    .npa-cell {
+      background: var(--surface);
+      padding: 16px 20px;
+    }
+
+    .npa-cell-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .npa-cell-value {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .npa-cell-value.momentum-Escalating { color: var(--red); }
+    .npa-cell-value.momentum-Stable     { color: var(--yellow); }
+    .npa-cell-value.momentum-Declining  { color: var(--green); }
+
+    .npa-domain-block {
+      margin-left: 38px;
+      margin-bottom: 20px;
+    }
+    .npa-domain-most {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+    }
+    .npa-domain-most-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+    }
+    .npa-domain-most-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--red);
+    }
+    .npa-domain-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .npa-domain-list-header {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      padding: 14px 20px 8px;
+    }
+    .npa-domain-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .npa-domain-row:last-child {
+      padding-bottom: 14px;
+    }
+    .npa-domain-name {
+      flex: 1;
+      color: var(--text);
+    }
+    .npa-domain-count {
+      color: var(--text-dim);
+      font-size: 11px;
+    }
+    .npa-domain-type {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+    .type-mainstream {
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+    }
+    .type-blog {
+      color: var(--yellow);
+      background: color-mix(in srgb, var(--yellow) 10%, transparent);
+    }
+    .type-investigative {
+      color: var(--text);
+      background: color-mix(in srgb, var(--text) 10%, transparent);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    .footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    }
+
+    .build-version {
+      position: fixed;
+      top: 10px;
+      right: 12px;
+      z-index: 10000;
+      background: #111;
+      color: var(--accent);
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 4px 8px;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+
+    .footer-brand {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .footer-ts {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .action-bar { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .action-btn { padding: 6px 14px; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; border-radius: 3px; cursor: pointer; text-decoration: none; border: 1px solid #333; background: var(--surface); color: var(--text-dim); transition: all 0.1s; }
+    .action-btn:hover { border-color: var(--text-faint); color: var(--text); }
+    .action-btn.occ { border-color: #1a3d2c; color: #6aaa84; }
+    .action-btn.occ:hover { background: #0a1f15; }
+    .action-btn.cam { border-color: #3d2a1a; color: #aa8a6a; }
+    .action-btn.cam:hover { background: #1f150a; }
+    .action-btn.tml { border-color: #2a1a3d; color: #8a6aaa; }
+    .action-btn.tml:hover { background: #150a20; }
+    .action-btn.asst { border-color: #1a2a3d; color: #6a8aaa; }
+    .action-btn.asst:hover { background: #0a1520; }
+    .action-btn.pdf { border-color: #3d1a1a; color: #e74c3c; cursor: pointer; font: inherit; }
+    .action-btn.pdf:hover { background: #1a0a0a; }
+
+    /* ── PRINT ──────────────────────────────────────── */
+    @media print {
+      body { background: #fff; color: #111; }
+      :root {
+        --bg: #fff; --surface: #f8f8f8; --border: #ddd; --border-mid: #ccc;
+        --text: #111; --text-dim: #555; --text-faint: #999;
+        --accent: #7a5c20; --accent-dim: #9a7a40;
+      }
+      .page { padding: 32px 40px; }
+      .confidential { color: #c0392b; border-color: #c0392b; }
+      .section { page-break-inside: avoid; }
+      .footer { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="build-version">Build v2026.05.17.12</div>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="brand">CouncilIA &mdash; Reputation Intelligence</div>
+      <div class="confidential">Confidential &mdash; Internal Intelligence Report</div>
+    </div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span data-label="Country">{{ country }}</span>
+      <span data-label="Industry">{{ industry }}</span>
+      <span data-label="Generated">{{ generated_at }}</span>
+    </div>
+    <div class="threat-row">
+      <span class="threat-label">Nível de Ameaça</span>
+      <span class="threat-badge threat-{{ threat_level }}">{{ threat_level }}</span>
+    </div>
+    {% if slug %}
+    <div class="action-bar">
+      <a href="/battle-plan/{{ slug }}" class="action-btn occ">Plano de Batalha SERP</a>
+      <a href="/dominance/{{ slug }}" class="action-btn cam">Dominância SERP</a>
+      <a href="/occupation/{{ slug }}" class="action-btn cam">Estratégia de Ocupação</a>
+      <a href="/timeline/{{ slug }}" class="action-btn tml">Linha do Tempo</a>
+      <a href="/assets?entity={{ slug }}" class="action-btn asst">Gerar Ativos</a>
+      <form method="post" action="/pdf" style="display:inline;">
+        <input type="hidden" name="entity_name" value="{{ entity_name }}">
+        <input type="hidden" name="country" value="{{ country }}">
+        <input type="hidden" name="industry" value="{{ industry }}">
+        <button type="submit" class="action-btn pdf" style="background:var(--red);">PDF</button>
+      </form>
+    </div>
+    {% endif %}
+  </header>
+
+  <!-- 01 · SUMÁRIO EXECUTIVO -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-title">Sumário Executivo</span>
+    </div>
+    <div class="section-body">{{ sections.reputation_summary }}</div>
+  </section>
+
+  <!-- 02 · PRESSÃO NARRATIVA -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <span class="section-title">Pressão Narrativa</span>
+    </div>
+    <div class="npa-grid">
+      <div class="npa-cell">
+        <div class="npa-cell-label">Artigos · Últimos 7 dias</div>
+        <div class="npa-cell-value">{{ npa.count_7d }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Artigos · Últimos 30 dias</div>
+        <div class="npa-cell-value">{{ npa.count_30d }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Momentum Narrativo</div>
+        <div class="npa-cell-value momentum-{{ npa.momentum }}">{{ npa.momentum }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Concentração de Fontes</div>
+        <div class="npa-cell-value" style="font-size:14px; padding-top:4px;">{{ npa.concentration }}</div>
+      </div>
+    </div>
+    <div class="npa-domain-block">
+      <div class="npa-domain-most">
+        <span class="npa-domain-most-label">Fonte Mais Agressiva</span>
+        <span class="npa-domain-most-value">{{ npa.most_aggressive }}</span>
+      </div>
+      <div class="npa-domain-list">
+        <div class="npa-domain-list-header">Principais Domínios</div>
+        {% for domain, count, dtype in npa.top_domains %}
+        <div class="npa-domain-row">
+          <span class="npa-domain-name">{{ domain }}</span>
+          <span class="npa-domain-count">{{ count }} {{ "artigo" if count == 1 else "artigos" }}</span>
+          <span class="npa-domain-type type-{{ dtype }}">{{ dtype }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="section-body" style="margin-top:16px;">{{ sections.npa_interpretation }}</div>
+  </section>
+
+  <!-- 03 · ATIVOS POSITIVOS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <span class="section-title">Ativos Positivos</span>
+    </div>
+    <div class="section-body">{{ sections.positive_assets }}</div>
+  </section>
+
+  <!-- 04 · ANÁLISE NARRATIVA -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <span class="section-title">Análise Narrativa</span>
+    </div>
+    <div class="section-body">{{ sections.narrative_analysis }}</div>
+  </section>
+
+  <!-- 05 · SINAIS NEGATIVOS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <span class="section-title">Sinais Negativos</span>
+    </div>
+    <div class="section-body">{{ sections.negative_signals }}</div>
+  </section>
+
+  <!-- 06 · ASSOCIAÇÕES DESCOBERTAS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <span class="section-title">Associações Descobertas</span>
+    </div>
+    <div class="section-body">{{ sections.discovered_associations }}</div>
+  </section>
+
+  <!-- 07 · POSICIONAMENTO RECOMENDADO -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <span class="section-title">Posicionamento Recomendado</span>
+    </div>
+    <div class="section-body">{{ sections.suggested_positioning }}</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">CouncilIA Reputation Intelligence &mdash; Distribuição Restrita</div>
+    <div class="footer-ts">Gerado em {{ generated_at }}</div>
+  </footer>
+
+</div>
+</body>
+</html>

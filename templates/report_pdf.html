@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: A4; margin: 2cm; @bottom-center { content: counter(page) "/" counter(pages); font-size: 8px; color: #888; font-family: monospace; } }
+    body { font-family: 'DejaVu Sans Mono', 'Courier New', monospace; font-size: 10px; line-height: 1.6; color: #111; }
+    h1 { font-size: 18px; margin-bottom: 4px; letter-spacing: 0.05em; }
+    .header { border-bottom: 2px solid #111; padding-bottom: 16px; margin-bottom: 20px; }
+    .brand { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #666; }
+    .entity-name { font-size: 22px; font-weight: 600; margin: 8px 0 4px; }
+    .header-meta { font-size: 8px; color: #666; }
+    .header-meta span { margin-right: 20px; }
+    .threat-badge { display: inline-block; padding: 3px 10px; font-size: 9px; letter-spacing: 0.1em; border: 1px solid; margin-top: 8px; }
+    .threat-CRITICAL { color: #c0392b; border-color: #c0392b; }
+    .threat-HIGH { color: #d35400; border-color: #d35400; }
+    .threat-MEDIUM { color: #c9a227; border-color: #c9a227; }
+    .threat-LOW { color: #27ae60; border-color: #27ae60; }
+    .section { margin-bottom: 18px; page-break-inside: avoid; }
+    .section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px; color: #c0392b; }
+    .section-body { white-space: pre-wrap; color: #333; }
+    .npa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #ccc; border: 1px solid #ccc; margin-bottom: 16px; }
+    .npa-cell { background: #f5f5f5; padding: 10px 14px; }
+    .npa-cell-label { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+    .npa-cell-value { font-size: 18px; font-weight: 500; }
+    .npa-domain-block { margin-bottom: 16px; }
+    .npa-domain-most { display: flex; gap: 12px; padding: 10px 14px; background: #f5f5f5; border: 1px solid #ccc; border-bottom: none; }
+    .npa-domain-most-label { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; }
+    .npa-domain-most-value { font-size: 11px; font-weight: 500; color: #c0392b; }
+    .npa-domain-list { background: #f5f5f5; border: 1px solid #ccc; }
+    .npa-domain-list-header { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; padding: 10px 14px 4px; }
+    .npa-domain-row { display: flex; gap: 10px; padding: 3px 14px; font-size: 10px; }
+    .npa-domain-row:last-child { padding-bottom: 10px; }
+    .npa-domain-name { flex: 1; }
+    .npa-domain-count { color: #888; font-size: 9px; }
+    .npa-domain-type { font-size: 7px; letter-spacing: 0.08em; text-transform: uppercase; padding: 1px 6px; border-radius: 2px; background: #e0e0e0; }
+    .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #ccc; font-size: 7px; color: #888; display: flex; justify-content: space-between; }
+    .confidential { font-size: 7px; letter-spacing: 0.2em; color: #c0392b; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">CouncilIA — Reputation Intelligence</div>
+    <div class="confidential">Confidential — Internal Intelligence Report</div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>{{ country }}</span>
+      <span>{{ industry }}</span>
+      <span>{{ generated_at }}</span>
+    </div>
+    <div class="threat-badge threat-{{ threat_level }}">{{ threat_level }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">01 · Sumário Executivo</div>
+    <div class="section-body">{{ sections.reputation_summary }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">02 · Pressão Narrativa</div>
+    <div class="npa-grid">
+      <div class="npa-cell">
+        <div class="npa-cell-label">Artigos · Últimos 7 dias</div>
+        <div class="npa-cell-value">{{ npa.count_7d }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Artigos · Últimos 30 dias</div>
+        <div class="npa-cell-value">{{ npa.count_30d }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Momentum Narrativo</div>
+        <div class="npa-cell-value">{{ npa.momentum }}</div>
+      </div>
+      <div class="npa-cell">
+        <div class="npa-cell-label">Concentração de Fontes</div>
+        <div class="npa-cell-value">{{ npa.concentration }}</div>
+      </div>
+    </div>
+    <div class="npa-domain-block">
+      <div class="npa-domain-most">
+        <span class="npa-domain-most-label">Fonte Mais Agressiva</span>
+        <span class="npa-domain-most-value">{{ npa.most_aggressive }}</span>
+      </div>
+      <div class="npa-domain-list">
+        <div class="npa-domain-list-header">Principais Domínios</div>
+        {% for domain, count, dtype in npa.top_domains %}
+        <div class="npa-domain-row">
+          <span class="npa-domain-name">{{ domain }}</span>
+          <span class="npa-domain-count">{{ count }} artigo{{ "s" if count != 1 }}</span>
+          <span class="npa-domain-type">{{ dtype }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="section-body">{{ sections.npa_interpretation }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">03 · Ativos Positivos</div>
+    <div class="section-body">{{ sections.positive_assets }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">04 · Análise Narrativa</div>
+    <div class="section-body">{{ sections.narrative_analysis }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">05 · Sinais Negativos</div>
+    <div class="section-body">{{ sections.negative_signals }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">06 · Associações Descobertas</div>
+    <div class="section-body">{{ sections.associations }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">07 · Posicionamento Recomendado</div>
+    <div class="section-body">{{ sections.recommended_positioning }}</div>
+  </div>
+
+  <div class="footer">
+    <span>CouncilIA · Reputation Intelligence</span>
+    <span>CONFIDENTIAL</span>
+    <span>{{ generated_at }}</span>
+  </div>
+</body>
+</html>

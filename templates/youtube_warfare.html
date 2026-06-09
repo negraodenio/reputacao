@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Warfare — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0a;--surface:#111;--surface2:#161616;
+      --border:#222;--border-mid:#2a2a2a;
+      --text:#e8e8e8;--text-dim:#888;--text-faint:#444;
+      --accent:#c8a96e;--accent-dim:#8a6e3e;
+      --red:#c0392b;--orange:#d35400;--yellow:#d4a017;--green:#27ae60;
+      --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+    .page{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+    h1{font-size:24px;font-weight:600;margin-bottom:4px}
+    .subtitle{color:var(--text-dim);font-family:var(--mono);font-size:11px;margin-bottom:32px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px}
+    .card-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+    .card-value{font-size:28px;font-weight:600;font-family:var(--mono)}
+    .card-bar{margin-top:12px;height:4px;border-radius:2px;background:var(--border)}
+    .card-bar-fill{height:100%;border-radius:2px;transition:width .3s}
+    .card-bar-fill.critical{background:var(--red)}
+    .card-bar-fill.high{background:var(--orange)}
+    .card-bar-fill.moderate{background:var(--yellow)}
+    .card-bar-fill.low{background:var(--green)}
+    table{width:100%;border-collapse:collapse;margin-bottom:32px}
+    th{text-align:left;font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;padding:10px 12px;border-bottom:1px solid var(--border)}
+    td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+    .badge{padding:2px 8px;border-radius:3px;font-size:11px;font-family:var(--mono);font-weight:500}
+    .badge-negative{background:rgba(192,57,43,.2);color:var(--red)}
+    .badge-positive{background:rgba(39,174,96,.2);color:var(--green)}
+    .badge-critical{background:rgba(192,57,43,.3);color:#fff}
+    .badge-alto{background:rgba(211,84,0,.3);color:var(--orange)}
+    .badge-moderado{background:rgba(212,160,23,.3);color:var(--yellow)}
+    .section-title{font-size:16px;font-weight:600;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+    .ad-card{background:var(--surface2);border:1px solid var(--border-mid);border-radius:6px;padding:16px}
+    .ad-name{font-weight:600;font-size:14px;margin-bottom:8px}
+    .ad-detail{font-size:12px;color:var(--text-dim);margin-bottom:4px}
+    .ad-detail strong{color:var(--text)}
+    .budget-row{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+    .budget-label{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+    .budget-value{font-family:var(--mono);font-size:14px;font-weight:600}
+    .back-link{display:inline-block;margin-bottom:24px;color:var(--accent);font-family:var(--mono);font-size:12px;text-decoration:none}
+    .back-link:hover{color:var(--accent-dim)}
+    .npa-note{background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;margin-bottom:24px;font-size:13px}
+  </style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="/battle-plan/{{ entity_name }}">&larr; Battle Plan</a>
+  <h1>Guerra de YouTube</h1>
+  <div class="subtitle">{{ entity_name }} — Gerado em {{ generated_at }}</div>
+
+  {% if toxicity %}
+  {% set t = toxicity %}
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Pontuação de Toxicidade no YouTube</div>
+      <div class="card-value" style="color:{% if t.total >= 70 %}var(--red){% elif t.total >= 40 %}var(--orange){% elif t.total >= 15 %}var(--yellow){% else %}var(--green){% endif %}">{{ t.total }}</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">{{ t.label }}</div>
+      <div class="card-bar"><div class="card-bar-fill {% if t.total >= 70 %}critical{% elif t.total >= 40 %}high{% elif t.total >= 15 %}moderate{% else %}low{% endif %}" style="width:{{ t.total }}%"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Vídeos Detectados</div>
+      <div class="card-value">{{ t.videos_detected }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Vídeos Negativos</div>
+      <div class="card-value" style="color:{% if t.negative_videos > 0 %}var(--red){% else %}var(--green){% endif %}">{{ t.negative_videos }}</div>
+    </div>
+  </div>
+
+  {% if npa_boost %}
+  <div class="npa-note">
+    <strong>Impacto no NPA:</strong> O YouTube adiciona <strong>+{{ npa_boost.npa_additional_points }}</strong> pontos ao NPA (peso 1.5x).
+    Score YouTube: {{ npa_boost.youtube_score }} | Impacto base: {{ npa_boost.base_npa_impact }} | Impacto com boost: {{ npa_boost.boosted_npa_impact }}
+  </div>
+  {% endif %}
+
+  <div class="grid">
+    {% for key, comp in t.breakdown.items() %}
+    <div class="card">
+      <div class="card-label">{{ key|replace('_', ' ')|title }}</div>
+      <div class="card-value" style="font-size:18px">{{ comp.score }}/{{ comp.max }}</div>
+      <div style="font-size:11px;color:var(--text-dim)">Raw: {{ comp.raw }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if videos %}
+  <div class="section-title">Vídeos na SERP</div>
+  <table>
+    <tr><th>#</th><th>Título</th><th>Canal</th><th>Sentimento</th><th>Thumb</th></tr>
+    {% for v in videos %}
+    <tr>
+      <td style="font-family:var(--mono)">#{{ v.position }}</td>
+      <td><a href="{{ v.url }}" target="_blank" style="color:var(--accent);text-decoration:none">{{ v.title[:70] }}</a></td>
+      <td>{{ v.channel }}</td>
+      <td><span class="badge {% if v.is_negative %}badge-negative{% else %}badge-positive{% endif %}">{{ v.sentiment }}</span></td>
+      <td>{% if v.thumbnail_url %}<img src="{{ v.thumbnail_url }}" width="80" style="border-radius:4px">{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p style="color:var(--text-dim);margin-bottom:32px">Nenhum resultado de vídeo do YouTube encontrado na SERP atual.</p>
+  {% endif %}
+
+  <div class="section-title">YouTube Ads — Campanhas Recomendadas</div>
+  <div class="ads-grid">
+    {% for c in ads.campaigns %}
+    <div class="ad-card">
+      <div class="ad-name">{{ c.name }}</div>
+      <div class="ad-detail"><strong>Formato:</strong> {{ c.format }}</div>
+      <div class="ad-detail"><strong>Segmentação:</strong> {{ c.targeting }}</div>
+      <div class="ad-detail"><strong>Asset:</strong> {{ c.video_asset }}</div>
+      {% if c.bid_strategy %}<div class="ad-detail"><strong>Lance:</strong> {{ c.bid_strategy }}</div>{% endif %}
+      <div class="budget-row">
+        <span class="budget-label">Budget Diário</span>
+        <span class="budget-value">R$ {{ c.budget_daily_min }}-{{ c.budget_daily_max }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if ads.total_daily_budget_min %}
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <div class="card-label">Budget Total YouTube Ads</div>
+      <div class="card-value" style="font-size:18px">R$ {{ ads.total_daily_budget_min }}-{{ ads.total_daily_budget_max }}/dia</div>
+      <div style="font-size:12px;color:var(--text-dim)">R$ {{ ads.total_monthly_budget_min }}-{{ ads.total_monthly_budget_max }}/mês</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <p style="color:var(--text-faint);font-size:11px;margin-top:48px;font-family:var(--mono)">CouncilIA — Motor de Guerra de YouTube</p>
+</div>
+</body>
+</html>

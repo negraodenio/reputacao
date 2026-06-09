@@ -1,0 +1,238 @@
+{
+  "entity": "Danielle Fonteles",
+  "date": "2026-05-19",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Danielle Fonteles - nobot",
+      "link": "https://pt.linkedin.com/in/danielle-fonteles-3753b813",
+      "snippet": "Director. No.bot Comunicação. jan. de 2015 - o momento 11 anos 5 meses. Portugal. Director. Pepper Comunicação.",
+      "domain": "pt.linkedin.com",
+      "type": "institutional",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 2,
+      "title": "Quem é a publicitária do PT que era sócia do “Careca” ...",
+      "link": "https://www.gazetadopovo.com.br/republica/quem-e-a-publicitaria-do-pt-que-era-socia-do-careca-do-inss/",
+      "snippet": "Marketeira de Dilma, Danielle Miranda Fonteles virou alvo da CPMI do INSS por movimentação; Confira na Gazeta do Povo.",
+      "domain": "gazetadopovo.com.br",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 3,
+      "title": "Danielle Fonteles | Lauro Jardim - O Globo",
+      "link": "https://blogs.oglobo.globo.com/lauro-jardim/tag/danielle-fonteles/",
+      "snippet": "Formada em Jornalismo e Publicidade pela PUC, está no Globo desde 2015. Apaixonada por jornalismo, escreve sobre cultura, saúde e internet, mas está sempre ...",
+      "domain": "blogs.oglobo.globo.com",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 4,
+      "title": "Declarações da publicitária Danielle Fonteles falam ...",
+      "link": "https://www2.senado.leg.br/bdsf/bitstream/handle/id/520743/noticia.html?sequence=1&isAllowed=y",
+      "snippet": "BRASÍLIA- Trechos da delação premiada da publicitária Danielle Fonteles, uma das sócias da agência Pepper Interativa, que contêm referências à presidente Dilma ...",
+      "domain": "www2.senado.leg.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 5,
+      "title": "A publicitária Danielle Miranda Fonteles (à direta ...",
+      "link": "https://www.instagram.com/p/DRt7JjtEaCa/",
+      "snippet": "A publicitária Danielle Miranda Fonteles (à direta na foto em destaque), delatora de supostos esquemas do PT durante a Lava Jato e ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "positive",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 6,
+      "title": "Bomba na CPMI do INSS! A ex-publicitária do PT, Danielle ...",
+      "link": "https://www.facebook.com/acusticafm/posts/bomba-na-cpmi-do-inss-a-ex-publicit%C3%A1ria-do-pt-danielle-fonteles-que-atuou-em-cam/1443951643762973/",
+      "snippet": "A ex-publicitária do PT, Danielle Fonteles, que atuou em campanhas de Dilma Rousseff e Rui Costa, foi ligada a Antônio Carlos Camilo Antunes ...",
+      "domain": "facebook.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true,
+      "is_video": false
+    },
+    {
+      "position": 7,
+      "title": "Governistas protegem publicitária que delatou PT e ...",
+      "link": "https://platobr.com.br/governo-protegeu-publicitaria-que-delatou-pt-e-recebeu-milhoes-do-careca-do-inss",
+      "snippet": "Como dona da agência Pepper, Fonteles atuou em campanhas eleitorais do PT, como a de Dilma, em 2010. Ela foi investigada pela Lava Jato e ...",
+      "domain": "platobr.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false,
+      "is_video": false
+    },
+    {
+      "position": 8,
+      "title": "Exclusivo; Venda milionária: o fio da meada que liga Danielle ...",
+      "link": "https://brasilnoticia.com.br/brasilia/exclusivo-venda-milionaria-o-fio-da-meada-que-liga-danielle-fonteles-ao-careca-do-inss/",
+      "snippet": "Danielle Fonteles, fundadora da agência Pepper Interativa, ficou conhecida nacionalmente após ser investigada pela Operação Acrônimo, deflagrada ...",
+      "domain": "brasilnoticia.com.br",
+      "type": "blog",
+      "sentiment": "positive",
+      "controlled": false,
+      "is_video": false
+    }
+  ],
+  "domains": [
+    "pt.linkedin.com",
+    "gazetadopovo.com.br",
+    "blogs.oglobo.globo.com",
+    "www2.senado.leg.br",
+    "instagram.com",
+    "facebook.com",
+    "platobr.com.br",
+    "brasilnoticia.com.br"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 6,
+    "positive": 2
+  },
+  "controlled_assets": 3,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "legal_domain_count": 0,
+  "authority_vacuum": "MODERATE",
+  "expansion_associations": [
+    {
+      "entity": "Polícia Federal",
+      "type": "legal",
+      "frequency": 7,
+      "domains": [
+        "gazetadopovo.com.br",
+        "www2.senado.leg.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Operação Acrônimo",
+      "type": "unknown",
+      "frequency": 5,
+      "domains": [
+        "www2.senado.leg.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Fernando Pimentel",
+      "type": "unknown",
+      "frequency": 4,
+      "domains": [
+        "www2.senado.leg.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "Supremo Tribunal Federal",
+      "type": "legal",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br",
+        "www2.senado.leg.br"
+      ],
+      "risk": "CRITICAL"
+    },
+    {
+      "entity": "globo.com",
+      "type": "unknown",
+      "frequency": 14,
+      "domains": [
+        "blogs.oglobo.globo.com"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Vinícius Sales",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Dilma Rousseff",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br",
+        "www2.senado.leg.br"
+      ],
+      "risk": "HIGH"
+    },
+    {
+      "entity": "Sílvio Ribas",
+      "type": "unknown",
+      "frequency": 3,
+      "domains": [
+        "gazetadopovo.com.br"
+      ],
+      "risk": "LOW"
+    }
+  ],
+  "narrative_pressure": {
+    "count_7d": 40,
+    "count_30d": 40,
+    "momentum": "Escalating",
+    "most_aggressive": "meionews.com"
+  },
+  "generated_at": "2026-05-19T09:44:40.656257+00:00",
+  "threat_archetype": "association_based",
+  "crisis_state": "active_crisis",
+  "youtube_toxicity": {
+    "total": 0.0,
+    "breakdown": {
+      "video_negative_count": {
+        "score": 0,
+        "max": 30,
+        "raw": 0
+      },
+      "avg_position_penalty": {
+        "score": 0,
+        "max": 25,
+        "raw": 0
+      },
+      "negative_saturation": {
+        "score": 0.0,
+        "max": 25,
+        "raw": 0.0
+      },
+      "position_severity": {
+        "score": 0,
+        "max": 20,
+        "raw": 0
+      }
+    },
+    "videos_detected": 1,
+    "negative_videos": 0,
+    "videos": [],
+    "label": "BAIXO — Sem contaminação significativa no YouTube"
+  },
+  "video_npa_boost": {
+    "youtube_score": 0.0,
+    "base_npa_impact": 0.0,
+    "boosted_npa_impact": 0.0,
+    "boost_multiplier": 1.2,
+    "boost_note": "Conservador (1.2x) — sem dados de CTR calibrados por entidade",
+    "npa_additional_points": 0.0
+  },
+  "youtube_videos": []
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artigo Gerado — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505; --surface: #0d0d0d; --surface-2: #111; --border: #1a1a1a; --border-mid: #222;
+      --text: #e8e8e8; --text-dim: #888; --text-faint: #444;
+      --accent: #c8a96e; --accent-dim: #7a6040;
+      --red: #c0392b; --orange: #d35400; --yellow: #c9a227; --green: #27ae60;
+      --blue: #2980b9;
+      --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.75; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 60px 64px 100px; }
+    .build-version { position:fixed; top:10px; right:12px; z-index:10000; background:#111; color:var(--accent); border:1px solid #333; border-radius:3px; padding:4px 8px; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; font-family:var(--mono); }
+    .header { border-bottom:1px solid var(--border); padding-bottom:36px; margin-bottom:48px; }
+    .brand { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; }
+    .brand span { color:var(--accent); }
+    .entity-name { font-family:var(--mono); font-size:1.85rem; font-weight:600; margin-bottom:10px; }
+    .header-meta { font-family:var(--mono); font-size:0.72rem; color:var(--text-faint); letter-spacing:0.04em; }
+    .header-meta span { color:var(--text-dim); margin-right:24px; }
+    .back-link { display:inline-block; margin-bottom:24px; font-family:var(--mono); font-size:0.72rem; color:var(--text-dim); text-decoration:none; }
+    .back-link:hover { color:var(--accent); }
+    h2 { font-family:var(--mono); font-size:0.8rem; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:20px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .section { margin-bottom:48px; }
+
+    .article-box { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:32px; margin-bottom:48px; }
+    .article-box h1 { font-family:var(--mono); font-size:1.2rem; font-weight:600; margin-bottom:16px; color:var(--text); }
+    .article-box .content { font-size:0.9rem; color:var(--text-dim); line-height:1.9; white-space:pre-wrap; font-family:var(--sans); }
+
+    .meta-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .meta-cell { background:var(--surface); padding:20px; }
+    .meta-label { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-bottom:6px; }
+    .meta-value { font-family:var(--mono); font-size:0.82rem; color:var(--text); }
+
+    .pub-box { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:24px; margin-bottom:16px; }
+    .pub-title { font-family:var(--mono); font-size:0.72rem; color:var(--accent); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.08em; }
+    .pub-step { font-size:0.8rem; color:var(--text-dim); padding:4px 0; padding-left:18px; position:relative; }
+    .pub-step::before { content:'→'; position:absolute; left:0; color:var(--accent-dim); }
+
+    .btn-bar { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+    .btn-back { padding:10px 24px; font-family:var(--mono); font-size:0.78rem; background:var(--surface-2); color:var(--text-dim); border:1px solid var(--border-mid); border-radius:3px; cursor:pointer; text-decoration:none; }
+    .btn-back:hover { color:var(--text); }
+    .btn-copy { padding:10px 24px; font-family:var(--mono); font-size:0.78rem; background:var(--accent); color:#000; border:none; border-radius:3px; cursor:pointer; }
+    .btn-copy:hover { opacity:0.85; }
+
+    .all-list { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; margin-bottom:24px; }
+    .all-item { background:var(--surface); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; }
+    .all-label { font-family:var(--mono); font-size:0.78rem; color:var(--accent); }
+    .all-status { font-family:var(--mono); font-size:0.65rem; }
+    .status-ok { color:var(--green); } .status-err { color:var(--red); }
+    .disable { opacity:0.4; pointer-events:none; }
+  </style>
+</head>
+<body>
+<div class="build-version">Build v2026.05.17.16</div>
+<div class="page">
+
+  <a href="/content/{{ entity_slug }}" class="back-link">&larr; Voltar ao Content Studio</a>
+
+  <div class="header">
+    <div class="brand"><span>CouncilIA</span> · Content Production Studio</div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>{% if generated_all %}Todos os artigos gerados{% else %}Artigo gerado{% endif %}</span>
+    </div>
+  </div>
+
+  {% if generated_all and all_results %}
+  <!-- ALL generated summary -->
+  <div class="section">
+    <h2>Resumo da Geração em Lote</h2>
+    <div class="all-list">
+      {% for r in all_results %}
+      <div class="all-item">
+        <span class="all-label">{{ r.label }}</span>
+        <span class="all-status status-ok">✓ Gerado</span>
+      </div>
+      {% endfor %}
+      {% if errors %}
+      {% for err in errors %}
+      <div class="all-item">
+        <span class="all-label">{{ err.split(':')[0] }}</span>
+        <span class="all-status status-err">✗ {{ err.split(':')[1] if ':' in err else err }}</span>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Show each article -->
+  {% for r in all_results %}
+  <div class="section" style="page-break-inside:avoid;">
+    <h2>{{ r.label }}</h2>
+    <div class="meta-grid" style="margin-bottom:16px;">
+      <div class="meta-cell"><div class="meta-label">Plataforma</div><div class="meta-value">{{ r.platform.platform if r.platform else '—' }}</div></div>
+      <div class="meta-cell"><div class="meta-label">SEO Title</div><div class="meta-value" style="font-size:0.7rem;">{{ r.seo.title if r.seo else '' }}</div></div>
+    </div>
+    {% set art_id = "art-" ~ loop.index %}
+    <div class="article-box" id="view-{{ art_id }}">
+      <div class="content" id="content-{{ art_id }}">{{ r.article }}</div>
+    </div>
+    <textarea id="editor-{{ art_id }}" style="display:none;width:100%;min-height:320px;background:var(--surface);border:1px solid var(--accent-dim);color:var(--text);padding:14px;font-family:var(--mono);font-size:0.75rem;line-height:1.7;resize:vertical;">{{ r.article }}</textarea>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button onclick="copyById('content-{{ art_id }}','editor-{{ art_id }}',this)" style="padding:5px 14px;font-family:var(--mono);font-size:0.65rem;background:var(--accent);color:#000;border:none;border-radius:3px;cursor:pointer;">Copiar</button>
+      <button onclick="toggleEditById('view-{{ art_id }}','editor-{{ art_id }}',this)" style="padding:5px 14px;font-family:var(--mono);font-size:0.65rem;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border-mid);border-radius:3px;cursor:pointer;">✎ Editar</button>
+    </div>
+    {% if r.platform and r.platform.steps %}
+    <div class="pub-box" style="margin-top:12px;">
+      <div class="pub-title">Como Publicar em {{ r.platform.platform }}</div>
+      {% for s in r.platform.steps %}
+      <div class="pub-step">{{ s }}</div>
+      {% endfor %}
+      {% if r.amplification and r.amplification.primary %}
+      <div style="margin-top:8px;font-size:0.72rem;color:var(--text-faint);">Amplificar: <strong>{{ r.amplification.primary }}</strong></div>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if r.structured_data %}
+    <div style="margin-top:10px;background:var(--surface2);border:1px solid var(--accent-dim);padding:12px 14px;">
+      <div style="font-family:var(--mono);font-size:0.62rem;color:var(--accent);margin-bottom:6px;">JSON-LD — inserir no &lt;head&gt;</div>
+      <pre id="jld-{{ art_id }}" style="font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);white-space:pre-wrap;">&lt;script type="application/ld+json"&gt;
+{{ r.structured_data | tojson(indent=2) }}
+&lt;/script&gt;</pre>
+      <button onclick="copyById('jld-{{ art_id }}',null,this)" style="margin-top:6px;padding:4px 10px;font-family:var(--mono);font-size:0.62rem;background:var(--surface);color:var(--accent);border:1px solid var(--accent-dim);border-radius:3px;cursor:pointer;">Copiar JSON-LD</button>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  {% elif result %}
+  <!-- Single article -->
+  <div class="section">
+    <h2>SEO Metadata</h2>
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="meta-label">Título</div><div class="meta-value">{{ result.seo.title[:60] }}</div></div>
+      <div class="meta-cell"><div class="meta-label">Slug</div><div class="meta-value">{{ result.seo.slug }}</div></div>
+      <div class="meta-cell"><div class="meta-label">Tags</div><div class="meta-value">{{ result.seo.tags|join(', ') }}</div></div>
+      <div class="meta-cell"><div class="meta-label">Meta Description</div><div class="meta-value" style="font-size:0.7rem;">{{ result.seo.meta_description[:100] }}</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Artigo — {{ result.label }}</h2>
+    <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;">
+      <span style="font-size:0.75rem;color:var(--text-faint);">Edite o texto antes de publicar se necessário.</span>
+      <button onclick="toggleEdit()" id="edit-toggle" style="padding:4px 12px;font-family:var(--mono);font-size:0.65rem;border:1px solid var(--border-mid);background:var(--surface2);color:var(--text-dim);border-radius:3px;cursor:pointer;">✎ Editar</button>
+    </div>
+    <div class="article-box" id="article-view">
+      <div class="content" id="article-content">{{ result.article }}</div>
+    </div>
+    <textarea id="article-editor" style="display:none;width:100%;min-height:400px;background:var(--surface);border:1px solid var(--accent-dim);color:var(--text);padding:16px;font-family:var(--mono);font-size:0.78rem;line-height:1.7;resize:vertical;">{{ result.article }}</textarea>
+  </div>
+
+  <div class="section">
+    <h2>Onde Publicar</h2>
+    <div class="pub-box">
+      <div class="pub-title">{{ result.platform.platform }}</div>
+      {% for s in result.platform.steps %}
+      <div class="pub-step">{{ s }}</div>
+      {% endfor %}
+      <div style="margin-top:12px;font-size:0.78rem;color:var(--text-dim);">
+        <strong>SEO Boost:</strong> {{ result.platform.seo_boost }}
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Como Amplificar</h2>
+    <div class="pub-box">
+      <div class="pub-title">Estratégia: {{ result.amplification.primary }}</div>
+      {% for t in result.amplification.tactics %}
+      <div class="pub-step">{{ t }}</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if result.structured_data %}
+  <div class="section">
+    <h2>Schema.org JSON-LD — Inserir no &lt;head&gt; da Página</h2>
+    <div style="background:var(--surface2);border:1px solid var(--accent-dim);padding:12px 16px;margin-bottom:8px;font-size:0.75rem;color:var(--accent);">
+      ⚡ Insira este código dentro do <code>&lt;head&gt;</code> da sua página publicada para ativar rich snippets no Google e aumentar a probabilidade de Knowledge Panel.
+    </div>
+    <div style="position:relative;">
+      <pre id="json-ld-block" style="background:var(--surface);border:1px solid var(--border);padding:16px;font-family:var(--mono);font-size:0.72rem;overflow-x:auto;white-space:pre-wrap;color:var(--text-dim);">&lt;script type="application/ld+json"&gt;
+{{ result.structured_data | tojson(indent=2) }}
+&lt;/script&gt;</pre>
+      <button onclick="copyJsonLd()" style="position:absolute;top:8px;right:8px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;background:var(--surface2);color:var(--accent);border:1px solid var(--accent-dim);border-radius:3px;cursor:pointer;">Copiar JSON-LD</button>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="section">
+    <h2>Checklist Antes de Publicar</h2>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:16px;">
+      {% set entity_count = result.article | lower | count(result.entity_name | lower) if result.entity_name else 0 %}
+      <div style="display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:0.72rem;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);"> Nome completo aparece no título (H1)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);"> Nome completo aparece no primeiro parágrafo
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);"> Meta description preenchida na plataforma (usar o campo abaixo)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);" {% if result.structured_data %}{% else %}{% endif %}> JSON-LD inserido no &lt;head&gt; (se publicando em site próprio)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);"> URL canônica configurada
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" style="accent-color:var(--accent);"> Solicitado indexação manual no Google Search Console após publicar
+        </label>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:var(--surface2);border-left:3px solid var(--accent-dim);font-size:0.72rem;color:var(--text-dim);">
+        <strong style="color:var(--accent);">Meta Description para copiar:</strong><br>
+        <span style="color:var(--text);">{{ result.seo.meta_description }}</span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if not result and not all_results %}
+  <p>Nenhum artigo gerado. Selecione um asset na página anterior.</p>
+  {% endif %}
+
+  <div class="btn-bar">
+    <a href="/content/{{ entity_slug }}" class="btn-back">&larr; Voltar ao Studio</a>
+    <a href="/battle-plan/{{ entity_slug }}" class="btn-back">Ver Battle Plan</a>
+    <button class="btn-copy" onclick="copyArticle()">📋 Copiar Artigo</button>
+  </div>
+
+  <script>
+    function copyArticle() {
+      const editor = document.getElementById('article-editor');
+      const view = document.getElementById('article-content');
+      const text = (editor && editor.style.display !== 'none')
+        ? editor.value
+        : (view ? view.innerText || view.textContent : '');
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        if (btn) { btn.textContent = '✓ Copiado!'; setTimeout(() => btn.textContent = 'Copiar Artigo', 2000); }
+      }).catch(() => {
+        const range = document.createRange();
+        range.selectNodeContents(view || document.body);
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        document.execCommand('copy'); sel.removeAllRanges();
+      });
+    }
+
+    function toggleEdit() {
+      const view = document.getElementById('article-view');
+      const editor = document.getElementById('article-editor');
+      const btn = document.getElementById('edit-toggle');
+      if (editor.style.display === 'none') {
+        editor.value = document.getElementById('article-content').innerText;
+        view.style.display = 'none'; editor.style.display = 'block';
+        btn.textContent = '✓ Confirmar Edição';
+      } else {
+        document.getElementById('article-content').textContent = editor.value;
+        editor.style.display = 'none'; view.style.display = 'block';
+        btn.textContent = '✎ Editar';
+      }
+    }
+
+    function copyById(viewId, editorId, btn) {
+      const editor = editorId ? document.getElementById(editorId) : null;
+      const view = document.getElementById(viewId);
+      const text = (editor && editor.style.display !== 'none')
+        ? editor.value : (view ? view.innerText || view.textContent : '');
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copiado!';
+        setTimeout(() => btn.textContent = orig, 2000);
+      });
+    }
+
+    function toggleEditById(viewId, editorId, btn) {
+      const view = document.getElementById(viewId);
+      const editor = document.getElementById(editorId);
+      if (editor.style.display === 'none') {
+        const contentId = viewId.replace('view-', 'content-');
+        const content = document.getElementById(contentId);
+        editor.value = content ? content.innerText : '';
+        view.style.display = 'none'; editor.style.display = 'block';
+        btn.textContent = '✓ Confirmar';
+      } else {
+        const contentId = viewId.replace('view-', 'content-');
+        const content = document.getElementById(contentId);
+        if (content) content.textContent = editor.value;
+        editor.style.display = 'none'; view.style.display = 'block';
+        btn.textContent = '✎ Editar';
+      }
+    }
+
+    function copyJsonLd() {
+      const el = document.getElementById('json-ld-block');
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText || el.textContent).then(() => {
+        event.target.textContent = '✓ Copiado!';
+        setTimeout(() => event.target.textContent = 'Copiar JSON-LD', 2000);
+      });
+    }
+  </script>
+
+</div>
+</body>
+</html>

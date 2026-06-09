@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>CouncilIA — Auditoria de Reputação</h1>
+<form method="post" action="/">
+  <table style="border-collapse:collapse; width:100%;">
+    <tr>
+      <td style="padding: 8px 0; width:120px;">Entidade</td>
+      <td><input type="text" name="entity_name" required placeholder="ex. Thiago Nigro"
+           style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;">País</td>
+      <td><input type="text" name="country" required placeholder="ex. Brasil"
+           style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;">Setor</td>
+      <td><input type="text" name="industry" required placeholder="ex. Finanças"
+           style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="padding-top:16px;">
+        <button type="submit"
+          style="padding:8px 24px; font-family:monospace; font-size:1rem; cursor:pointer; background:#111; color:#fff; border:none;">
+          Executar Auditoria
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>
+{% endblock %}

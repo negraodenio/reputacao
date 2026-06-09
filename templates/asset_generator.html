@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>CouncilIA — Gerador de Ativos</h1>
+<p style="margin-bottom:2rem; color:#888; font-size:0.9rem;">
+  Gere ativos narrativos prontos para publicação para posicionamento de reputação.
+  <br><a href="/">← Console do operador</a>
+</p>
+
+<form method="post" action="/assets">
+  <table style="border-collapse:collapse; width:100%;">
+    <tr>
+      <td style="padding: 8px 0; width:140px;">Entidade</td>
+      <td><input type="text" name="entity_name" required placeholder="ex. Thiago Nigro"
+           value="{{ entity_name or '' }}"
+           style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;">Tipo de Ativo</td>
+      <td>
+        <select name="asset_type" required
+          style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;">
+          <option value="">Selecione o tipo de ativo...</option>
+          <option value="linkedin_article"         {% if asset_type == 'linkedin_article' %}selected{% endif %}>Artigo LinkedIn</option>
+          <option value="executive_bio"            {% if asset_type == 'executive_bio' %}selected{% endif %}>Biografia Executiva</option>
+          <option value="legal_clarification"      {% if asset_type == 'legal_clarification' %}selected{% endif %}>Esclarecimento Jurídico</option>
+          <option value="institutional_profile"    {% if asset_type == 'institutional_profile' %}selected{% endif %}>Perfil Institucional</option>
+          <option value="interview_talking_points" {% if asset_type == 'interview_talking_points' %}selected{% endif %}>Pontos para Entrevista</option>
+          <option value="press_release"            {% if asset_type == 'press_release' %}selected{% endif %}>Comunicado à Imprensa</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0; vertical-align:top;">Contexto Estratégico</td>
+      <td>
+        <textarea name="strategic_context" rows="6" placeholder="Descreva a situação, o objetivo narrativo e tópicos sensíveis a abordar ou evitar..."
+          style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc; resize:vertical;">{{ strategic_context or '' }}</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="padding-top:16px;">
+        <button type="submit"
+          style="padding:8px 24px; font-family:monospace; font-size:1rem; cursor:pointer; background:#111; color:#fff; border:none;">
+          Gerar Ativo
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% if error %}
+  <p style="color:#c00; border:1px solid #c00; padding:12px; margin-top:32px;">
+    Geração falhou: {{ error }}
+  </p>
+{% endif %}
+
+{% if generated_asset %}
+  <div style="margin-top:32px; padding:16px; border-top:2px solid #111;">
+    <p style="margin-bottom:12px; font-size:0.85rem; color:#888;">
+      <strong>{{ entity_name }}</strong> — {{ asset_type_label }}
+      &nbsp;<span style="color:#aaa;">({{ generated_asset | length }} chars)</span>
+    </p>
+    <pre style="white-space:pre-wrap; line-height:1.7; font-size:0.95rem; background:#f8f8f8; padding:16px; border:1px solid #ddd;">{{ generated_asset }}</pre>
+  </div>
+{% endif %}
+{% endblock %}

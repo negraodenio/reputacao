@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CouncilIA Reputation</title>
+  <style>
+    body { font-family: monospace; max-width: 860px; margin: 60px auto; padding: 0 24px; background: #fff; color: #111; }
+    h1 { font-size: 1.2rem; letter-spacing: 0.05em; margin-bottom: 2rem; }
+    a { color: #111; }
+
+    #op-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    #op-overlay.active {
+      opacity: 1; pointer-events: auto;
+    }
+    #op-box {
+      background: #111; border: 1px solid #333; border-radius: 12px;
+      padding: 48px 56px; text-align: center;
+      min-width: 320px;
+    }
+    #op-badge {
+      font-size: 0.65rem; letter-spacing: 0.2em; color: #c8a96e;
+      border: 1px solid #c8a96e; display: inline-block;
+      padding: 3px 10px; border-radius: 2px; margin-bottom: 20px;
+    }
+    #op-spinner {
+      width: 36px; height: 36px; margin: 20px auto 24px;
+      border: 3px solid #333; border-top-color: #e0e0e0;
+      border-radius: 50%; animation: op-spin 0.8s linear infinite;
+    }
+    @keyframes op-spin { to { transform: rotate(360deg); } }
+    #op-subtitle {
+      font-size: 0.7rem; color: #666; letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    #op-status-text {
+      font-size: 0.95rem; color: #e0e0e0; font-family: monospace;
+      min-height: 1.4em;
+    }
+
+    #build-version {
+      position: fixed;
+      top: 10px;
+      right: 12px;
+      z-index: 10000;
+      background: #111;
+      color: #c8a96e;
+      border: 1px solid #333;
+      border-radius: 3px;
+      padding: 4px 8px;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="build-version">Build v2026.05.17.15</div>
+  {% block content %}{% endblock %}
+
+  <div id="op-overlay">
+    <div id="op-box">
+      <div id="op-badge">CONFIDENCIAL</div>
+      <div id="op-subtitle">Inteligência Narrativa Operacional</div>
+      <div id="op-spinner"></div>
+      <div id="op-status-text">Inicializando...</div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var messages = [
+        "Analisando ambiente narrativo\u2026",
+        "Expandindo associa\u00E7\u00F5es da entidade\u2026",
+        "Extraindo intelig\u00EAncia dos artigos\u2026",
+        "Mapeando press\u00E3o narrativa\u2026",
+        "Gerando an\u00E1lise estrat\u00E9gica\u2026",
+        "Finalizando relat\u00F3rio de intelig\u00EAncia\u2026"
+      ];
+      var overlay = document.getElementById("op-overlay");
+      var textEl = document.getElementById("op-status-text");
+
+      document.addEventListener("submit", function(e) {
+        var form = e.target;
+        if (form.tagName !== "FORM") return;
+        if (form.method && form.method.toUpperCase() !== "POST") return;
+        // Disable all submit buttons immediately to prevent double-submission
+        var btns = form.querySelectorAll('[type="submit"], button:not([type])');
+        btns.forEach(function(b) {
+          b.disabled = true;
+          b.style.opacity = "0.5";
+          b.style.cursor = "not-allowed";
+        });
+        overlay.classList.add("active");
+        var idx = 0;
+        textEl.textContent = messages[0];
+        setInterval(function() {
+          idx = (idx + 1) % messages.length;
+          textEl.textContent = messages[idx];
+        }, 2000);
+      });
+    })();
+  </script>
+</body>
+</html>

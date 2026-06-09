@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505; --surface: #0d0d0d; --surface-2: #111; --border: #1a1a1a; --border-mid: #222;
+      --text: #e8e8e8; --text-dim: #888; --text-faint: #444;
+      --accent: #c8a96e; --accent-dim: #7a6040;
+      --red: #c0392b; --orange: #d35400; --yellow: #c9a227; --green: #27ae60;
+      --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.75; }
+    .page { max-width: 800px; margin: 0 auto; padding: 60px 64px 100px; }
+
+    .header { border-bottom: 1px solid var(--border); padding-bottom: 36px; margin-bottom: 48px; }
+    .brand { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; }
+    .brand span { color: var(--accent); }
+    .entity-name { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
+    .back { font-size: 0.75rem; margin-bottom: 12px; }
+    .back a { color: var(--text-dim); text-decoration: none; }
+    .back a:hover { color: var(--accent); }
+
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--border-mid); }
+
+    .tl-entry { position: relative; margin-bottom: 28px; padding-left: 24px; }
+    .tl-dot { position: absolute; left: -26px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid; background: var(--surface); }
+    .tl-dot.improved { border-color: var(--green); }
+    .tl-dot.worsened { border-color: var(--red); }
+    .tl-dot.stable { border-color: var(--text-faint); }
+
+    .tl-date { font-family: var(--mono); font-size: 0.72rem; color: var(--text-faint); margin-bottom: 4px; }
+    .tl-card { background: var(--surface); border: 1px solid var(--border-mid); border-radius: 6px; padding: 16px 20px; }
+    .tl-row { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+    .tl-threat { font-family: var(--mono); font-size: 0.85rem; font-weight: 500; }
+    .tl-threat.t-CRITICAL { color: var(--red); }
+    .tl-threat.t-HIGH { color: var(--orange); }
+    .tl-threat.t-MEDIUM { color: var(--yellow); }
+    .tl-threat.t-LOW { color: var(--green); }
+    .tl-meta { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); }
+    .tl-meta span { margin-right: 16px; }
+    .tl-direction { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .tl-direction.worsened { color: var(--red); }
+    .tl-direction.improved { color: var(--green); }
+    .tl-direction.stable { color: var(--text-faint); }
+
+    .empty { padding: 48px; text-align: center; color: var(--text-faint); font-family: var(--mono); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="brand">CouncilIA <span>Intelligence</span></div>
+    <div class="back"><a href="/snapshots">&larr; Snapshot Center</a></div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div style="color:var(--text-faint);font-size:0.75rem;">{{ timeline|length }} snapshots &middot; Gerado {{ generated_at }}</div>
+  </div>
+
+  {% if timeline %}
+  <div class="timeline">
+    {% for t in timeline %}
+    <div class="tl-entry">
+      <div class="tl-dot {{ t.direction }}"></div>
+      <div class="tl-date">{{ t.date }}</div>
+      <div class="tl-card">
+        <div class="tl-row">
+          <div class="tl-threat t-{{ t.threat }}">{{ t.threat }}</div>
+          <div class="tl-meta">
+            <span>Momentum: <span class="momentum-{{ t.momentum|lower }}">{{ t.momentum }}</span></span>
+            <span>Neg: {{ t.neg_ratio|int }}%</span>
+            <span>Ativos: {{ t.controlled }}/10</span>
+          </div>
+          <div class="tl-direction {{ t.direction }}">{{ t.direction }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">Nenhum snapshot disponível.</div>
+  {% endif %}
+</div>
+
+<style>
+  .momentum-escalating { color: var(--red); }
+  .momentum-declining { color: var(--green); }
+  .momentum-stable { color: var(--text-dim); }
+</style>
+</body>
+</html>

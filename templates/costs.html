@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custos — CouncilIA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505; --surface: #0d0d0d; --surface-2: #111; --border: #1a1a1a; --border-mid: #222;
+      --text: #e8e8e8; --text-dim: #888; --text-faint: #444;
+      --accent: #c8a96e; --accent-dim: #7a6040;
+      --red: #c0392b; --green: #27ae60;
+      --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.75; }
+    .page { max-width: 900px; margin: 0 auto; padding: 60px 64px 100px; }
+
+    .header { border-bottom: 1px solid var(--border); padding-bottom: 36px; margin-bottom: 48px; }
+    .brand { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; }
+    .brand span { color: var(--accent); }
+    h1 { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; margin-bottom: 8px; }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 48px; }
+    .summary-cell { background: var(--surface); padding: 24px; text-align: center; }
+    .summary-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 8px; }
+    .summary-value { font-family: var(--mono); font-size: 1.2rem; font-weight: 500; color: var(--accent); }
+
+    .filter-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 32px; flex-wrap: wrap; }
+    .filter-bar select, .filter-bar input { padding: 6px 10px; font-family: var(--mono); font-size: 0.8rem; border: 1px solid var(--border-mid); border-radius: 3px; background: var(--surface-2); color: var(--text); }
+    .filter-bar button { padding: 6px 16px; font-family: var(--mono); font-size: 0.75rem; border: 1px solid var(--accent-dim); border-radius: 3px; background: transparent; color: var(--accent); cursor: pointer; }
+
+    .breakdown { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); margin-bottom: 32px; }
+    .br-row { display: flex; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid var(--border-mid); font-family: var(--mono); font-size: 0.82rem; }
+    .br-row:last-child { border-bottom: none; }
+    .br-service { color: var(--text-dim); }
+    .br-cost { color: var(--text); }
+
+    .entry-log { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--surface); font-size: 0.78rem; }
+    .el-row { display: grid; grid-template-columns: 1fr 80px 120px 1fr; gap: 0; padding: 8px 16px; border-bottom: 1px solid var(--border-mid); font-family: var(--mono); }
+    .el-row:last-child { border-bottom: none; }
+    .el-service { color: var(--accent); }
+    .el-cost { color: var(--text); text-align: right; }
+    .el-entity { color: var(--text-dim); }
+    .el-time { color: var(--text-faint); font-size: 0.7rem; }
+
+    .empty { padding: 48px; text-align: center; color: var(--text-faint); font-family: var(--mono); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="brand">CouncilIA <span>Operations</span></div>
+    <h1>Controle de Custos</h1>
+    <div style="color:var(--text-faint);font-size:0.85rem;">{{ costs.count }} opera&ccedil;&otilde;es registradas</div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <div class="summary-label">Custo Total</div>
+      <div class="summary-value">${{ "%.4f"|format(costs.total_cost) }}</div>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-label">Opera&ccedil;&otilde;es</div>
+      <div class="summary-value">{{ costs.count }}</div>
+    </div>
+    <div class="summary-cell">
+      <div class="summary-label">&Uacute;ltima</div>
+      <div class="summary-value" style="font-size:0.85rem;">
+        {% if costs.entries %}
+        {{ costs.entries[-1].timestamp[:10] }}
+        {% else %}---{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <form method="get" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <select name="entity">
+        <option value="">Todas entidades</option>
+        {% for e in entities %}
+        <option value="{{ e.slug }}" {% if entity == e.slug %}selected{% endif %}>{{ e.entity }}</option>
+        {% endfor %}
+      </select>
+      <input type="number" name="last" value="200" min="10" max="10000" style="width:80px;">
+      <button type="submit">Filtrar</button>
+    </form>
+  </div>
+
+  {% if costs.by_service %}
+  <div class="breakdown">
+    <div style="padding:12px 20px;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;border-bottom:1px solid var(--border);">Por Servi&ccedil;o</div>
+    {% for svc, cost in costs.by_service.items()|sort(attribute='1', reverse=True) %}
+    <div class="br-row">
+      <span class="br-service">{{ svc }}</span>
+      <span class="br-cost">${{ "%.4f"|format(cost) }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div style="margin-bottom:24px;font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;color:var(--text-faint);">Log de Opera&ccedil;&otilde;es (&uacute;ltimas 50)</div>
+  {% if costs.entries %}
+  <div class="entry-log">
+    {% for e in costs.entries|reverse %}
+    <div class="el-row">
+      <span class="el-service">{{ e.service }}</span>
+      <span class="el-cost">${{ "%.4f"|format(e.cost) }}</span>
+      <span class="el-entity">{{ e.entity[:18] }}{% if e.entity|length > 18 %}&hellip;{% endif %}</span>
+      <span class="el-time">{{ e.timestamp[:16] }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">Nenhuma opera&ccedil;&atilde;o registrada.</div>
+  {% endif %}
+</div>
+</body>
+</html>

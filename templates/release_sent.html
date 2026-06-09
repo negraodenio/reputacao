@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Payload — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0a;--surface:#111;--surface2:#161616;--border:#222;--border-mid:#2a2a2a;--text:#e8e8e8;--text-dim:#888;--text-faint:#444;--accent:#c8a96e;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+    .page{max-width:800px;margin:0 auto;padding:40px 48px 80px}
+    h1{font-size:22px;font-weight:600;margin-bottom:4px}
+    .subtitle{color:var(--text-dim);font-family:var(--mono);font-size:11px;margin-bottom:32px}
+    .payload-box{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:24px;margin-bottom:24px}
+    pre{white-space:pre-wrap;font-family:var(--mono);font-size:13px;color:var(--text);line-height:1.6}
+    .btn{padding:10px 24px;background:var(--accent);color:#000;border:none;border-radius:4px;font-family:var(--mono);font-size:12px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block}
+  </style>
+</head>
+<body>
+<div class="page">
+  <h1>Release Payload Gerado</h1>
+  <div class="subtitle">{{ entity_name }} → {{ portal.name }} — Gerado em {{ generated_at }}</div>
+
+  <div class="payload-box">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Portal: {{ portal.name }} | Método: {{ portal.method }} | Velocidade: {{ portal.speed }}</div>
+
+    {% if portal.method == "paid_api" %}
+    <pre>{{ payload|tojson(indent=2) }}</pre>
+    {% else %}
+    <pre>{{ payload }}</pre>
+    {% endif %}
+  </div>
+
+  <div style="margin-bottom:32px;padding:16px;background:var(--surface2);border-left:3px solid var(--accent);font-size:13px">
+    <strong>Instruções:</strong><br>
+    {{ portal.instructions }}
+  </div>
+
+  <a href="/news-distribution/{{ entity_name }}" class="btn">← Voltar ao News Distribution</a>
+
+  <p style="color:var(--text-faint);font-size:11px;margin-top:48px;font-family:var(--mono)">CouncilIA — Google News Distribution Engine</p>
+</div>
+</body>
+</html>

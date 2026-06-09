@@ -1,0 +1,132 @@
+{
+  "entity": "Danielle Fontele",
+  "date": "2026-05-16",
+  "serp": [
+    {
+      "position": 1,
+      "title": "Daniele Fonteles (@danisfonteles)",
+      "link": "https://www.instagram.com/danisfonteles/",
+      "snippet": "Log in · Open app · danisfonteles's profile picture. danisfonteles. Daniele Fonteles. 1,536 followers. 838 following. Siga @mundomix01. Follow. Message ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 2,
+      "title": "2 \"Danielle Fonteles\" profiles",
+      "link": "https://www.linkedin.com/pub/dir/Danielle/Fonteles",
+      "snippet": "View the profiles of professionals named \"Danielle Fonteles\" on LinkedIn. There are 2 professionals named \"Danielle Fonteles\", who use LinkedIn to exchange ...",
+      "domain": "linkedin.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 3,
+      "title": "Ex-secretária do Careca confirma negócios com Danielle ...",
+      "link": "https://www.youtube.com/watch?v=qMXnoBdj4OM",
+      "snippet": "... Danielle Miranda Fonteles, ex-marqueteira do PT. Em depoimento à CPMI (Comissão Parlamentar Mista de Inquérito) do INSS, a ex-secretária ...",
+      "domain": "youtube.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 4,
+      "title": "Quem é a publicitária do PT que era sócia do “Careca” ...",
+      "link": "https://www.gazetadopovo.com.br/republica/quem-e-a-publicitaria-do-pt-que-era-socia-do-careca-do-inss/",
+      "snippet": "Marketeira de Dilma, Danielle Miranda Fonteles virou alvo da CPMI do INSS por movimentação; Confira na Gazeta do Povo.",
+      "domain": "gazetadopovo.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 5,
+      "title": "Danielle Fonteles - nobot",
+      "link": "https://pt.linkedin.com/in/danielle-fonteles-3753b813",
+      "snippet": "nobot · Experiência: https://tis-research.eu · Localidade: Lisboa · 81 conexões no LinkedIn. Veja o perfil de Danielle Fonteles no LinkedIn, uma comunidade ...",
+      "domain": "pt.linkedin.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 6,
+      "title": "Danielle Fonteles | Lauro Jardim - O Globo",
+      "link": "https://blogs.oglobo.globo.com/lauro-jardim/tag/danielle-fonteles/",
+      "snippet": "Lauro Jardim. Começou no jornalismo em 1989, no Globo. Passou pelas redações de Istoé, JB e Exame. Entre 1998 e setembro de 2015, trabalhou em Veja, ...",
+      "domain": "blogs.oglobo.globo.com",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 7,
+      "title": "danielle fonteles",
+      "link": "https://www.tiktok.com/@danielle.fonteles",
+      "snippet": "DANIELLE FONTELES (@danielle.fonteles) no TikTok |9311 curtidas.252 seguidores.Mãe do Ben e do Daniel ❤️.Assista ao último vídeo de DANIELLE FONTELES ...",
+      "domain": "tiktok.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    },
+    {
+      "position": 8,
+      "title": "Governistas protegem publicitária que delatou PT e ...",
+      "link": "https://platobr.com.br/governo-protegeu-publicitaria-que-delatou-pt-e-recebeu-milhoes-do-careca-do-inss",
+      "snippet": "A base do governo na CPI mista do INSS articulou, nesta quinta-feira, 16, para barrar a quebra do sigilo fiscal e bancário da publicitária ...",
+      "domain": "platobr.com.br",
+      "type": "blog",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 9,
+      "title": "Saiba quem é a publicitária que entrou na mira da CPMI do ...",
+      "link": "https://veja.abril.com.br/coluna/radar/saiba-quem-e-a-publicitaria-que-entrou-na-mira-da-cpmi-do-inss/",
+      "snippet": "Após Radar revelar transação de R$ 5 milhões entre Danielle Fonteles e Careca do INSS, parlamentares pedem convocação e quebra de sigilo da ...",
+      "domain": "veja.abril.com.br",
+      "type": "mainstream",
+      "sentiment": "neutral",
+      "controlled": false
+    },
+    {
+      "position": 10,
+      "title": "Danny Fonteles🌙 (@daniele.fonteles1)",
+      "link": "https://www.instagram.com/daniele.fonteles1/",
+      "snippet": "billy14souza ❤️ •@mayk.kayk •selenofilia •SOMOS A SOMA DAS NOSSAS MEMÓRIAS •\" HO'OMAU \"2.2K+ followers · 1.1K+ following. See photos and videos from ...",
+      "domain": "instagram.com",
+      "type": "social",
+      "sentiment": "neutral",
+      "controlled": true
+    }
+  ],
+  "domains": [
+    "instagram.com",
+    "linkedin.com",
+    "youtube.com",
+    "gazetadopovo.com.br",
+    "pt.linkedin.com",
+    "blogs.oglobo.globo.com",
+    "tiktok.com",
+    "platobr.com.br",
+    "veja.abril.com.br",
+    "instagram.com"
+  ],
+  "sentiment_counts": {
+    "negative": 0,
+    "neutral": 10,
+    "positive": 0
+  },
+  "controlled_assets": 6,
+  "page_1_negative_ratio": 0.0,
+  "top_3_negative_count": 0,
+  "narrative_pressure": {
+    "count_7d": 0,
+    "count_30d": 0,
+    "momentum": "Declining",
+    "most_aggressive": null
+  }
+}

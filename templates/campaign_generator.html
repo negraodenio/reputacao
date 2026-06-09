@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>CouncilIA — Gerador de Campanha</h1>
+<p style="margin-bottom:2rem; color:#888; font-size:0.9rem;">
+  Gere campanhas de reputação coordenadas de 90 dias com implantação por fases.
+  <br><a href="/">← Console do operador</a> &nbsp;|&nbsp; <a href="/assets">← Gerador de ativos</a>
+</p>
+
+<form method="post" action="/campaign">
+  <table style="border-collapse:collapse; width:100%;">
+    <tr>
+      <td style="padding: 8px 0; width:150px;">Entidade</td>
+      <td><input type="text" name="entity" required placeholder="ex. Thiago Nigro"
+           value="{{ entity_name or '' }}"
+           style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;">Nível de Ameaça</td>
+      <td>
+        <select name="threat_level" required
+          style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;">
+          <option value="">Selecione o nível de ameaça...</option>
+          <option value="LOW"      {% if threat_level == 'LOW' %}selected{% endif %}>BAIXO — Monitoramento de rotina</option>
+          <option value="MEDIUM"   {% if threat_level == 'MEDIUM' %}selected{% endif %}>MÉDIO — Pressão narrativa ativa</option>
+          <option value="HIGH"     {% if threat_level == 'HIGH' %}selected{% endif %}>ALTO — Risco escalando</option>
+          <option value="CRITICAL" {% if threat_level == 'CRITICAL' %}selected{% endif %}>CRÍTICO — Crise de reputação ativa</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0;">Estado Narrativo</td>
+      <td>
+        <select name="narrative_state" required
+          style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc;">
+          <option value="">Selecione o estado narrativo...</option>
+          <option value="Exposição Crítica"         {% if narrative_state == 'Exposição Crítica' %}selected{% endif %}>Exposição Crítica</option>
+          <option value="Crise Escalando"           {% if narrative_state == 'Crise Escalando' %}selected{% endif %}>Crise Escalando</option>
+          <option value="Estabilização Ativa"       {% if narrative_state == 'Estabilização Ativa' %}selected{% endif %}>Estabilização Ativa</option>
+          <option value="Recuperação Narrativa"     {% if narrative_state == 'Recuperação Narrativa' %}selected{% endif %}>Recuperação Narrativa</option>
+          <option value="Reposicionamento de Autoridade" {% if narrative_state == 'Reposicionamento de Autoridade' %}selected{% endif %}>Reposicionamento de Autoridade</option>
+          <option value="Reputação Estável"         {% if narrative_state == 'Reputação Estável' %}selected{% endif %}>Reputação Estável</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 8px 0; vertical-align:top;">Objetivo Estratégico</td>
+      <td>
+        <textarea name="objective" rows="5" placeholder="Qual problema narrativo esta campanha resolve? ex. Reduzir concentração de mídia negativa e aumentar presença institucional controlada na página 1."
+          style="width:100%; padding:6px; font-family:monospace; font-size:1rem; border:1px solid #ccc; resize:vertical;">{{ objective or '' }}</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td style="padding-top:16px;">
+        <button type="submit"
+          style="padding:8px 24px; font-family:monospace; font-size:1rem; cursor:pointer; background:#111; color:#fff; border:none;">
+          Gerar Campanha
+        </button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+{% if error %}
+  <p style="color:#c00; border:1px solid #c00; padding:12px; margin-top:32px;">
+    Geração falhou: {{ error }}
+  </p>
+{% endif %}
+
+{% if campaign %}
+  <div style="margin-top:32px; padding:16px; border-top:2px solid #111;">
+    <p style="margin-bottom:12px; font-size:0.85rem; color:#888;">
+      <strong>{{ entity_name }}</strong> — {{ threat_level }} / {{ narrative_state }}
+      &nbsp;<span style="color:#aaa;">({{ campaign | length }} chars)</span>
+    </p>
+    <pre style="white-space:pre-wrap; line-height:1.7; font-size:0.95rem; background:#f8f8f8; padding:16px; border:1px solid #ddd;">{{ campaign }}</pre>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Studio — {{ entity_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+      --bg:#050505; --surface:#0d0d0d; --surface-2:#111; --border:#1a1a1a; --border-mid:#222;
+      --text:#e8e8e8; --text-dim:#888; --text-faint:#444;
+      --accent:#c8a96e; --accent-dim:#7a6040;
+      --red:#c0392b; --orange:#d35400; --yellow:#c9a227; --green:#27ae60; --blue:#2980b9;
+      --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; line-height:1.75; }
+    .page { max-width:1060px; margin:0 auto; padding:52px 48px 100px; }
+    .header { border-bottom:1px solid var(--border); padding-bottom:28px; margin-bottom:36px; }
+    .brand { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; }
+    .brand span { color:var(--accent); }
+    .entity-name { font-family:var(--mono); font-size:1.7rem; font-weight:600; margin-bottom:8px; }
+    .header-meta { font-family:var(--mono); font-size:0.72rem; color:var(--text-faint); }
+    .header-meta span { color:var(--text-dim); margin-right:20px; }
+    h2 { font-family:var(--mono); font-size:0.78rem; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .section { margin-bottom:40px; }
+    .action-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+
+    /* Asset grid */
+    .asset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .asset-card { background:var(--surface); padding:20px; display:flex; flex-direction:column; gap:6px; position:relative; }
+    .asset-card.cached { background:#0a0f0a; }
+    .asset-card.cached::before { content:""; position:absolute; top:0; left:0; right:0; height:2px; background:var(--green); }
+    .asset-name { font-family:var(--mono); font-size:0.78rem; color:var(--accent); font-weight:500; }
+    .asset-intent { font-size:0.68rem; color:var(--text-dim); }
+    .asset-meta { font-size:0.62rem; color:var(--text-faint); font-family:var(--mono); }
+    .asset-kw { font-family:var(--mono); font-size:0.58rem; color:var(--text-faint); }
+
+    /* Cache badge */
+    .cache-badge { font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; padding:2px 8px; border-radius:2px; text-transform:uppercase; }
+    .badge-cached { background:rgba(39,174,96,.15); color:var(--green); border:1px solid rgba(39,174,96,.3); }
+    .badge-pending { background:rgba(200,169,110,.08); color:var(--accent-dim); border:1px solid rgba(200,169,110,.2); }
+
+    /* Buttons */
+    .btn-gen { padding:7px 14px; font-family:var(--mono); font-size:0.7rem; cursor:pointer; background:var(--accent); color:#000; border:none; border-radius:3px; letter-spacing:0.04em; text-decoration:none; display:inline-block; text-align:center; }
+    .btn-gen:hover { opacity:0.85; }
+    .btn-view { padding:7px 14px; font-family:var(--mono); font-size:0.7rem; cursor:pointer; background:transparent; color:var(--green); border:1px solid rgba(39,174,96,.4); border-radius:3px; text-decoration:none; display:inline-block; text-align:center; }
+    .btn-view:hover { background:rgba(39,174,96,.08); }
+    .btn-pub { padding:7px 14px; font-family:var(--mono); font-size:0.7rem; cursor:pointer; background:transparent; color:#6a9aaa; border:1px solid #1a3d4d; border-radius:3px; text-decoration:none; display:inline-block; }
+    .btn-pub:hover { background:#0a1a22; }
+    .btn-gen-all { padding:10px 24px; font-family:var(--mono); font-size:0.8rem; cursor:pointer; background:var(--accent); color:#000; border:none; border-radius:4px; letter-spacing:0.04em; }
+    .btn-site { padding:10px 20px; font-family:var(--mono); font-size:0.78rem; cursor:pointer; background:transparent; color:var(--blue); border:1px solid var(--blue); border-radius:4px; }
+    .btn-secondary { padding:10px 20px; font-family:var(--mono); font-size:0.78rem; background:var(--surface-2); color:var(--text-dim); border:1px solid var(--border-mid); border-radius:4px; text-decoration:none; }
+
+    /* Cache summary bar */
+    .cache-bar { display:flex; gap:16px; padding:14px 18px; background:var(--surface); border:1px solid var(--border); margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+    .cache-stat { font-family:var(--mono); font-size:0.72rem; }
+    .cache-stat .val { font-size:1.1rem; font-weight:600; }
+    .stat-green { color:var(--green); }
+    .stat-yellow { color:var(--yellow); }
+
+    /* Publish panel */
+    .publish-panel { background:var(--surface); border:1px solid var(--border-mid); padding:20px 24px; }
+    .publish-panel-title { font-family:var(--mono); font-size:0.72rem; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px; }
+    .pub-step-row { display:flex; gap:12px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--border); font-size:0.78rem; }
+    .pub-step-row:last-child { border-bottom:none; }
+    .pub-num { font-family:var(--mono); font-size:0.65rem; font-weight:600; color:var(--accent); min-width:20px; margin-top:1px; }
+    .pub-text { color:var(--text-dim); line-height:1.6; }
+    .pub-link { color:var(--accent); text-decoration:none; font-family:var(--mono); font-size:0.68rem; }
+    .pub-link:hover { opacity:0.8; }
+
+    /* strategy boxes */
+    .strat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .strategy-box { background:var(--surface); border:1px solid var(--border); padding:16px 18px; }
+    .strategy-title { font-family:var(--mono); font-size:0.68rem; color:var(--accent); margin-bottom:6px; }
+    .strategy-text { font-size:0.75rem; color:var(--text-dim); line-height:1.6; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="brand"><span>CouncilIA</span> · Content Production Studio</div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">
+      <span>{{ generated_at }}</span>
+      <span>{{ content_assets|length }} ativos no plano</span>
+      {% if has_cache %}<span style="color:var(--green);">{{ cached_articles|length }} em cache</span>{% endif %}
+    </div>
+  </div>
+
+  <!-- Cache summary -->
+  {% if has_cache %}
+  <div class="cache-bar">
+    <div class="cache-stat"><span class="val stat-green">{{ cached_articles|length }}</span> <span>artigos prontos</span></div>
+    <div style="color:var(--text-faint);">|</div>
+    {% set missing_count = content_assets|length - cached_articles|length %}
+    {% if missing_count > 0 %}
+    <div class="cache-stat"><span class="val stat-yellow">{{ missing_count }}</span> <span>a gerar</span></div>
+    <div style="color:var(--text-faint);">|</div>
+    {% endif %}
+    <div style="margin-left:auto;display:flex;gap:8px;">
+      <a href="/publish-assist/{{ entity_slug }}" class="btn-pub">📤 Assistente de Publicação</a>
+      <a href="/semantic-variations/{{ entity_slug }}" class="btn-secondary" style="font-size:0.72rem;padding:7px 14px;">🔀 Variações Semânticas</a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Batch actions -->
+  <div class="section">
+    <h2>Ações em Lote</h2>
+    <div class="action-row">
+      <form method="post" action="/content/{{ entity_slug }}/generate-all" style="display:inline;">
+        <button type="submit" class="btn-gen-all">⚡ Gerar Todos (7 artigos)</button>
+      </form>
+      <form method="post" action="/content/{{ entity_slug }}/build-site" style="display:inline;">
+        <button type="submit" class="btn-site">🌐 Criar Site Jornalístico</button>
+      </form>
+      <a href="/distribution/{{ entity_slug }}" class="btn-secondary">🌐 Distribution Matrix</a>
+      <a href="/narrative-blast/{{ entity_slug }}" class="btn-secondary">🚀 Narrative Blast</a>
+      <a href="/quick-publish/{{ entity_slug }}" style="padding:10px 20px;font-family:var(--mono);font-size:0.78rem;background:rgba(39,174,96,.12);color:var(--green);border:1px solid rgba(39,174,96,.3);border-radius:4px;text-decoration:none;">⚡ Publicar via API</a>
+    </div>
+  </div>
+
+  <!-- Asset grid with cache status -->
+  <div class="section">
+    <h2>Ativos de Conteúdo — Estado Atual</h2>
+    <div class="asset-grid">
+      {% for c in content_assets %}
+      {% set is_cached = c.asset in cached_types %}
+      <div class="asset-card {% if is_cached %}cached{% endif %}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+          <div class="asset-name">{{ c.label }}</div>
+          <span class="cache-badge {% if is_cached %}badge-cached{% else %}badge-pending{% endif %}">
+            {% if is_cached %}Gerado{% else %}Pendente{% endif %}
+          </span>
+        </div>
+        <div class="asset-intent">{{ c.intent }} · Alvo: {{ c.target_position }}</div>
+        <div class="asset-meta">{{ c.velocity }} · {{ c.tactic.replace('_',' ') }}</div>
+        <div class="asset-kw">{{ c.seo_keywords[:2]|join(' · ') }}</div>
+        <div style="display:flex;gap:6px;margin-top:auto;padding-top:12px;flex-wrap:wrap;">
+          {% if is_cached %}
+          <form method="post" action="/content/{{ entity_slug }}">
+            <input type="hidden" name="asset_type" value="{{ c.asset }}">
+            <button type="submit" class="btn-gen" style="font-size:0.65rem;padding:5px 10px;">↺ Regenerar</button>
+          </form>
+          <a href="/publish-assist/{{ entity_slug }}" class="btn-view" style="font-size:0.65rem;padding:5px 10px;">📤 Publicar</a>
+          {% else %}
+          <form method="post" action="/content/{{ entity_slug }}">
+            <input type="hidden" name="asset_type" value="{{ c.asset }}">
+            <button type="submit" class="btn-gen">Gerar {{ c.label }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Roteiro YouTube — card fixo -->
+      {% set yt_cached = "roteiro_youtube" in cached_types %}
+      <div class="asset-card {% if yt_cached %}cached{% endif %}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+          <div class="asset-name">Roteiro YouTube</div>
+          <span class="cache-badge {% if yt_cached %}badge-cached{% else %}badge-pending{% endif %}">
+            {% if yt_cached %}Gerado{% else %}Pendente{% endif %}
+          </span>
+        </div>
+        <div class="asset-intent">video · DA 100 · transcrições indexam</div>
+        <div class="asset-meta">2-5 dias · YouTube SEO</div>
+        <div class="asset-kw">{{ entity_name }} youtube · {{ entity_name }} video</div>
+        <div style="margin-top:auto;padding-top:12px;">
+          <form method="post" action="/content/{{ entity_slug }}/generate-video">
+            <input type="hidden" name="asset_subtype" value="posicionamento_institucional">
+            <button type="submit" class="btn-gen" style="{% if yt_cached %}font-size:0.65rem;padding:5px 10px;{% endif %}">
+              {% if yt_cached %}↺ Regenerar{% else %}Gerar Roteiro{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cached articles — preview rápido -->
+  {% if has_cache %}
+  <div class="section">
+    <h2>Artigos em Cache — Prontos para Publicar</h2>
+    <div style="border:1px solid var(--border);overflow:hidden;">
+      {% for a in cached_articles %}
+      <div style="display:grid;grid-template-columns:1.5fr 2fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid var(--border);font-size:0.78rem;align-items:center;">
+        <div style="font-family:var(--mono);font-size:0.72rem;color:var(--accent);">{{ a.asset_type }}</div>
+        <div style="color:var(--text-dim);font-size:0.72rem;">{{ a.seo.title[:55] if a.seo else a.entity_name }}{% if a.seo and a.seo.title|length > 55 %}…{% endif %}</div>
+        <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text-faint);">{{ a.generated_at[:10] if a.generated_at else '' }}</div>
+        <div style="display:flex;gap:6px;">
+          <a href="/publish-assist/{{ entity_slug }}" class="btn-pub" style="font-size:0.6rem;padding:4px 8px;">Publicar</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Publicação manual — guia operacional -->
+  <div class="section">
+    <h2>Como Publicar — Sequência Correta</h2>
+    <div class="publish-panel">
+      <div class="publish-panel-title">Protocolo de Publicação para Deslocamento de SERP</div>
+      <div class="pub-step-row"><span class="pub-num">1</span><span class="pub-text"><strong>Gerar todos os artigos</strong> (botão acima) — o sistema escreve em PT-BR com o nome completo da entidade 5+ vezes e estrutura H1/H2 para SEO.</span></div>
+      <div class="pub-step-row"><span class="pub-num">2</span><span class="pub-text"><strong>Publicar no LinkedIn</strong> primeiro — é o anchor. Todos os outros ativos vão linkar para este. Abrir <a href="https://www.linkedin.com/pulse/write/" target="_blank" class="pub-link">linkedin.com/pulse/write</a></span></div>
+      <div class="pub-step-row"><span class="pub-num">3</span><span class="pub-text"><strong>Publicar no Medium</strong> com o mesmo artigo (variação semântica recomendada). Abrir <a href="https://medium.com/new-story" target="_blank" class="pub-link">medium.com/new-story</a></span></div>
+      <div class="pub-step-row"><span class="pub-num">4</span><span class="pub-text"><strong>Enviar press release</strong> para EIN Presswire ou Dino — distribui para Google News em 1-4h. Usar <a href="/news-distribution/{{ entity_slug }}" class="pub-link">News Distribution →</a></span></div>
+      <div class="pub-step-row"><span class="pub-num">5</span><span class="pub-text"><strong>Publicar FAQ</strong> no site institucional com JSON-LD (rich snippets). O CouncilIA gera o JSON-LD pronto para copiar.</span></div>
+      <div class="pub-step-row"><span class="pub-num">6</span><span class="pub-text"><strong>Gravar vídeo YouTube</strong> seguindo o roteiro gerado. Título e descrição SEO são gerados automaticamente.</span></div>
+      <div class="pub-step-row"><span class="pub-num">7</span><span class="pub-text"><strong>Solicitar indexação manual</strong> no Google Search Console para cada URL nova. Acelera em 48-72h.</span></div>
+      <div class="pub-step-row"><span class="pub-num">8</span><span class="pub-text"><strong>Criar campanha Google Ads</strong> de brand defense — garante posição #1 enquanto SEO orgânico amadurece. Ver <a href="/battle-plan/{{ entity_slug }}" class="pub-link">Battle Plan →</a></span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Velocidade de Indexação por Canal</h2>
+    <div class="strat-grid">
+      <div class="strategy-box">
+        <div class="strategy-title">LinkedIn Articles — 2-8h</div>
+        <div class="strategy-text">DA 98. Indexa em horas. Ranqueia para buscas profissionais e branded. Melhor ROI por hora de trabalho. Primeiro ativo a publicar.</div>
+      </div>
+      <div class="strategy-box">
+        <div class="strategy-title">Medium — 4-24h</div>
+        <div class="strategy-text">DA 94. Crosspost do artigo LinkedIn com variação semântica. Duplica a presença com texto diferente — sem penalidade de duplicate content.</div>
+      </div>
+      <div class="strategy-box">
+        <div class="strategy-title">Newswire (EIN/Dino) — 1-4h</div>
+        <div class="strategy-text">Google News imediato. Distribui para 200+ portais automaticamente. Um press release gera 10-50 publicações simultâneas.</div>
+      </div>
+      <div class="strategy-box">
+        <div class="strategy-title">YouTube — 24-72h</div>
+        <div class="strategy-text">DA 100. Transcrições automáticas indexam como texto. Thumbnail visual captura atenção antes do texto. Necessário gravar o vídeo manualmente.</div>
+      </div>
+      <div class="strategy-box">
+        <div class="strategy-title">Site Jornalístico — 3-14 dias</div>
+        <div class="strategy-text">Domínio próprio com FAQ, bio, perfil e comunicados. Base para schema.org e Knowledge Panel. Deploy em 2 minutos no Netlify.</div>
+      </div>
+      <div class="strategy-box">
+        <div class="strategy-title">Google Ads — Imediato</div>
+        <div class="strategy-text">Posição #1 garantida para branded search enquanto SEO orgânico amadurece. Budget sugerido no Battle Plan. Ativar no dia da publicação.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

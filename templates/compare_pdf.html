@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page { size: A4; margin: 2cm; @bottom-center { content: counter(page) "/" counter(pages); font-size: 8px; color: #888; font-family: monospace; } }
+    body { font-family: 'DejaVu Sans Mono', 'Courier New', monospace; font-size: 10px; line-height: 1.6; color: #111; }
+    h1 { font-size: 18px; margin-bottom: 4px; letter-spacing: 0.05em; }
+    .header { border-bottom: 2px solid #111; padding-bottom: 16px; margin-bottom: 20px; }
+    .brand { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #666; }
+    .entity-name { font-size: 22px; font-weight: 600; margin: 8px 0 4px; }
+    .header-meta { font-size: 8px; color: #666; }
+    .section { margin-bottom: 18px; page-break-inside: avoid; }
+    .section-title { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 4px; margin-bottom: 8px; color: #c0392b; }
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #ccc; border: 1px solid #ccc; margin-bottom: 16px; }
+    .metric-cell { background: #f5f5f5; padding: 10px 14px; }
+    .metric-label { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+    .metric-value { font-size: 14px; font-weight: 500; }
+    .metric-delta { font-size: 10px; font-weight: 600; margin-left: 6px; }
+    .delta-positive { color: #27ae60; }
+    .delta-negative { color: #c0392b; }
+    .delta-neutral { color: #888; }
+    .snap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .snap-col { background: #f9f9f9; border: 1px solid #ddd; padding: 12px; }
+    .snap-col h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 8px; color: #555; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+    .snap-col.antes { border-left: 3px solid #c0392b; }
+    .snap-col.depois { border-left: 3px solid #27ae60; }
+    .serp-entry { font-size: 8px; padding: 2px 0; display: flex; gap: 6px; }
+    .serp-entry .pos { color: #888; min-width: 16px; }
+    .serp-entry .neg { color: #c0392b; }
+    .serp-entry .posi { color: #27ae60; }
+    .serp-entry .neut { color: #888; }
+    .movement { margin-bottom: 8px; }
+    .movement h4 { font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #555; margin: 0 0 4px; }
+    .movement ul { list-style: none; padding: 0; margin: 0; font-size: 8px; }
+    .movement li { padding: 1px 0; }
+    .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #ccc; font-size: 7px; color: #888; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">CouncilIA — Evolution Report</div>
+    <div class="entity-name">{{ entity_name }}</div>
+    <div class="header-meta">{{ generated_at }}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Comparativo Antes / Depois</div>
+    <div class="snap-grid">
+      <div class="snap-col antes">
+        <h3>Antes — {{ diff.period.from }}</h3>
+        <div style="font-size:9px;">
+          <div>NPA: {{ old_snap.get('npa_score', '—') }}</div>
+          <div>Negative Share: {{ old_snap.get('page_1_negative_ratio', 0) | round(2) }}</div>
+          <div>Top-3 Negativos: {{ old_snap.get('top_3_negative_count', 0) }}</div>
+          <div>Ativos Controlados: {{ old_snap.get('controlled_assets', 0) }}</div>
+          <div>Domínios Jurídicos: {{ old_snap.get('legal_domain_count', 0) }}</div>
+        </div>
+      </div>
+      <div class="snap-col depois">
+        <h3>Depois — {{ diff.period.to }}</h3>
+        <div style="font-size:9px;">
+          <div>NPA: {{ new_snap.get('npa_score', '—') }}</div>
+          <div>Negative Share: {{ new_snap.get('page_1_negative_ratio', 0) | round(2) }}</div>
+          <div>Top-3 Negativos: {{ new_snap.get('top_3_negative_count', 0) }}</div>
+          <div>Ativos Controlados: {{ new_snap.get('controlled_assets', 0) }}</div>
+          <div>Domínios Jurídicos: {{ new_snap.get('legal_domain_count', 0) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Deltas</div>
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-label">Deslocamento Negativo</div>
+        <div class="metric-value">-{{ diff.negative_displacement }} posições</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Crescimento Ativos</div>
+        <div class="metric-value">+{{ diff.asset_penetration_growth }}</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Narrative Share</div>
+        <div class="metric-value">{{ diff.narrative_share_change_pp | round(1) }} pp</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Top-3 Negativos</div>
+        <div class="metric-value">{{ diff.top_3_negative_delta }}</div>
+      </div>
+    </div>
+  </div>
+
+  {% if diff.ranking_movement.moved_up or diff.ranking_movement.moved_down or diff.ranking_movement.entered %}
+  <div class="section">
+    <div class="section-title">Movimentação de Ranking</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+      <div class="movement">
+        <h4>Subiram</h4>
+        <ul>
+          {% for m in diff.ranking_movement.moved_up[:8] %}
+          <li><strong>{{ m.domain }}</strong> #{{ m.from }} → #{{ m.to }}</li>
+          {% else %}
+          <li>—</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="movement">
+        <h4>Caíram</h4>
+        <ul>
+          {% for m in diff.ranking_movement.moved_down[:8] %}
+          <li><strong>{{ m.domain }}</strong> #{{ m.from }} → #{{ m.to }}</li>
+          {% else %}
+          <li>—</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="movement">
+        <h4>Entraram</h4>
+        <ul>
+          {% for m in diff.ranking_movement.entered[:8] %}
+          <li><strong>{{ m.domain }}</strong> #{{ m.position }}</li>
+          {% else %}
+          <li>—</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if diff.ranking_movement.new_negative_entrants %}
+  <div class="section">
+    <div class="section-title">⚠ Novos Entrantes Negativos</div>
+    <ul>
+      {% for m in diff.ranking_movement.new_negative_entrants %}
+      <li><strong>{{ m.domain }}</strong> na posição #{{ m.position }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <div class="footer">
+    <span>CouncilIA · Evolution Report</span>
+    <span>CONFIDENTIAL</span>
+    <span>{{ generated_at }}</span>
+  </div>
+</body>
+</html>
