@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from api.routes import reputation
 from api.routes import console
 from api.routes import automation
+from api.routes import political
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,6 +45,7 @@ app = FastAPI(
 app.include_router(console.router)
 app.include_router(reputation.router, prefix="/reputation", tags=["reputation"])
 app.include_router(automation.router)
+app.include_router(political.router, prefix="/political", tags=["political"])
 
 
 @app.get("/health", tags=["health"])

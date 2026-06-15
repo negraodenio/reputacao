@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CouncilIA — Fila de Distribuição · {{ entity.name if entity else slug }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#07080a; --surface:#0d1014; --surface2:#131820;
+      --border:#1e2530; --border2:#252f3d;
+      --text:#e2e8f0; --dim:#6b7a8d; --faint:#2d3748;
+      --gold:#f0a500; --gold-dim:#7a5200;
+      --green:#22c55e; --yellow:#eab308; --orange:#f97316; --red:#ef4444; --blue:#3b82f6;
+      --mono:'IBM Plex Mono',monospace; --sans:'Inter',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14px; }
+    .topnav { display:flex; align-items:center; justify-content:space-between; padding:14px 32px; border-bottom:1px solid var(--border); background:var(--surface); }
+    .topnav-brand { font-family:var(--mono); font-size:13px; color:var(--gold); }
+    .topnav-brand span { color:var(--dim); }
+    .nav-link { font-family:var(--mono); font-size:11px; padding:5px 12px; border:1px solid var(--border2); border-radius:3px; text-decoration:none; color:var(--dim); }
+    .nav-link:hover { color:var(--text); }
+    .page { max-width:1100px; margin:0 auto; padding:32px; }
+    .page-header { margin-bottom:32px; }
+    .page-title { font-size:20px; font-weight:600; margin-bottom:4px; }
+    .page-sub { color:var(--dim); font-size:13px; }
+    .section { margin-bottom:40px; }
+    .section-title { font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+
+    /* Content list */
+    .content-item { background:var(--surface); border:1px solid var(--border); padding:16px 20px; margin-bottom:8px; display:flex; align-items:flex-start; gap:16px; }
+    .content-type-badge { font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border:1px solid var(--border2); color:var(--dim); flex-shrink:0; white-space:nowrap; }
+    .content-title { font-size:14px; font-weight:500; margin-bottom:4px; }
+    .content-meta { font-family:var(--mono); font-size:10px; color:var(--dim); }
+    .compliance-ok  { color:var(--green); }
+    .compliance-bad { color:var(--red); }
+
+    /* Distribution queue */
+    .queue-table { width:100%; border-collapse:collapse; }
+    .queue-table th { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dim); padding:10px 14px; border-bottom:1px solid var(--border); text-align:left; }
+    .queue-table td { padding:10px 14px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:top; }
+    .queue-table tr:hover td { background:var(--surface2); }
+    .status-queued    { color:var(--yellow); font-family:var(--mono); font-size:11px; }
+    .status-distributed { color:var(--green); font-family:var(--mono); font-size:11px; }
+    .portal-method { font-family:var(--mono); font-size:10px; color:var(--dim); }
+    .instructions-cell { font-size:11px; color:var(--dim); max-width:240px; }
+    .btn { font-family:var(--mono); font-size:11px; letter-spacing:0.06em; padding:5px 12px; border:1px solid; cursor:pointer; text-decoration:none; display:inline-block; }
+    .btn-send { color:var(--gold); border-color:var(--gold-dim); background:transparent; }
+    .btn-send:hover { background:rgba(240,165,0,0.08); }
+    .btn-back { color:var(--dim); border-color:var(--border2); }
+    .btn-back:hover { color:var(--text); }
+    .empty { text-align:center; padding:40px; color:var(--dim); font-family:var(--mono); font-size:13px; }
+  </style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-brand">CouncilIA <span>/ Distribuição Política</span></div>
+  <a href="/political" class="nav-link">← Voltar</a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">{{ entity.name if entity else slug }} — Fila de Distribuição</div>
+    <div class="page-sub">{{ entity.role if entity else '' }} · {{ entity.party if entity else '' }} · {{ entity.state if entity else '' }} · Gerado em {{ generated_at }}</div>
+  </div>
+
+  <!-- CONTEÚDOS GERADOS -->
+  <div class="section">
+    <div class="section-title">Conteúdo Gerado</div>
+    {% if content_list %}
+      {% for c in content_list %}
+      <div class="content-item">
+        <span class="content-type-badge">{{ c.type_label or c.content_type }}</span>
+        <div style="flex:1;">
+          <div class="content-title">{{ c.title or '—' }}</div>
+          <div class="content-meta">
+            {{ c.word_count }} palavras ·
+            {{ c.generated_at[:10] if c.generated_at else '' }} ·
+            <span class="{% if c.compliance %}compliance-ok{% else %}compliance-bad{% endif %}">
+              {% if c.compliance %}✓ Conforme{% else %}⚠ Revisar compliance{% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty">Nenhum conteúdo gerado ainda. Execute o pipeline primeiro.</div>
+    {% endif %}
+  </div>
+
+  <!-- FILA DE DISTRIBUIÇÃO -->
+  <div class="section">
+    <div class="section-title">Fila de Envio para Portais</div>
+    {% if queue %}
+    <table class="queue-table">
+      <thead>
+        <tr>
+          <th>Conteúdo</th>
+          <th>Portal</th>
+          <th>Método</th>
+          <th>Instruções</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in queue %}
+        <tr id="row-{{ loop.index }}">
+          <td>
+            <div style="font-weight:500;margin-bottom:3px;">{{ (item.title or item.content_type)[:50] }}{% if item.title and item.title|length > 50 %}…{% endif %}</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);">{{ item.content_type }}</div>
+          </td>
+          <td>
+            <div style="font-weight:500;">{{ item.portal_name }}</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);">{{ item.portal_url }}</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);">⏱ {{ item.speed }}</div>
+          </td>
+          <td><span class="portal-method">{{ item.portal_method }}</span></td>
+          <td class="instructions-cell">{{ item.portal_instructions[:120] }}{% if item.portal_instructions and item.portal_instructions|length > 120 %}…{% endif %}</td>
+          <td>
+            <span class="status-{{ item.status }}">
+              {{ '✓ Enviado' if item.status == 'distributed' else '⏳ Aguardando' }}
+            </span>
+            {% if item.published_url %}
+            <div style="font-family:var(--mono);font-size:10px;margin-top:4px;">
+              <a href="{{ item.published_url }}" target="_blank" style="color:var(--gold);">Ver publicação</a>
+            </div>
+            {% endif %}
+          </td>
+          <td>
+            {% if item.status != 'distributed' %}
+            <button class="btn btn-send" onclick="markSent('{{ slug }}', '{{ item.portal_name }}', '{{ item.content_type }}', {{ loop.index }})">
+              Marcar Enviado
+            </button>
+            {% else %}
+            <span style="color:var(--green);font-family:var(--mono);font-size:11px;">✓</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <div class="empty">Fila de distribuição vazia. Execute o pipeline para gerar conteúdo e selecionar portais.</div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+async function markSent(slug, portalName, contentType, rowIdx) {
+  const url = prompt('URL da publicação (opcional):') || '';
+  const form = new FormData();
+  form.append('slug', slug);
+  form.append('portal_name', portalName);
+  form.append('content_type', contentType);
+  form.append('published_url', url);
+
+  const res = await fetch('/political/mark-sent', { method:'POST', body:form });
+  const json = await res.json();
+  if (json.status === 'marked') {
+    const row = document.getElementById('row-' + rowIdx);
+    if (row) {
+      row.querySelector('.status-queued').className = 'status-distributed';
+      row.querySelector('.status-distributed').textContent = '✓ Enviado';
+      row.querySelector('button').remove();
+    }
+  }
+}
+</script>
+</body>
+</html>
