@@ -295,3 +295,30 @@ def mark_sent(
 def portals_by_state(request: Request, state: str):
     from services.regional_portals import get_state_portals_summary
     return JSONResponse(get_state_portals_summary(state.upper()))
+
+# ── Deep Scan (Firecrawl + LLM) ─────────────────────────────────────────────
+
+@router.post("/deep-scan")
+def start_deep_scan(
+    request: Request,
+    slug:    str = Form(...),
+    scan_type: str = Form(...),  # 'dossier' ou 'defense'
+):
+    from services.political_engine import get_politician
+    from services.deep_scrape_service import run_deep_scan_async
+    
+    entity = get_politician(slug)
+    if not entity:
+        return JSONResponse({"error": f"Político '{slug}' não encontrado."}, status_code=404)
+        
+    target_name = entity.opponent if scan_type == 'dossier' else entity.name
+    if not target_name:
+        return JSONResponse({"error": "Alvo (nome do político ou adversário) não definido."}, status_code=400)
+        
+    result = run_deep_scan_async(slug, target_name, scan_type)
+    return JSONResponse(result)
+
+@router.get("/deep-scan/status/{slug}/{scan_type}")
+def get_deep_scan_status(request: Request, slug: str, scan_type: str):
+    from services.deep_scrape_service import check_deep_scan_status
+    return JSONResponse(check_deep_scan_status(slug, scan_type))

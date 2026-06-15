@@ -514,6 +514,13 @@
         <button class="btn btn-secondary btn-sm" onclick="runOpponent('{{ politician.slug }}', '{{ politician.opponent }}')">
           ⚔ Oponente
         </button>
+        <div style="width: 100%; height: 1px; background: var(--border); margin: 6px 0;"></div>
+        <button class="btn btn-danger btn-sm" onclick="runDeepScan('{{ politician.slug }}', 'dossier')">
+          🕵️ Dossiê Profundo (Firecrawl)
+        </button>
+        <button class="btn btn-secondary btn-sm" style="color: var(--blue); border-color: rgba(59,130,246,0.3);" onclick="runDeepScan('{{ politician.slug }}', 'defense')">
+          🛡️ Escudo de Defesa (Firecrawl)
+        </button>
       </div>
 
       <div class="pcard-last-run">
@@ -617,7 +624,20 @@
   </div>
 </div>
 
+<div id="result-modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeResultModal()">
+  <div class="modal" style="width: 800px; max-width: 95vw; background: var(--surface);">
+    <div class="modal-title" id="result-modal-title" style="color: var(--gold);">Resultado do Deep Scan</div>
+    <div id="result-modal-content" style="font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--text); padding-right: 10px; max-height: 60vh; overflow-y: auto;">
+      <!-- HTML injectado aqui -->
+    </div>
+    <div class="form-actions" style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px;">
+      <button type="button" class="btn btn-secondary" onclick="closeResultModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <script>
+  function closeResultModal() { document.getElementById('result-modal-overlay').classList.remove('open'); }
   function openModal(data = null) {
     const form = document.getElementById('register-form');
     const title = document.getElementById('modal-title');
@@ -759,6 +779,64 @@
     } catch(err) {
       hideOverlay();
       showToast('Erro ao analisar adversário');
+    }
+  }
+
+  async function runDeepScan(slug, scanType) {
+    const messages = [
+      "Iniciando Módulo de Deep Scan (Firecrawl)...",
+      "Mapeando portais e blogs negativos via SERP...",
+      "Sugando matérias jornalísticas inteiras (Bypass)...",
+      "Processando análise militar-cibernética com LLM...",
+      "Construindo Dossiê/Escudo Narrativo...",
+      "Isso pode levar de 30 a 60 segundos..."
+    ];
+    showOverlay(messages);
+
+    const form = new FormData();
+    form.append('slug', slug);
+    form.append('scan_type', scanType);
+    
+    try {
+      // Inicia o scan
+      const startRes = await fetch('/political/deep-scan', { method: 'POST', body: form });
+      const startJson = await startRes.json();
+      if (startJson.error) {
+        hideOverlay();
+        showToast(startJson.error);
+        return;
+      }
+
+      // Faz pooling a cada 3 segundos
+      const checkInterval = setInterval(async () => {
+        try {
+          const checkRes = await fetch(`/political/deep-scan/status/${slug}/${scanType}`);
+          const statusJson = await checkRes.json();
+          
+          if (statusJson.status === 'running') {
+            document.getElementById("op-status-text").textContent = statusJson.step || "Processando...";
+          } else if (statusJson.status === 'completed') {
+            clearInterval(checkInterval);
+            hideOverlay();
+            
+            document.getElementById('result-modal-title').textContent = scanType === 'dossier' ? '🕵️ Dossiê Profundo (Adversário)' : '🛡️ Escudo de Defesa (Cliente)';
+            document.getElementById('result-modal-content').innerHTML = statusJson.result;
+            document.getElementById('result-modal-overlay').classList.add('open');
+            
+            showToast("✓ Deep Scan concluído com sucesso!");
+          } else if (statusJson.status === 'error') {
+            clearInterval(checkInterval);
+            hideOverlay();
+            showToast(`Erro no scan: ${statusJson.message}`);
+          }
+        } catch(e) {
+          console.error("Polling error:", e);
+        }
+      }, 3000);
+
+    } catch(err) {
+      hideOverlay();
+      showToast('Erro de conexão ao iniciar Deep Scan');
     }
   }
 </script>
