@@ -10,7 +10,11 @@ from services.openrouter_service import call_openrouter
 from services.asset_service import generate_asset
 
 ASSET_TEMPLATES_DIR = Path(__file__).parent.parent / "asset_templates"
-CACHE_DIR = Path(__file__).parent.parent / "articles_cache"
+import os
+if os.environ.get("VERCEL"):
+    CACHE_DIR = Path("/tmp/articles_cache")
+else:
+    CACHE_DIR = Path(__file__).parent.parent / "articles_cache"
 
 # ── Plataforma de publicação por tipo de asset ────────────────────────────
 

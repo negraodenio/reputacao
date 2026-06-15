@@ -17,6 +17,12 @@ from pathlib import Path
 
 logger = logging.getLogger("councilia.pipeline")
 
+import os
+if os.environ.get("VERCEL"):
+    CACHE_DIR = Path("/tmp/articles_cache")
+else:
+    CACHE_DIR = Path(__file__).parent.parent / "articles_cache"
+
 # Ativos gerados por nível de ameaça
 _ASSETS_BY_THREAT: dict[str, list[str]] = {
     "LOW":      [],
@@ -172,7 +178,7 @@ def _auto_generate_response(entity_name: str, slug: str, snap: dict) -> None:
         if result:
             # Salva em cache dedicado
             cache_path = (
-                Path(__file__).parent.parent / "articles_cache" / slug / "auto_response.json"
+                CACHE_DIR / slug / "auto_response.json"
             )
             cache_path.parent.mkdir(parents=True, exist_ok=True)
             import json
@@ -194,7 +200,7 @@ def _save_pipeline_log(slug: str, log_entry: dict) -> None:
     """Salva log de execução do pipeline."""
     import json, os, tempfile
     log_path = (
-        Path(__file__).parent.parent / "articles_cache" / slug / "pipeline_log.json"
+        CACHE_DIR / slug / "pipeline_log.json"
     )
     log_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -228,7 +234,7 @@ def get_pipeline_status(slug: str) -> dict:
     """Retorna o último log de pipeline para um slug."""
     import json
     log_path = (
-        Path(__file__).parent.parent / "articles_cache" / slug / "pipeline_log.json"
+        CACHE_DIR / slug / "pipeline_log.json"
     )
     if not log_path.exists():
         return {"status": "never_run", "slug": slug}

@@ -13,3 +13,5 @@ outputs/
 costs/cost_log.json
 monitoring/
 snapshots/entities.json
+
+.vercel

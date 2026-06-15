@@ -4,7 +4,11 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-COST_LOG = Path(__file__).parent.parent / "costs" / "cost_log.json"
+import os
+if os.environ.get("VERCEL"):
+    COST_LOG = Path("/tmp/costs/cost_log.json")
+else:
+    COST_LOG = Path(__file__).parent.parent / "costs" / "cost_log.json"
 
 ESTIMATED_COSTS = {
     "serpapi":           0.01,

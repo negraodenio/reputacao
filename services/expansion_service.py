@@ -16,7 +16,11 @@ from pathlib import Path
 from services.firecrawl_service import scrape
 from services.constants import PRIORITY_DOMAINS, EXCLUDED_DOMAINS
 
-CACHE_DIR = Path(__file__).parent.parent / "cache"
+import os
+if os.environ.get("VERCEL"):
+    CACHE_DIR = Path("/tmp/cache")
+else:
+    CACHE_DIR = Path(__file__).parent.parent / "cache"
 CACHE_TTL_HOURS = 12
 
 # ── Constants ────────────────────────────────────────────────────
