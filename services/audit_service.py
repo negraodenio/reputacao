@@ -112,8 +112,8 @@ def run_audit(
         deep: se True, aciona também o deep audit (páginas 9-11).
               Recomendado apenas para threat_level HIGH/CRITICAL.
     """
-    # ── 1. SERP Page 1 — raw_data inclui ai_overview ───────────────────────
-    raw_data = search_raw(entity_name, num=20)
+    # ── 1. SERP Page 1 a 10 (100 resultados) — raw_data inclui ai_overview ───────────────────────
+    raw_data = search_raw(entity_name, num=100)
     results = [
         {
             "position": item.get("position"),

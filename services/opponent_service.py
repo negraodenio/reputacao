@@ -25,7 +25,7 @@ logger = logging.getLogger("councilia.opponent")
 def analyze_opponent(
     politician_name: str,
     opponent_name:   str,
-    num_results:     int = 10,
+    num_results:     int = 100,
 ) -> dict:
     """
     Compara o SERP do político com o do adversário.
