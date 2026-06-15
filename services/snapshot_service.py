@@ -86,7 +86,8 @@ def _is_controlled(domain: str, entity_slug: str) -> bool:
 
 
 def save_snapshot(entity: str, serp: list[dict], news: list[dict],
-                  expansion_associations: list[dict] | None = None) -> Path:
+                  expansion_associations: list[dict] | None = None,
+                  aio_report: dict | None = None) -> Path:
     slug = _entity_slug(entity)
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -176,6 +177,30 @@ def save_snapshot(entity: str, serp: list[dict], news: list[dict],
     snapshot["youtube_toxicity"]   = youtube_toxicity
     snapshot["video_npa_boost"]    = video_npa_boost
     snapshot["youtube_videos"]     = youtube_videos
+
+    # AI Overview — persisténcia dos scores AIO no snapshot
+    if aio_report:
+        snapshot["aio_has_overview"]  = aio_report.get("has_overview", False)
+        snapshot["aio_risk_score"]    = aio_report.get("risk_score", 0.0)
+        snapshot["aio_risk_label"]    = aio_report.get("risk_label", "SEM OVERVIEW")
+        snapshot["aio_sentiment"]     = aio_report.get("sentiment", "absent")
+        snapshot["aio_source_count"]  = aio_report.get("source_count", 0)
+        snapshot["aio_cited_sources"] = aio_report.get("cited_sources", [])
+        snapshot["aio_llm_analysis"]  = aio_report.get("llm_analysis", "")
+    else:
+        snapshot["aio_has_overview"]  = False
+        snapshot["aio_risk_score"]    = 0.0
+        snapshot["aio_risk_label"]    = "N/A"
+        snapshot["aio_sentiment"]     = "absent"
+        snapshot["aio_source_count"]  = 0
+        snapshot["aio_cited_sources"] = []
+        snapshot["aio_llm_analysis"]  = ""
+
+    # Deep SERP — campos inicializados como None (serão preenchidos async)
+    snapshot["deep_negative_index"]  = None
+    snapshot["dni_label"]            = None
+    snapshot["resurface_risk"]       = None
+    snapshot["deep_negatives_count"] = None
 
     out_dir = SNAPSHOTS_DIR / slug
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -433,3 +458,41 @@ def get_all_snapshots(slug: str) -> list[dict]:
         snap["threat"] = infer_threat_from_snapshot(snap)
         snapshots.append(snap)
     return snapshots
+
+
+def update_snapshot_deep_serp(slug: str, deep_report: dict) -> bool:
+    """
+    Atualiza o snapshot mais recente com os dados do Deep SERP.
+
+    Chamado de forma assíncrona (thread separada) após o deep audit concluir.
+    Retorna True se o snapshot foi encontrado e atualizado, False caso contrário.
+    """
+    dir_path = SNAPSHOTS_DIR / slug
+    if not dir_path.exists():
+        return False
+
+    files = sorted(dir_path.glob("*.json"))
+    if not files:
+        return False
+
+    latest_path = files[-1]
+    try:
+        snap = json.loads(latest_path.read_text(encoding="utf-8"))
+
+        # Atualizar campos deep SERP
+        snap["deep_negative_index"]  = deep_report.get("deep_negative_index")
+        snap["dni_label"]            = deep_report.get("dni_label")
+        snap["resurface_risk"]       = deep_report.get("resurface_risk")
+        snap["deep_negatives_count"] = deep_report.get("total_negatives", 0)
+        snap["deep_suppressed_count"] = len(deep_report.get("suppressed_domains", []))
+        snap["deep_serp_fetched_at"] = deep_report.get("fetched_at")
+
+        _atomic_write_json(latest_path, snap)
+        return True
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("councilia.snapshot").warning(
+            f"Falha ao atualizar snapshot deep SERP para {slug}: {e}"
+        )
+        return False
+

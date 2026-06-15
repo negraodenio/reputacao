@@ -1,9 +1,10 @@
 import re
 import logging
+import threading
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from pathlib import Path
-from services.serpapi_service import search
+from services.serpapi_service import search, search_raw
 from services.openrouter_service import call_openrouter
 from services.firecrawl_service import scrape
 from services.gnews_service import fetch_news
@@ -13,6 +14,8 @@ from services.expansion_service import expand_entity, format_expansion_context
 from services.constants import PRIORITY_DOMAINS, EXCLUDED_DOMAINS, domain_authority, classify_domain
 from services.cost_tracker import track
 from services.metrics import compute_news_counts, compute_momentum, compute_npa_domains
+from services.ai_overview_service import extract_and_analyze as analyze_aio
+from services.deep_serp_service import fetch_deep_serp
 
 logger = logging.getLogger("councilia.audit")
 
@@ -91,15 +94,43 @@ def _capture_serp_screenshot(entity_name: str, results: list[dict]):
         pass
 
 
-def run_audit(entity_name: str, country: str = "Brazil", industry: str = "General") -> dict:
+def run_audit(
+    entity_name: str,
+    country: str = "Brazil",
+    industry: str = "General",
+    deep: bool = False,
+) -> dict:
     """
     Returns dict with:
-      - text: sanitized analysis text
-      - debug_expansion: full expansion debug trace (for NPA struct in console)
-      - all_news: merged GNews articles (for report template)
+      - text:        sanitized analysis text
+      - all_news:    merged GNews articles (for report template)
+      - serp:        page-1 organic results
+      - ai_overview: Google AI Overview report (AIO Risk Score etc.)
+      - deep_serp:   Deep SERP report (DNI, páginas 9-11) — só se deep=True
+
+    Args:
+        deep: se True, aciona também o deep audit (páginas 9-11).
+              Recomendado apenas para threat_level HIGH/CRITICAL.
     """
-    results = search(entity_name, num=20)
+    # ── 1. SERP Page 1 — raw_data inclui ai_overview ───────────────────────
+    raw_data = search_raw(entity_name, num=20)
+    results = [
+        {
+            "position": item.get("position"),
+            "title":    item.get("title"),
+            "link":     item.get("link"),
+            "snippet":  item.get("snippet"),
+        }
+        for item in raw_data.get("organic_results", [])
+    ]
     track("serpapi", entity_name)
+
+    # ── 2. AI Overview — sem custo extra (já incluído no raw_data) ──────────
+    aio_report = {}
+    try:
+        aio_report = analyze_aio(entity_name, raw_data, enable_llm=True)
+    except Exception as _e:
+        logger.warning(f"AI Overview análise falhou: {_e}")
 
     serp_block = "\n".join(
         f"{r['position']}. {r['title']}\n   {r['link']}\n   {r['snippet']}"
@@ -207,11 +238,12 @@ def run_audit(entity_name: str, country: str = "Brazil", industry: str = "Genera
           tokens_output=usage.get("completion_tokens", 0))
     raw = response["choices"][0]["message"]["content"]
 
-    save_snapshot(entity_name, results, all_news, expansion["associations"])
+    save_snapshot(entity_name, results, all_news, expansion["associations"],
+                  aio_report=aio_report)
     _capture_serp_screenshot(entity_name, results)
 
-    # ── Post-Audit Pipeline — geração automática por threat level ─────────
-    # Determina threat level a partir do snapshot recém-salvo
+    # ── Post-Audit Pipeline + Deep SERP ──────────────────────────────────────
+    deep_report = {}
     try:
         from services.snapshot_service import get_latest_snapshot
         from services.post_audit_pipeline import run_post_audit_pipeline
@@ -222,7 +254,6 @@ def run_audit(entity_name: str, country: str = "Brazil", industry: str = "Genera
         if snap:
             threat = snap.get("threat_level", "LOW")
             if not threat:
-                # fallback: inferir do texto da análise
                 text_lower = _sanitize(raw).lower()
                 if any(w in text_lower for w in ["criminal", "prisão", "condenação", "fraude"]):
                     threat = "CRITICAL"
@@ -232,18 +263,42 @@ def run_audit(entity_name: str, country: str = "Brazil", industry: str = "Genera
                     threat = "MEDIUM"
                 else:
                     threat = "LOW"
+
             run_post_audit_pipeline(
                 entity_name=entity_name,
                 threat_level=threat,
                 slug=slug,
-                async_mode=True,  # não bloqueia o request HTTP
+                async_mode=True,
             )
+
+            # Deep SERP: ativa automaticamente em HIGH/CRITICAL ou se solicitado
+            should_deep = deep or threat in ("HIGH", "CRITICAL")
+            if should_deep:
+                def _run_deep():
+                    try:
+                        dr = fetch_deep_serp(
+                            entity_name=entity_name,
+                            page1_results=results,
+                        )
+                        # Atualiza snapshot com dados deep
+                        from services.snapshot_service import update_snapshot_deep_serp
+                        update_snapshot_deep_serp(slug, dr)
+                        logger.info(
+                            f"Deep SERP concluído: DNI={dr.get('deep_negative_index')}, "
+                            f"negativos={dr.get('total_negatives')}"
+                        )
+                    except Exception as _de:
+                        logger.warning(f"Deep SERP falhou: {_de}")
+
+                threading.Thread(target=_run_deep, daemon=True, name="deep-serp").start()
+
     except Exception as _e:
-        import logging as _logging
-        _logging.getLogger("councilia.audit").warning(f"Pipeline pós-audit não iniciado: {_e}")
+        logger.warning(f"Pipeline pós-audit não iniciado: {_e}")
 
     return {
-        "text": _sanitize(raw),
-        "all_news": all_news,
-        "serp": results,
+        "text":        _sanitize(raw),
+        "all_news":    all_news,
+        "serp":        results,
+        "ai_overview": aio_report,
+        "deep_serp":   deep_report,  # populated async; empty dict until thread completes
     }

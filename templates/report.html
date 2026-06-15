@@ -342,6 +342,102 @@
     .action-btn.pdf { border-color: #3d1a1a; color: #e74c3c; cursor: pointer; font: inherit; }
     .action-btn.pdf:hover { background: #1a0a0a; }
 
+    /* ── AI PANORAMA ────────────────────────────────── */
+    .aio-panel {
+      margin-left: 38px;
+      border: 1px solid #2a1a0a;
+      background: #0d0a06;
+    }
+    .aio-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: 1px solid #2a1a0a;
+    }
+    .aio-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8a6e3e;
+    }
+    .aio-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      padding: 3px 12px;
+      border: 1px solid;
+    }
+    .aio-BAIXO\ RISCO    { color: var(--green);  border-color: var(--green);  }
+    .aio-RISCO\ MODERADO { color: var(--yellow); border-color: var(--yellow); }
+    .aio-ALTO\ RISCO     { color: var(--orange); border-color: var(--orange); }
+    .aio-CRÍTICO         { color: var(--red);    border-color: var(--red); background: rgba(192,57,43,0.08); }
+    .aio-SEM\ OVERVIEW   { color: var(--text-dim); border-color: var(--border); }
+    .aio-score-num {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-left: auto;
+    }
+    .aio-score-max {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-top: 8px;
+    }
+    .aio-body {
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .aio-field-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 4px;
+    }
+    .aio-field-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+    }
+    .aio-sources {
+      padding: 12px 20px 16px;
+      border-top: 1px solid #2a1a0a;
+    }
+    .aio-source-row {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      padding: 3px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .aio-source-row a { color: #8a6e3e; text-decoration: none; }
+    .aio-source-row a:hover { color: var(--accent); }
+    .aio-llm {
+      padding: 14px 20px;
+      border-top: 1px solid #2a1a0a;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    .aio-absent {
+      padding: 16px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
     /* ── PRINT ──────────────────────────────────────── */
     @media print {
       body { background: #fff; color: #111; }
@@ -446,7 +542,63 @@
     <div class="section-body" style="margin-top:16px;">{{ sections.npa_interpretation }}</div>
   </section>
 
-  <!-- 03 · ATIVOS POSITIVOS -->
+  <!-- 03 · AI PANORAMA — Google AI Overview -->
+  {% if ai_overview and ai_overview.has_overview is defined %}
+  <section class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <span class="section-title">AI Panorama — Google AI Overview</span>
+    </div>
+    <div class="aio-panel">
+      {% if ai_overview.has_overview %}
+      <div class="aio-header">
+        <span class="aio-label">Status</span>
+        <span class="aio-badge aio-{{ ai_overview.risk_label }}">{{ ai_overview.risk_label }}</span>
+        <span class="aio-label" style="margin-left:16px;">Sentimento</span>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--text-dim);">{{ ai_overview.sentiment | upper }}</span>
+        <span class="aio-score-num">{{ ai_overview.risk_score }}<span class="aio-score-max">/100</span></span>
+      </div>
+      <div class="aio-body">
+        <div>
+          <div class="aio-field-label">Fontes Citadas</div>
+          <div class="aio-field-value">{{ ai_overview.source_count }} fonte(s)</div>
+        </div>
+        <div>
+          <div class="aio-field-label">Keywords Negativas Detectadas</div>
+          <div class="aio-field-value" style="color:{% if ai_overview.negative_hits %}var(--red){% else %}var(--green){% endif %}">
+            {% if ai_overview.negative_hits %}{{ ai_overview.negative_hits | join(', ') }}{% else %}Nenhuma{% endif %}
+          </div>
+        </div>
+      </div>
+      {% if ai_overview.cited_sources %}
+      <div class="aio-sources">
+        <div class="aio-field-label" style="margin-bottom:8px;">Fontes utilizadas pelo Google AI</div>
+        {% for src in ai_overview.cited_sources[:5] %}
+        <div class="aio-source-row">
+          <a href="{{ src.link }}" target="_blank" rel="noopener">{{ src.title or src.link }}</a>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if ai_overview.llm_analysis %}
+      <div class="aio-llm">{{ ai_overview.llm_analysis }}</div>
+      {% endif %}
+      {% else %}
+      <div class="aio-absent">
+        ✓ Sem Google AI Overview detectado para esta entidade nesta busca.
+        Isto pode ser positivo (IA não encontrou material para sintetizar) ou
+        neutro (entidade ainda não tem volume suficiente para gerar overview).
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  <!-- Renumerar seções seguintes a partir de 04 -->
+  {% set _base = 3 %}
+  {% else %}
+  {% set _base = 2 %}
+  {% endif %}
+
+  <!-- 03/04 · ATIVOS POSITIVOS -->
   <section class="section">
     <div class="section-header">
       <span class="section-number">03</span>

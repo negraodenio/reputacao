@@ -191,6 +191,7 @@ def run(
         sections = _parse_sections(audit_text)
         all_news = audit_result.get("all_news", [])
         serp = audit_result.get("serp", [])
+        aio  = audit_result.get("ai_overview", {})
         npa = _parse_npa_struct(all_news, serp)
         threat = _infer_threat(sections, npa)
         slug = _entity_slug(entity_name)
@@ -206,6 +207,7 @@ def run(
             "sections": sections,
             "npa": npa,
             "slug": slug,
+            "ai_overview": aio,
         })
     except Exception as e:
         return templates.TemplateResponse("result.html", {
@@ -246,6 +248,72 @@ def report_pdf(
             "result": None,
             "error": f"Erro ao gerar PDF: {e}<br><pre>{traceback.format_exc()}</pre>",
         })
+
+
+@router.post("/deep-audit")
+def deep_audit_endpoint(
+    request: Request,
+    entity_name: str = Form(...),
+):
+    """
+    Endpoint de auditoria profunda (páginas 9-11 + AI Overview standalone).
+
+    Retorna JSON com:
+      - deep_serp: DNI, negativos profundos, supressão confirmada
+      - ai_overview: AIO Risk Score, sentimento, fontes citadas
+
+    Nota: Este endpoint NÃO faz a análise completa de auditoria (sem LLM).
+    Para acionamento manual via dashboard de snapshot.
+    """
+    from fastapi.responses import JSONResponse
+    from services.deep_serp_service import fetch_deep_serp
+    from services.serpapi_service import search_raw
+    from services.ai_overview_service import extract_and_analyze as analyze_aio
+
+    try:
+        slug = _entity_slug(entity_name)
+
+        # Busca page 1 para referência comparativa e AI Overview
+        raw_data = search_raw(entity_name, num=10)
+        p1_results = [
+            {"position": r.get("position"), "link": r.get("link"), "title": r.get("title")}
+            for r in raw_data.get("organic_results", [])
+        ]
+
+        # AI Overview (0 créditos extras — já estava na chamada)
+        aio_report = analyze_aio(entity_name, raw_data, enable_llm=False)
+
+        # Deep SERP (3 créditos extras)
+        deep_report = fetch_deep_serp(
+            entity_name=entity_name,
+            page1_results=p1_results,
+        )
+
+        # Persistir no snapshot se existir
+        from services.snapshot_service import update_snapshot_deep_serp
+        update_snapshot_deep_serp(slug, deep_report)
+
+        return JSONResponse({
+            "entity_name":         entity_name,
+            "deep_negative_index": deep_report.get("deep_negative_index"),
+            "dni_label":           deep_report.get("dni_label"),
+            "resurface_risk":      deep_report.get("resurface_risk"),
+            "total_negatives":     deep_report.get("total_negatives"),
+            "suppressed_count":    len(deep_report.get("suppressed_domains", [])),
+            "assessment":          deep_report.get("assessment"),
+            "aio_has_overview":    aio_report.get("has_overview"),
+            "aio_risk_score":      aio_report.get("risk_score"),
+            "aio_risk_label":      aio_report.get("risk_label"),
+            "aio_sentiment":       aio_report.get("sentiment"),
+            "aio_source_count":    aio_report.get("source_count"),
+        })
+
+    except Exception as e:
+        import traceback
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"error": str(e), "trace": traceback.format_exc()}, status_code=500)
+
+
 
 
 @router.get("/snapshots/{entity_path:path}/compare/pdf", response_class=Response)
