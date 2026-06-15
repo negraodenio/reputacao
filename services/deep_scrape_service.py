@@ -25,7 +25,8 @@ ESTRUTURA OBRIGATÓRIA:
 1. RESUMO DOS ESCÂNDALOS: Identifique o cerne de todas as denúncias relatadas nas reportagens.
 2. ALVOS E VALORES: Extraia e liste em formato de tópicos (bullet points) os nomes de empreiteiras, empresas, laranjas, valores desviados ou envolvidos citados nos textos.
 3. FRAQUEZAS NARRATIVAS (O CHIFRE DE AQUILES): Aponte falhas nas explicações dadas por {target_name} nas matérias, que possam ser ridicularizadas ou expostas pela campanha do nosso cliente.
-4. SUGESTÃO DE ATAQUE: Indique uma linha de frente agressiva a ser usada nos debates e redes sociais para desestabilizar o oponente.
+4. ANTECEDENTES JURÍDICOS E GOVERNAMENTAIS: Liste inquéritos, processos no Jusbrasil, Escavador ou irregularidades no TCU encontrados contra o alvo, informando a gravidade.
+5. SUGESTÃO DE ATAQUE: Indique uma linha de frente agressiva a ser usada nos debates e redes sociais para desestabilizar o oponente.
 
 TEXTOS BRUTOS COLETADOS:
 {texts_combined[:40000]}
@@ -48,7 +49,8 @@ OBJETIVO: Criar um ESCUDO NARRATIVO (Defesa Profunda) para blindar o cliente con
 ESTRUTURA OBRIGATÓRIA:
 1. RAIOS-X DO ATAQUE: Liste as acusações exatas feitas pela mídia (qual é o argumento central dos jornalistas ou oponentes nas matérias).
 2. LINHA DE DEFESA IRREFUTÁVEL: Crie um argumento lógico, jurídico ou social para cada ponto de ataque que desmonte a acusação. Ache o buraco na reportagem.
-3. NOTA DE ESCLARECIMENTO: Escreva uma nota oficial à imprensa (pronta para uso), cirúrgica, imponente e protetora, projetada para encerrar o assunto imediatamente, passando confiança ao eleitor.
+3. DEFESA JURÍDICA E GOVERNAMENTAL: Se houver processos (Jusbrasil/Escavador) ou apontamentos do TCU, crie a narrativa de mitigação para desqualificar a importância desses passivos judiciais.
+4. NOTA DE ESCLARECIMENTO: Escreva uma nota oficial à imprensa (pronta para uso), cirúrgica, imponente e protetora, projetada para encerrar o assunto imediatamente, passando confiança ao eleitor.
 
 TEXTOS BRUTOS COLETADOS:
 {texts_combined[:40000]}
@@ -73,17 +75,36 @@ def run_deep_scan_async(slug: str, target_name: str, scan_type: str):
             status_data = {"status": "running", "step": "Infiltrando na SERP e varrendo links...", "result": None}
             status_file.write_text(json.dumps(status_data))
             
-            # 1. SerpAPI (pegar links com palavras associadas a denúncias/crises)
-            query = f'"{target_name}" (escândalo OR crime OR denúncia OR polícia OR investigação OR polêmica OR fraude)'
-            results = search(query, num=5)
+            # 1. SerpAPI (pesquisas simultâneas: mídia, justiça e governo)
+            import concurrent.futures
+            
+            q_media = f'"{target_name}" (escândalo OR crime OR denúncia OR polícia OR investigação OR polêmica OR fraude)'
+            q_legal = f'site:jusbrasil.com.br OR site:escavador.com "{target_name}"'
+            q_gov = f'site:tcu.gov.br OR site:transparencia.gov.br "{target_name}"'
+            
+            with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                f_media = executor.submit(search, q_media, 5)
+                f_legal = executor.submit(search, q_legal, 3)
+                f_gov = executor.submit(search, q_gov, 3)
+                
+                res_media = f_media.result()
+                res_legal = f_legal.result()
+                res_gov = f_gov.result()
             
             links = []
-            for r in results:
-                link = r.get("link", "")
-                if "youtube.com" not in link and "instagram.com" not in link and "facebook.com" not in link:
-                    links.append(link)
-            
-            links = links[:3] # Máximo 3 portais profundos
+            def _add_links(results, max_count):
+                added = 0
+                for r in results:
+                    link = r.get("link", "")
+                    if "youtube.com" not in link and "instagram.com" not in link and "facebook.com" not in link:
+                        links.append(link)
+                        added += 1
+                        if added >= max_count:
+                            break
+                            
+            _add_links(res_media, 2)
+            _add_links(res_legal, 2)
+            _add_links(res_gov, 1)
             
             if not links:
                 status_data["status"] = "completed"
@@ -91,18 +112,27 @@ def run_deep_scan_async(slug: str, target_name: str, scan_type: str):
                 status_file.write_text(json.dumps(status_data))
                 return
 
-            status_data["step"] = f"Extraindo dados brutos (Deep Scrape) de {len(links)} domínios com Firecrawl..."
+            status_data["step"] = f"Araponga ativado: Raspando e baixando {len(links)} portais/tribunais na íntegra..."
             status_file.write_text(json.dumps(status_data))
             
-            # 2. Firecrawl
+            # 2. Firecrawl Paralelo (Muito mais rápido e bypassa limites de tempo)
             deep_texts = []
-            for link in links:
+            
+            def _fetch_link(l):
                 try:
-                    text = scrape(link)
-                    if text and len(text) > 300: # IGNORA SCRAPE VAZIO OU COM ERRO
-                        deep_texts.append(f"ORIGEM DA INFORMAÇÃO: {link}\n{text}")
+                    txt = scrape(l)
+                    if txt and len(txt) > 300:
+                        return f"ORIGEM DA INFORMAÇÃO: {l}\n{txt}"
                 except Exception as e:
-                    logger.warning(f"Erro no scrape do link {link}: {e}")
+                    logger.warning(f"Erro no scrape do link {l}: {e}")
+                return None
+                
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(links)) as executor:
+                future_to_url = {executor.submit(_fetch_link, l): l for l in links}
+                for future in concurrent.futures.as_completed(future_to_url):
+                    data = future.result()
+                    if data:
+                        deep_texts.append(data)
                     
             if not deep_texts:
                 status_data["status"] = "completed"
