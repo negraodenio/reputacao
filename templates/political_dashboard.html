@@ -371,6 +371,44 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── OVERLAY DE OPERAÇÃO (CÓPIA DA VERSÃO ANTERIOR) ── */
+    #op-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    #op-overlay.active {
+      opacity: 1; pointer-events: auto;
+    }
+    #op-box {
+      background: #111; border: 1px solid #333; border-radius: 12px;
+      padding: 48px 56px; text-align: center;
+      min-width: 320px;
+    }
+    #op-badge {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.2em; color: var(--gold);
+      border: 1px solid var(--gold); display: inline-block;
+      padding: 3px 10px; border-radius: 2px; margin-bottom: 20px;
+    }
+    #op-spinner {
+      width: 36px; height: 36px; margin: 20px auto 24px;
+      border: 3px solid #333; border-top-color: var(--text);
+      border-radius: 50%; animation: op-spin 0.8s linear infinite;
+    }
+    @keyframes op-spin { to { transform: rotate(360deg); } }
+    #op-subtitle {
+      font-size: 12px; color: var(--dim); letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    #op-status-text {
+      font-size: 14px; color: var(--text); font-family: var(--mono);
+      min-height: 1.4em;
+    }
   </style>
 </head>
 <body>
@@ -556,6 +594,16 @@
 <!-- TOAST -->
 <div id="toast"></div>
 
+<!-- OVERLAY DE OPERAÇÃO -->
+<div id="op-overlay">
+  <div id="op-box">
+    <div id="op-badge">MÓDULO POLÍTICO</div>
+    <div id="op-subtitle">Inteligência Narrativa Operacional</div>
+    <div id="op-spinner"></div>
+    <div id="op-status-text">Inicializando operação...</div>
+  </div>
+</div>
+
 <script>
   function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
   function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
@@ -586,29 +634,57 @@
     }
   }
 
+  let opInterval;
+
+  function showOverlay(messages) {
+    const overlay = document.getElementById("op-overlay");
+    const textEl = document.getElementById("op-status-text");
+    overlay.classList.add("active");
+    textEl.textContent = messages[0];
+    let idx = 0;
+    opInterval = setInterval(() => {
+      idx = (idx + 1) % messages.length;
+      textEl.textContent = messages[idx];
+    }, 2500);
+  }
+
+  function hideOverlay() {
+    document.getElementById("op-overlay").classList.remove("active");
+    clearInterval(opInterval);
+  }
+
   async function runPipeline(slug, name) {
-    const loading = document.getElementById('pipeline-loading');
-    loading.classList.add('show');
-    showToast(`▶ Iniciando pipeline para ${name}...`);
+    const messages = [
+      "Auditando ambiente narrativo (SERP)...",
+      "Avaliando IA Overviews do Google...",
+      "Identificando ameaças e gaps de reputação...",
+      "Acionando motor de geração de conteúdo político...",
+      "Preparando fila de distribuição regional...",
+      "Analisando métricas de compliance eleitoral..."
+    ];
+    showOverlay(messages);
 
     const form = new FormData();
     form.append('slug', slug);
-    form.append('async_mode', 'true');
+    form.append('async_mode', 'false');
 
     try {
       const res = await fetch('/political/pipeline', { method: 'POST', body: form });
       const json = await res.json();
-      loading.classList.remove('show');
-      if (json.status === 'started') {
-        showToast(`✓ Pipeline iniciado! Auditoria + geração de conteúdo em andamento...`, 6000);
+      hideOverlay();
+      
+      if (json.status && json.status.includes('completed')) {
+        showToast(`✓ Pipeline concluído! ${json.generated_count || 0} conteúdos gerados.`);
+        setTimeout(() => location.reload(), 1500);
       } else if (json.status === 'blocked_silence') {
         showToast(`⚠ ${json.message}`, 6000);
       } else {
-        showToast(`Pipeline: ${json.status}`);
+        showToast(`Pipeline finalizado com status: ${json.status}`);
+        setTimeout(() => location.reload(), 1500);
       }
     } catch(err) {
-      loading.classList.remove('show');
-      showToast('Erro ao iniciar pipeline');
+      hideOverlay();
+      showToast('Erro ao executar pipeline. Pode ter excedido o tempo limite da Vercel.');
     }
   }
 
@@ -616,24 +692,38 @@
     if (!opponentName) {
       const opp = prompt('Nome do adversário para análise:');
       if (!opp) return;
+      opponentName = opp;
     }
-    showToast('⚔ Analisando adversário... (2 créditos SerpAPI)');
+    
+    const messages = [
+      `Acessando SERP do adversário: ${opponentName}...`,
+      "Coletando métricas de domínio e sentimento...",
+      "Comparando gap narrativo entre os políticos...",
+      "Gerando insight estratégico com Inteligência Artificial...",
+      "Consolidando relatório de vantagem eleitoral..."
+    ];
+    showOverlay(messages);
+
     const form = new FormData();
     form.append('slug', slug);
-    if (opponentName) form.append('opponent_name', opponentName);
+    form.append('opponent_name', opponentName);
+    
     try {
       const res = await fetch('/political/opponent', { method: 'POST', body: form });
       const json = await res.json();
+      hideOverlay();
+      
       if (json.comparison) {
         const c = json.comparison;
         showToast(
-          `⚔ ${c.winner} em vantagem · ${c.politician_name}: ${c.politician_score}/100 · ${c.opponent_name}: ${c.opponent_score}/100`,
+          `⚔ ${c.winner} em vantagem · Você: ${c.politician_score}/100 · Adversário: ${c.opponent_score}/100`,
           8000
         );
       } else {
         showToast(`Erro: ${json.error || 'Falha na análise'}`);
       }
     } catch(err) {
+      hideOverlay();
       showToast('Erro ao analisar adversário');
     }
   }
