@@ -74,8 +74,9 @@ def register_politician(
     opponent:      str = Form(""),
     keywords:      str = Form(""),
     election_year: int = Form(2026),
+    original_slug: str = Form(""),
 ):
-    from services.political_engine import PoliticalEntity, register_politician as _register
+    from services.political_engine import PoliticalEntity, register_politician as _register, delete_politician
 
     entity = PoliticalEntity(
         name=name,
@@ -89,6 +90,10 @@ def register_politician(
         keywords=[k.strip() for k in keywords.split(",") if k.strip()],
         election_year=election_year,
     )
+    
+    if original_slug and original_slug != entity.slug:
+        delete_politician(original_slug)
+
     _register(entity)
 
     return JSONResponse({

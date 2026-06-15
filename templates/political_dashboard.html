@@ -497,6 +497,18 @@
         <button class="btn btn-primary btn-sm" onclick="runPipeline('{{ politician.slug }}', '{{ politician.name }}')">
           ▶ Rodar Pipeline
         </button>
+        <button class="btn btn-secondary btn-sm" onclick="openModal({
+          name: '{{ politician.name|replace('\'', '\\\'') }}',
+          role: '{{ politician.role }}',
+          target_role: '{{ politician.target_role }}',
+          party: '{{ politician.party }}',
+          state: '{{ politician.state }}',
+          city: '{{ politician.city|replace('\'', '\\\'') }}',
+          election_year: '{{ politician.election_year }}',
+          opponent: '{{ politician.opponent|replace('\'', '\\\'') }}',
+          keywords: '{{ politician.keywords | join(', ') | replace('\'', '\\\'') }}',
+          slug: '{{ politician.slug }}'
+        })">✎ Editar</button>
         <a href="/political/queue/{{ politician.slug }}" class="btn btn-secondary btn-sm">Fila de Distribuição</a>
         <a href="/political/calendar/{{ politician.slug }}" class="btn btn-secondary btn-sm">Calendário</a>
         <button class="btn btn-secondary btn-sm" onclick="runOpponent('{{ politician.slug }}', '{{ politician.opponent }}')">
@@ -520,8 +532,9 @@
 <!-- MODAL DE CADASTRO -->
 <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-title">Cadastrar Político</div>
+    <div class="modal-title" id="modal-title">Cadastrar Político</div>
     <form id="register-form" onsubmit="submitRegister(event)">
+      <input type="hidden" name="original_slug" id="original_slug" value="">
       <div class="form-grid">
         <div class="form-group full">
           <label class="form-label">Nome Completo *</label>
@@ -605,7 +618,28 @@
 </div>
 
 <script>
-  function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
+  function openModal(data = null) {
+    const form = document.getElementById('register-form');
+    const title = document.getElementById('modal-title');
+    if (data) {
+      title.textContent = 'Editar Político';
+      form.elements['original_slug'].value = data.slug;
+      form.elements['name'].value = data.name;
+      form.elements['role'].value = data.role;
+      form.elements['target_role'].value = data.target_role;
+      form.elements['party'].value = data.party;
+      form.elements['state'].value = data.state;
+      form.elements['city'].value = data.city || '';
+      form.elements['election_year'].value = data.election_year || '2026';
+      form.elements['opponent'].value = data.opponent || '';
+      form.elements['keywords'].value = data.keywords || '';
+    } else {
+      title.textContent = 'Cadastrar Político';
+      form.reset();
+      form.elements['original_slug'].value = '';
+    }
+    document.getElementById('modal-overlay').classList.add('open');
+  }
   function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 
   function showToast(msg, duration = 4000) {
