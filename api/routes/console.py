@@ -8,7 +8,7 @@ from services.audit_service import run_audit, _build_npa
 from services.constants import classify_domain, domain_authority
 
 NEWS_DOMAIN_TYPES = {"mainstream", "investigative", "blog"}
-from services.snapshot_service import compare_snapshots, get_latest_snapshot, get_two_latest_snapshots, infer_threat_from_snapshot, extract_negative_domains, extract_source_concentration, format_associations_from_snapshot, list_entities, get_all_snapshots
+from services.snapshot_service import compare_snapshots, get_latest_snapshot, get_two_latest_snapshots, infer_threat_from_snapshot, extract_negative_domains, extract_source_concentration, format_associations_from_snapshot, list_entities, get_all_snapshots, SNAPSHOTS_DIR
 from services.cost_tracker import get_costs, get_latest_audit_cost
 from services.archetype import ARCHETYPE_LABELS, CRISIS_STATE_LABELS
 from services.serp_dominance import compute_serp_score, compute_domain_clusters, compute_position_map
@@ -29,8 +29,6 @@ from urllib.parse import urlparse
 from collections import Counter
 import markdown
 from services.pdf_service import serve_pdf
-
-SNAPSHOTS_DIR = Path(__file__).parent.parent.parent / "snapshots"
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent.parent / "templates"))

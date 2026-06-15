@@ -17,16 +17,21 @@ logger = logging.getLogger("councilia")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Inicia o background monitor ao arrancar o servidor."""
-    from services.monitoring_engine import run_background_monitoring
-    task = asyncio.create_task(run_background_monitoring())
-    logger.info("Background monitoring task iniciada.")
-    yield
-    task.cancel()
-    try:
-        await task
-    except asyncio.CancelledError:
-        pass
-    logger.info("Background monitoring task encerrada.")
+    import os
+    if os.environ.get("VERCEL"):
+        logger.info("Executando no Vercel: background monitoring desativado.")
+        yield
+    else:
+        from services.monitoring_engine import run_background_monitoring
+        task = asyncio.create_task(run_background_monitoring())
+        logger.info("Background monitoring task iniciada.")
+        yield
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+        logger.info("Background monitoring task encerrada.")
 
 
 app = FastAPI(

@@ -20,7 +20,11 @@ from pathlib import Path
 from urllib.parse import urlparse
 from services.constants import classify_domain
 
-MONITOR_DIR = Path(__file__).parent.parent / "monitoring"
+import os
+if os.environ.get("VERCEL"):
+    MONITOR_DIR = Path("/tmp/monitoring")
+else:
+    MONITOR_DIR = Path(__file__).parent.parent / "monitoring"
 
 # Alertas mais antigos que N dias são removidos do estado (pruning)
 ALERT_RETENTION_DAYS = 90

@@ -10,7 +10,11 @@ from services.archetype import classify_archetype, classify_crisis_state
 from services.youtube_warfare import extract_youtube_results, compute_youtube_toxicity, compute_video_npa_boost
 from services.metrics import compute_news_counts, compute_momentum, compute_neg_ratio
 
-SNAPSHOTS_DIR = Path(__file__).parent.parent / "snapshots"
+import os
+if os.environ.get("VERCEL"):
+    SNAPSHOTS_DIR = Path("/tmp/snapshots")
+else:
+    SNAPSHOTS_DIR = Path(__file__).parent.parent / "snapshots"
 INDEX_PATH = SNAPSHOTS_DIR / "entities.json"
 
 
